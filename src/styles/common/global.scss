@@ -1,0 +1,48 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5% !important;
+
+    @font-face {
+        font-family: 'Roboto-Bold';
+        src: url(../../fonts/Roboto-Bold.woff2);
+    }
+    
+    @font-face {
+        font-family: 'Roboto-Medium';
+        src: url(../../fonts/Roboto-Medium.woff2);
+    }
+    
+    @font-face {
+        font-family: 'Roboto-Regular';
+        src: url(../../fonts/Roboto-Regular.woff2);
+    }
+}
+
+.container {
+    padding: 0 20%;
+
+    @media screen and (max-width: 2500px) {
+        padding: 0 15%;
+    }
+
+    @media screen and (max-width: 2000px) {
+        padding: 0 10%;
+    }
+
+    @media screen and (max-width: 1440px) {
+        padding: 0 5.6rem;
+    }
+
+    @media screen and (max-width: 575px) {
+        padding: 0 2.4rem;
+    }
+}
+
+section {
+    padding: 5rem 0;
+}

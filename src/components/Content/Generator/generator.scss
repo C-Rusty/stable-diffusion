@@ -1,0 +1,59 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+
+.generator {
+    height: 100%;
+
+    .container {
+        height: 100%;
+    }
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__headline {
+        @extend %Font-Headline;
+        color: $colorLightBlue;
+
+        text-transform: uppercase;
+
+        margin-bottom: 4rem;
+    }
+
+    &__input {
+        width: 80%;
+        
+        padding: 2rem;
+
+        border: none;
+        border-radius: .5rem;
+
+        transition: all .5s ease;
+
+        margin-bottom: 4rem;
+
+        &:focus {
+            outline: none;
+            transition: all .5s ease;
+            box-shadow: $colorLightBlue 0 0 10px 5px;
+        }
+    }
+
+    &__model-select {
+        width: 80%;
+
+        border: none;
+        border-radius: .5rem;
+
+        padding: 1rem;
+
+        &:focus {
+            outline: none;
+            transition: all .5s ease;
+        }
+    }
+}
