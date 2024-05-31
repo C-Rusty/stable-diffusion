@@ -1,4 +1,4 @@
-import Generator from "./Content/Generator/Generator";
+import Generator from "./Content/generator/Generator";
 
 const Main = () => {
     return(

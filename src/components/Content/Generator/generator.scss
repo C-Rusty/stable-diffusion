@@ -43,13 +43,26 @@
         }
     }
 
-    &__model-select {
+    &__select-container, &__input-container {
+        width: 100%;
+
+        margin-bottom: 2rem;
+
+        &-headline {
+            @extend %Font-Regular-20px;
+            color: $colorLightBlue;
+        }
+    }
+
+    &__model-select, &__resolution-select, &__aspect-ratio-select {
         width: 80%;
 
         border: none;
         border-radius: .5rem;
 
         padding: 1rem;
+
+        margin-top: 2rem;
 
         &:focus {
             outline: none;
