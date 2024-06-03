@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Select from '../../common/Select';
 import './generator.scss';
-import { AspectRatios, GenModelsValue, Resolutions, SelectProps } from '../../../types/types';
+import { SelectProps } from '../../../types/commonTypes';
 
 const Generator = () => {
 
@@ -74,7 +74,7 @@ const Generator = () => {
                             setSelectValue={setGenModel} 
                         />
                     </label>
-                    {genModel === `core` || `sd3` ? 
+                    {genModel === `core` || genModel === `sd3` ? 
                         <label htmlFor="" className='generator__select-container'>
                             <span className='generator__select-container-headline'>Aspect Ratio</span>
                             <Select
@@ -93,6 +93,7 @@ const Generator = () => {
                             />
                         </label>
                     }
+                    <button>Generate Image</button>
                     <div className="generator__generated-image"></div>
                 </div>
             </div>

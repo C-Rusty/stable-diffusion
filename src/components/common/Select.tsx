@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { SelectProps } from "../../types/types";
+import { SelectProps } from "../../types/commonTypes";
 
 const Select = (
     {
