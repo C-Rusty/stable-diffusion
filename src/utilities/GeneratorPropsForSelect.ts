@@ -1,6 +1,11 @@
-import { InputProps, SelectProps } from "../types/typesCommon";
+import { GenModelsText, GenModelsValue } from "../types/typesCommon";
+import { outputFormat, presetStyle } from "../types/typesV2Model";
 
-const genModelSelectProps: SelectProps = {
+const genModelSelectProps: {
+    className: string
+    id: string
+    options: Array<{value: GenModelsValue, text: GenModelsText}>
+} = {
     className: 'generator__model-select',
     id: 'model-select',
     options: [
@@ -11,14 +16,23 @@ const genModelSelectProps: SelectProps = {
     ],
 };
 
-const seedInputProps: InputProps = {
+const seedInputProps: {
+    className: string
+    id: string
+    inputValue: number
+    placeholder: string
+} = {
     className: 'generator__seed-select',
     id: 'seed-select',
     inputValue: 0,
     placeholder: `the 'randomness' of the generation`
 };
 
-const style_presetSelectProps: SelectProps = {
+const stylePresetSelectProps: {
+    className: string
+    id: string
+    options: Array<{value: presetStyle, text: presetStyle}>
+} = {
     className: 'generator__style-preset-select',
     id: 'style-select',
     options: [
@@ -43,7 +57,11 @@ const style_presetSelectProps: SelectProps = {
       
 };
 
-const outputFormatSelectProps: SelectProps = {
+const outputFormatSelectProps: {
+    className: string
+    id: string
+    options: Array<{value: outputFormat, text: outputFormat}>
+} = {
     className: 'generator__output-format-select',
     id: 'output-select',
     options: [
@@ -57,6 +75,6 @@ const outputFormatSelectProps: SelectProps = {
 export const generatorCommonPropsForSelect = {
     genModelSelectProps,
     seedInputProps,
-    style_presetSelectProps,
+    stylePresetSelectProps,
     outputFormatSelectProps
 };

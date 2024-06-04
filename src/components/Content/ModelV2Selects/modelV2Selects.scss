@@ -1,0 +1,11 @@
+.generator-v2 {
+    &__inner {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+
+    &__label:last-child {
+        grid-column: span 4;
+    }   
+}

@@ -1,7 +1,10 @@
-import { InputProps, SelectProps } from "../types/typesCommon";
-import { AspectRatios, outputFormat, presetStyle } from "../types/typesV2Model";
+import { AspectRatiosProps, outputFormat } from "../types/typesV2Model";
 
-const aspectRatiSelectProps: SelectProps = {
+const aspectRatiSelectProps: {
+    className: string
+    id: string
+    options: AspectRatiosProps[]
+} = {
     className: 'generator__aspect-ratio-select',
     id: 'aspect-select',
     options: [
@@ -17,14 +20,23 @@ const aspectRatiSelectProps: SelectProps = {
     ],
 };
 
-const negativeInputProps: InputProps = {
+const negativeInputProps: {
+    className: string
+    id: string
+    inputValue: string
+    placeholder: string
+} = {
     className: 'generator__negative-prompt-select',
     id: 'negative-select',
     inputValue: ``,
     placeholder: `what you do not wish to see in the output image`
 };
 
-const outputFormmatSelectProps: SelectProps = {
+const outputFormmatSelectProps: {
+    className: string
+    id: string
+    options: Array<{value: outputFormat, text: outputFormat}>
+} = {
     className: 'generator__output-format-select',
     id: 'format-select',
     options: [

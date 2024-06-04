@@ -1,13 +1,15 @@
-@import '../../styles//common/variables.scss';
-@import '../../styles//common/fonts.scss';
+@import '../../styles/common/variables.scss';
+@import '../../styles/common/fonts.scss';
 
 .header {
+    background: $colorBlack;
+
     .container {
-        border-bottom: .1rem $colorLightBlue solid;
+        border-bottom: .1rem $colorPink solid;
     }
 
     &__inner {
-        padding: 2rem 0;
+        padding: 4rem 0;
     }
 
     &__nav {
@@ -18,7 +20,7 @@
     }
 
     &__nav-item {
-        color: $colorLightBlue;
+        color: $colorPink;
         @extend %Font-Regular-20px;
 
         text-decoration: none;

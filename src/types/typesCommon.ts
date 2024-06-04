@@ -1,5 +1,5 @@
-import { ResolutionsProps } from "./typesV1Model";
-import { AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesV2Model";
+import { Resolutions, ResolutionsProps } from "./typesV1Model";
+import { AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesV2Model";
 
 export type SelectProps = {
     className: string, 
@@ -21,3 +21,5 @@ export type GenModelsProps = {
     value: GenModelsValue,
     text: GenModelsText
 };
+
+export type MyState = AspectRatios | Resolutions;

@@ -1,7 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { SelectProps } from '../../../types/typesCommon';
-import Select from '../../common/Select';
-import './ModelV1Selects.scss';
+import './modelV1Selects.scss';
 import { ApiV1ModelParams, Resolutions } from '../../../types/typesV1Model';
 
 const ModelV1Selects = (
@@ -38,11 +37,11 @@ const ModelV1Selects = (
         <>
             <label htmlFor="" className='generator__select-container'>
                 <span className='generator__select-container-headline'>Image Resolution </span>
-                <Select
+                {/* <Select
                     optionProps={resolutionOptionProps}
                     defaultValue={resolution}
-                    setSelectValue={setResolution}
-                />
+                    setSelectValue={setResolution as Dispatch<SetStateAction<Resolutions>>}
+                /> */}
             </label>
         </>
     );

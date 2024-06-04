@@ -1,0 +1,45 @@
+@import '../fonts.scss';
+@import '../variables.scss';
+
+%label-styles {
+    label {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        h1 {
+            @extend %Font-Headline;
+            color: $colorPink;
+        }
+    
+        span {
+            @extend %Font-Regular-20px;
+            color: $colorPink;
+        }
+    
+        input, select {
+            width: 100%;
+
+            border: none;
+            border-radius: .5rem;
+            transition: all .5s ease;
+
+            padding: 1rem 1.5rem;
+
+            &:focus {
+                outline: .3rem $colorBlue solid;
+                transition: all .5s ease;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        input {
+            &:focus {
+                padding-left: 1.5rem;
+            }
+        }
+    }
+}

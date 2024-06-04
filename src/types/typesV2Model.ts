@@ -19,7 +19,7 @@ export type OutputFormatProps = {
 };
 
 export type ApiV2ModelParams = {
-    prompt: string,
+    prompt?: string,
     aspect_ratio: AspectRatios,
     negative_prompt: string, 
     seed: number, 

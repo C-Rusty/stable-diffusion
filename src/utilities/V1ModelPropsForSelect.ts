@@ -1,6 +1,10 @@
-import { SelectProps } from "../types/typesCommon";
+import { Resolutions, ResolutionsProps } from "../types/typesV1Model";
 
-const resolutionSelectProps: SelectProps = {
+const resolutionSelectProps: {
+    className: string
+    id: string
+    options: Array<{value: Resolutions, text: Resolutions}>
+} = {
     className: 'generator__resolution-select',
     id: 'resolution-select',
     options: [
