@@ -1,4 +1,4 @@
-import { InputProps, SelectProps } from "../types/commonTypes";
+import { InputProps, SelectProps } from "../types/typesCommon";
 
 const genModelSelectProps: SelectProps = {
     className: 'generator__model-select',
@@ -11,29 +11,6 @@ const genModelSelectProps: SelectProps = {
     ],
 };
 
-const aspectRatiSelectProps: SelectProps = {
-    className: 'generator__aspect-ratio-select',
-    id: 'aspect-ratio-select',
-    options: [
-        {value: `16:9`, text: `16:9`},
-        {value: `1:1`, text: `1:1`},
-        {value: `21:9`, text: `21:9`},
-        {value: `2:3`, text: `2:3`},
-        {value: `3:2`, text: `3:2`},
-        {value: `4:5`, text: `4:5`},
-        {value: `5:4`, text: `5:4`},
-        {value: `9:16`, text: `9:16`},
-        {value: `9:21`, text: `9:21`},
-    ],
-};
-
-const negativeInputProps: InputProps = {
-    className: 'generator__negative-prompt-select',
-    id: 'negative-prompt-select',
-    inputValue: ``,
-    placeholder: `what you do not wish to see in the output image`
-};
-
 const seedInputProps: InputProps = {
     className: 'generator__seed-select',
     id: 'seed-select',
@@ -43,7 +20,7 @@ const seedInputProps: InputProps = {
 
 const style_presetSelectProps: SelectProps = {
     className: 'generator__style-preset-select',
-    id: 'style-preset-select',
+    id: 'style-select',
     options: [
         { value: "3d-model", text: "3d-model" },
         { value: "analog-film", text: "analog-film" },
@@ -68,7 +45,7 @@ const style_presetSelectProps: SelectProps = {
 
 const outputFormatSelectProps: SelectProps = {
     className: 'generator__output-format-select',
-    id: 'output-format-select',
+    id: 'output-select',
     options: [
         {value: `png`, text: `png`},
         {value: `jpeg`, text: `jpeg`},
@@ -76,23 +53,10 @@ const outputFormatSelectProps: SelectProps = {
     ],
 };
 
-const resolutionSelectProps: SelectProps = {
-    className: 'generator__resolution-select',
-    id: 'resolution-select',
-    options: [
-        {value: `1024x1024`, text: `1024x1024`},
-        {value: `1152x896`, text: `1152x896`},
-        {value: `896x1152`, text: `896x1152`},
-        {value: `1216x832`, text: `1216x832`},
-        {value: `1344x768`, text: `1344x768`},
-        {value: `768x1344`, text: `768x1344`},
-        {value: `1536x640`, text: `1536x640`},
-        {value: `640x1536`, text: `640x1536`},
-    ],
-};
 
-export const generatorPropsForSelect = {
+export const generatorCommonPropsForSelect = {
     genModelSelectProps,
-    aspectRatiSelectProps,
-    resolutionSelectProps
-}
+    seedInputProps,
+    style_presetSelectProps,
+    outputFormatSelectProps
+};

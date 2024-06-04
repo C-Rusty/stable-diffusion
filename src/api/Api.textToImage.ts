@@ -30,7 +30,7 @@ const getImageFromV1Model = (params: ApiV1ModelParams, model: string) => {
     const urlPath = `${API_URL}/v1/generation/${model}/text-to-image`;
 
     const options = {
-        method: 'GET',
+        method: 'POST',
         url: urlPath,
         headers: {
             'Content-Type': 'application/json',
