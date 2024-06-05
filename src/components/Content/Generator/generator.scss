@@ -1,6 +1,5 @@
 @import '../../../styles/common/variables.scss';
 @import '../../../styles/common/fonts.scss';
-@import '../../../styles/common/components/labels.scss';
 
 .generator {
     height: 100%;
@@ -12,7 +11,7 @@
         flex-direction: column;
         justify-content: center;
 
-        gap: 2rem;
+        gap: 4rem;
     }
 
     &__headline {
@@ -22,6 +21,31 @@
         text-align: center;
 
         margin-bottom: 2rem;
+    }
+
+    &__img-descr-propmt {
+        width: 100%;
+
+        padding: 2rem 1rem;
+
+        border: none;
+        border-bottom: .1rem solid $colorGreen;
+        border-radius: .5rem;
+
+        background: transparent;
+
+        transition: all .3s ease-in-out;
+
+        color: $colorPink;
+
+        &:focus {
+            outline: none;
+
+            border-bottom-color: $colorBlue;
+
+            transition: all .3s ease-in-out;
+        }
+
     }
 
     &__label {
@@ -46,18 +70,16 @@
                 &:hover {
                     cursor: pointer;
                 }
-
-                &:focus {
-                    transition: all .3s ease;
-                    background: $colorBlue;
-                }
             }
         }
     }
 
-    @extend %label-styles;
-
     .generator__img-description {
         padding: 2rem;
     }
+}
+
+.active-model-btn {
+    transition: all .3s ease;
+    background: $colorBlue;
 }

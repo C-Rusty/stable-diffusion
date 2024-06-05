@@ -1,3 +1,4 @@
+import { Dispatch } from "react";
 import { Resolutions, ResolutionsProps } from "./typesV1Model";
 import { AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesV2Model";
 
@@ -23,3 +24,5 @@ export type GenModelsProps = {
 };
 
 export type MyState = AspectRatios | Resolutions;
+
+export type SetStateAction<T> = Dispatch<React.SetStateAction<T>>;

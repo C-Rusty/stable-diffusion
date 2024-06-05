@@ -1,4 +1,4 @@
-import { Resolutions, ResolutionsProps } from "../types/typesV1Model";
+import { Resolutions, ResolutionsProps } from "../../types/typesV1Model";
 
 const resolutionSelectProps: {
     className: string

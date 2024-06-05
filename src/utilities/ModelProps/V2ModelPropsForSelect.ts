@@ -1,12 +1,8 @@
-import { AspectRatiosProps, outputFormat } from "../types/typesV2Model";
+import { AspectRatiosProps, OutputFormat } from "../../types/typesV2Model";
 
 const aspectRatiSelectProps: {
-    className: string
-    id: string
     options: AspectRatiosProps[]
 } = {
-    className: 'generator__aspect-ratio-select',
-    id: 'aspect-select',
     options: [
         {value: `16:9`, text: `16:9`},
         {value: `1:1`, text: `1:1`},
@@ -21,24 +17,20 @@ const aspectRatiSelectProps: {
 };
 
 const negativeInputProps: {
-    className: string
-    id: string
     inputValue: string
-    placeholder: string
+    placeholder: string,
+    inputType: string,
+    name: string,
 } = {
-    className: 'generator__negative-prompt-select',
-    id: 'negative-select',
     inputValue: ``,
-    placeholder: `what you do not wish to see in the output image`
+    placeholder: `what you do not wish to see in the output image`,
+    inputType: `text`,
+    name: `negative-prompt`,
 };
 
 const outputFormmatSelectProps: {
-    className: string
-    id: string
-    options: Array<{value: outputFormat, text: outputFormat}>
+    options: Array<{value: OutputFormat, text: OutputFormat}>
 } = {
-    className: 'generator__output-format-select',
-    id: 'format-select',
     options: [
         {value: `png`, text: `png`},
         {value: `jpeg`, text: `jpeg`},

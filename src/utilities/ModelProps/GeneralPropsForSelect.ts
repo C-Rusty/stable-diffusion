@@ -1,12 +1,10 @@
-import { GenModelsText, GenModelsValue } from "../types/typesCommon";
-import { outputFormat, presetStyle } from "../types/typesV2Model";
+import { GenModelsText, GenModelsValue } from "../../types/typesCommon";
+import { OutputFormat, PresetStyle } from "../../types/typesV2Model";
 
 const genModelSelectProps: {
-    className: string
     id: string
     options: Array<{value: GenModelsValue, text: GenModelsText}>
 } = {
-    className: 'generator__model-select',
     id: 'model-select',
     options: [
         {value: 'sd3', text: 'SD3 (powerful)'},
@@ -17,23 +15,23 @@ const genModelSelectProps: {
 };
 
 const seedInputProps: {
-    className: string
     id: string
-    inputValue: number
-    placeholder: string
+    value: number
+    placeholder: string,
+    inputType: string,
+    name: string
 } = {
-    className: 'generator__seed-select',
     id: 'seed-select',
-    inputValue: 0,
-    placeholder: `the 'randomness' of the generation`
+    value: 0,
+    placeholder: `the 'randomness' of the generation`,
+    inputType: 'number',
+    name: 'seed',
 };
 
 const stylePresetSelectProps: {
-    className: string
     id: string
-    options: Array<{value: presetStyle, text: presetStyle}>
+    options: Array<{value: PresetStyle, text: PresetStyle}>
 } = {
-    className: 'generator__style-preset-select',
     id: 'style-select',
     options: [
         { value: "3d-model", text: "3d-model" },
@@ -58,11 +56,9 @@ const stylePresetSelectProps: {
 };
 
 const outputFormatSelectProps: {
-    className: string
     id: string
-    options: Array<{value: outputFormat, text: outputFormat}>
+    options: Array<{value: OutputFormat, text: OutputFormat}>
 } = {
-    className: 'generator__output-format-select',
     id: 'output-select',
     options: [
         {value: `png`, text: `png`},

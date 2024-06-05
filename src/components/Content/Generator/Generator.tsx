@@ -5,7 +5,7 @@ import ModelV1Selects from '../ModelV1Selects/ModelV1Selects';
 import ModelV2Selects from '../ModelV2Selects/ModelV2Selects';
 import { ApiV1ModelParams } from '../../../types/typesV1Model';
 import { ApiV2ModelParams } from '../../../types/typesV2Model';
-import { generatorCommonPropsForSelect } from '../../../utilities/GeneratorPropsForSelect';
+import { generatorCommonPropsForSelect } from '../../../utilities/ModelProps/GeneralPropsForSelect';
 
 const Generator = () => {
 
@@ -20,18 +20,21 @@ const Generator = () => {
         console.log(genModel);
     }, [genModel]);
 
-    const handleModelClick = (value: GenModelsValue) => {
+    const handleModelClick = (value: GenModelsValue, id: string) => {
         setGenModel(value);
+        document.getElementById(id)?.classList.toggle(`active-model-btn`)
     };
+
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
 
     return(
         <section className="generator">
             <div className="container">
                 <div className="generator__inner">
                     <h1 className="generator__headline">Stable Diffusion</h1>
-                    <label htmlFor="" className='generator__label '>
-                        <input type="text" name="input" id="generate-image-prompt" placeholder='image description'  className="generator__img-description" ref={prompt} />
-                    </label>
+                    <input type="text" name="input" id="generate-image-prompt" placeholder='Image description'  className="generator__img-descr-propmt" ref={prompt} />
                     <label htmlFor="" className="generator__label">
                         <span className='generator__label-headline'>
                             Select Model
@@ -41,7 +44,8 @@ const Generator = () => {
                             <button 
                                 className="generator-model__btn" 
                                 key={optionItem.value}
-                                onClick={() => handleModelClick(optionItem.value)}
+                                id={optionItem.value}
+                                onClick={() => handleModelClick(optionItem.value,optionItem.value)}
                             >{optionItem.text}</button>
                         )}
                         </div>

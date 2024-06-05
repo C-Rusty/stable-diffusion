@@ -1,11 +1,83 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/mixins.scss';
+
+$arrow-bg: rgba(255, 255, 255, 0.3);
+$arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
+$option-bg: white;
+$select-bg: rgba(255, 255, 255, 0.2);
+
 .generator-v2 {
     &__inner {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 2rem;
+        column-gap: 2rem;
+        row-gap: 4rem;
     }
 
-    &__label:last-child {
+    &__select-component, &__input-component {
+        position: relative;
+
+        .v2-input, .v2-select {
+            width: 100%;
+
+            color: $colorPink;
+
+            background-color: transparent;
+
+            border: none;
+            border-bottom: .1rem solid $colorGreen;
+            border-radius: .5rem;
+
+            padding: 2rem 1rem;
+
+            @include transition(.3s, ease, all);
+            
+            &:focus {
+                @include transition(.3s, ease, all);
+
+                outline: none;
+                border-bottom-color: $colorBlue;
+
+                ~ .input-label, ~ .select-label {
+                    color: $colorBlue;
+                    @include transition(.3s, ease, all);
+                }
+            }
+        }
+
+        .input-label, .select-label {
+            position: absolute;
+            top: -1rem;
+            left: 0;
+
+            color:$colorPink;
+
+            @extend %Font-Regular-15px;
+
+            @include transition(.3s, ease, all);
+
+            pointer-events: none;
+        }
+    } 
+    
+    .v2-select {
+        &:focus {
+            option {
+                // background: $colorBlack;
+                text-indent: 5px;
+                padding: 2rem;
+            }
+
+            &:hover {
+                cursor: pointer;
+            }
+
+        }
+
+    }
+
+    &__input-component:last-child {
         grid-column: span 4;
-    }   
+    }
 }

@@ -1,0 +1,21 @@
+.v2-select {
+    position: relative;
+
+    &:active {
+        &__inner {
+            z-index: 2;
+        }
+    }
+
+    &__inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        z-index: -1;
+    }
+}
+
+.open-select {
+    z-index: 2;
+}
