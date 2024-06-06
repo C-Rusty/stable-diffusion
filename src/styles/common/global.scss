@@ -21,6 +21,17 @@ html {
         font-family: 'Roboto-Regular';
         src: url(../../fonts/Roboto-Regular.woff2);
     }
+
+    &::-webkit-scrollbar {
+        width: 1rem;
+        background-color: $colorBlack;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $colorPink;
+
+        border-radius: .5rem;
+    }
 }
 
 .container {

@@ -2,9 +2,9 @@ import { Fragment } from "react/jsx-runtime";
 import { Route, Routes } from "react-router-dom";
 import SignIn from "../components/Content/signIn/SignIn";
 import { urlPaths } from "./urlPaths";
-import Header from "../components/header/Header";
-import Generator from "../components/Content/generator/Generator";
-import Footer from "../components/footer/Footer";
+import Header from "../components/Header/Header";
+import Generator from "../components/Content/Generator/Generator";
+import Footer from "../components/Footer/Footer";
 
 const Main = () => {
     return(

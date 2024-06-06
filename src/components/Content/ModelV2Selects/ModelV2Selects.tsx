@@ -55,6 +55,7 @@ const ModelV2Selects = (
                         setValue={setAspectRatio} 
                         options={aspectRatiSelectProps.options} 
                         className={selectCommonClassName} 
+                        id={aspectRatiSelectProps.id}
                     />
                     <label className="select-label">Aspect Ratio</label>
                 </div>
@@ -74,6 +75,7 @@ const ModelV2Selects = (
                         setValue={setStylePreset} 
                         options={stylePresetSelectProps.options} 
                         className={selectCommonClassName} 
+                        id={stylePresetSelectProps.id}
                     />
                     <label className="select-label">Style Preset</label>
                 </div>
@@ -82,6 +84,7 @@ const ModelV2Selects = (
                         setValue={setOutputFormat} 
                         options={outputFormmatSelectProps.options} 
                         className={selectCommonClassName} 
+                        id={outputFormmatSelectProps.id}
                     />
                     <label className="select-label">Output Format</label>
                 </div>
@@ -93,6 +96,7 @@ const ModelV2Selects = (
                         placeholder={negativeInputProps.placeholder}
                         value={negativePrompt}
                         setValue={setNegativePrompt}
+                        id={negativeInputProps.id}
                     />
                     <label className="input-label">Negative Prompt</label>
                 </div>

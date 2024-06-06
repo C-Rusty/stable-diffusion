@@ -18,6 +18,20 @@ $select-bg: rgba(255, 255, 255, 0.2);
     &__select-component, &__input-component {
         position: relative;
 
+        &:hover {
+            cursor: pointer;
+
+            .v2-input, .v2-select{
+                border-bottom-color: $colorBlue;
+                @include transition(.5s, ease, all);
+            }
+
+            .input-label, .select-label {
+                color: $colorBlue;
+                @include transition(.5s, ease, all);
+            }
+        }
+
         .v2-input, .v2-select {
             width: 100%;
 
@@ -29,7 +43,7 @@ $select-bg: rgba(255, 255, 255, 0.2);
             border-bottom: .1rem solid $colorGreen;
             border-radius: .5rem;
 
-            padding: 2rem 1rem;
+            padding: 2rem 0;
 
             @include transition(.3s, ease, all);
             
@@ -55,28 +69,12 @@ $select-bg: rgba(255, 255, 255, 0.2);
 
             @extend %Font-Regular-15px;
 
-            @include transition(.3s, ease, all);
+            @include transition(.5s, ease, all);
 
             pointer-events: none;
         }
     } 
     
-    .v2-select {
-        &:focus {
-            option {
-                // background: $colorBlack;
-                text-indent: 5px;
-                padding: 2rem;
-            }
-
-            &:hover {
-                cursor: pointer;
-            }
-
-        }
-
-    }
-
     &__input-component:last-child {
         grid-column: span 4;
     }

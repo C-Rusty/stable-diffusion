@@ -2,17 +2,18 @@ import axios from "axios";
 import FormData from "form-data";
 import { ApiV2ModelParams } from "../types/typesV2Model";
 import { ApiV1ModelParams } from "../types/typesV1Model";
+import * as fs from 'fs';
 
-const API_KEY = process.env.STABLE_DIFFUSION_API_KEY;
+const API_KEY = `TNhiPu6VzuDIEsp28aUQO9GJF8emJ1GJkTEu5P5FklwLaE47`;
 
-const API_URL = `https://api.stability.ai/`;
+const API_URL = `https://api.stability.ai`;
 
-const getImageFromV2Model = (params: ApiV2ModelParams, model: string) => {
-    const urlPath = `${API_URL}/v2beta/stable-image/generate/${model}`;
-    const formData = params;
+const getImageFromV2Model = async (prompt: string, params: ApiV2ModelParams, model: string) => {
+    const urlPath = `${API_URL}/v2beta/stable-image/generate/${model}`
+    const formData = {prompt, ...params};
 
-    return axios.postForm(
-        urlPath, 
+    const response = await axios.postForm(
+        urlPath,
         axios.toFormData(formData, new FormData()),
         {
             validateStatus: undefined,
@@ -21,8 +22,20 @@ const getImageFromV2Model = (params: ApiV2ModelParams, model: string) => {
               Authorization: `Bearer sk-${API_KEY}`, 
               Accept: "image/*" 
             },
-        }
+        },
     );
+
+    if (response.status === 200) {
+        const blob = new Blob([response.data], {type: `image/${params.output_format}`});
+        const url = URL.createObjectURL(blob);
+        return url;
+    } else {
+        const error: {
+            name: string;
+            errors: string[];
+        } = response.data;
+        return error;
+    };
 };
 
 const getImageFromV1Model = (params: ApiV1ModelParams, model: string) => {
@@ -43,7 +56,7 @@ const getImageFromV1Model = (params: ApiV1ModelParams, model: string) => {
     return axios.request(options);
 }
 
-export const powefulModel = {
+export const api = {
     getImageFromV2Model,
     getImageFromV1Model
 };

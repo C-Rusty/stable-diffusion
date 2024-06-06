@@ -1,12 +1,13 @@
 @import '../../../styles/common/variables.scss';
 @import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/extends.scss';
 
 .generator {
     height: 100%;
 
     background: $colorBlack;
 
-    &__inner {
+    &__form {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -17,10 +18,11 @@
     &__headline {
         @extend %Font-Headline;
         color: $colorPink;
-
         text-align: center;
 
         margin-bottom: 2rem;
+
+        @extend %headline-main-animation;
     }
 
     &__img-descr-propmt {
@@ -34,9 +36,9 @@
 
         background: transparent;
 
-        transition: all .3s ease-in-out;
-
         color: $colorPink;
+
+        @extend %select-input-hover;
 
         &:focus {
             outline: none;
@@ -45,17 +47,25 @@
 
             transition: all .3s ease-in-out;
         }
-
     }
 
-    &__label {
+    &__model-select {
+        &-headline {
+            @extend %Font-Regular-20px;
+            color: $colorPink;
+            text-align: center;
+        }
+
+
         .generator-model {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
 
+            margin-top: 1rem;
+
             &__btn {
-                @extend %Font-Regular-15px;
+                @extend %Font-Regular-20px;
                 color: $colorPink;
 
                 background: $colorGreen;
@@ -74,6 +84,33 @@
         }
     }
 
+    .btn-container {
+        display: flex;
+        justify-content: center;
+
+        &__button {
+            background: $colorBlue;
+
+            padding: 1.5rem 1rem;
+
+            border: none;
+            border-radius: .5rem;
+
+            @extend %Font-Regular-20px;
+            color: $colorPink;
+
+            @include transition(.3s, ease, all);
+
+            &:hover {
+                cursor: pointer;
+
+                @include transition(.3s, ease, all);
+
+                background: #1e5cce;
+            }
+        }
+    }
+
     .generator__img-description {
         padding: 2rem;
     }
@@ -81,5 +118,5 @@
 
 .active-model-btn {
     transition: all .3s ease;
-    background: $colorBlue;
+    background: $colorBlue !important;
 }

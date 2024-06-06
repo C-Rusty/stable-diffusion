@@ -1,5 +1,10 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+
 .v2-select {
     position: relative;
+
+    height: 100%;
 
     &:active {
         &__inner {
@@ -7,15 +12,51 @@
         }
     }
 
-    &__inner {
+    &__list-options {
         position: absolute;
         top: 0;
         left: 0;
 
-        z-index: -1;
+        display: none;
+
+        z-index: -20;
+    }
+
+    &__option {
+        color: $colorPink;
+
+        @extend %Font-Regular-15px;
+
+        padding: .5rem 0;
+    }
+
+    &__value {
+        color: $colorPink;
+
+        @extend %Font-Regular-15px;
     }
 }
 
-.open-select {
+.open-list {
+    display: block;
+
     z-index: 2;
+
+    top: 5rem;
+
+    width: 100%;
+    max-height: 15rem;
+
+    overflow-y: auto;
+
+    background: $colorBlack;
+
+    &::-webkit-scrollbar {
+        width: .4rem;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $colorGreen;
+        border-radius: .5rem;
+    }
 }

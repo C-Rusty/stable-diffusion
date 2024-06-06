@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import './select.scss';
 
 type SetStateAction<T> = React.Dispatch<React.SetStateAction<T>>;
@@ -6,22 +7,64 @@ interface SelectComponentProps<T> {
     setValue: SetStateAction<T>,
     options: {text: string, value: string}[],
     className: string,
-    id?: string | undefined
+    id?: string
 }
 
 const Select = <T,> ({ setValue, options, className, id}: SelectComponentProps<T>) => {
 
-    const handleClick = (value: T) => {
+    const [selectedOption, setSelectedOption] = useState<string>(`None`);
+    const [selectHtml, setSelectHtml] = useState<HTMLElement | null>(null);
+
+    useEffect(() => {
+        if (!id) throw new Error(`Select id is not defined when setting a value for selectHtml`); 
+        setSelectHtml(document.getElementById(id));
+    }, []);
+
+    const handleClick = (value: T, text: string, id: string | undefined) => {
         setValue(value);
+        setSelectedOption(text);
+        setIsOpen(false);
+
+        const list = selectHtml?.querySelector(`.${className}__list-options`);
+        if (id) list?.classList.remove(`open-list`);
     };
 
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (!id) throw new Error(`Select id is not defined`);
+
+        const list = selectHtml?.querySelector(`.${className}__list-options`);
+        if (id) {
+            switch (isOpen) {
+                case true:
+                    list?.classList.add(`open-list`);
+                break;
+                case false:
+                    list?.classList.remove(`open-list`);
+                break;
+            
+                default: break;
+            }
+        };
+        
+    }, [isOpen]);
+
     return(
-        <div className={className} id={id ? id : undefined}>
-            <div className={className + `__inner`}>
-                <div></div>
+        <div 
+            className={className} 
+            id={id ? id : undefined}
+            onClick={() => setIsOpen(!isOpen)}
+        >
+            <span className={className + `__value`}>{selectedOption}</span>
+            <div className={className + `__list-options`}>
                 {options.map((optionItem) => 
                     <div 
-                        onClick={() => handleClick(optionItem.value as unknown as T)} 
+                        onClick={() => handleClick(
+                            optionItem.value as unknown as T,
+                            optionItem.text,
+                            id
+                        )} 
                         key={optionItem.value}
                         className={className + `__option`}
                     >{optionItem.text}</div>
