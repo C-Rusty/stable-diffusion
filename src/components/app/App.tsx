@@ -9,7 +9,9 @@ function App() {
 
   return (
     <div className="main">
-      {isAuth ? <Main/> : <AuthModal setIsAuth={setIsAuth}/>}
+      {/* {isAuth ?  */}
+      <Main/> 
+      {/* // : <AuthModal setIsAuth={setIsAuth}/>} */}
     </div>
   );
 }
