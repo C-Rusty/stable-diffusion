@@ -1,0 +1,93 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/mixins.scss';
+
+.generator-v2 {
+    &__inner {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 2rem;
+        row-gap: 2.5rem;
+    }
+
+    &__select-component, &__input-component , &__textarea-component {
+        position: relative;
+
+        &:hover {
+            cursor: pointer;
+
+            .v2-input, .v2-select, .v2-textarea{
+                border-bottom-color: $colorBlue;
+                @include transition(.5s, ease, all);
+            }
+
+            .input-label, .select-label, .textarea-label {
+                color: $colorBlue;
+                @include transition(.5s, ease, all);
+            }
+        }
+
+        .v2-input, .v2-select, .v2-textarea {
+            width: 100%;
+
+            color: $colorPink;
+
+            background-color: transparent;
+
+            border: none;
+            border-bottom: .1rem solid $colorGreen;
+            border-radius: .5rem;
+
+            padding: 2rem 0;
+
+            @include transition(.3s, ease, all);
+            
+            &:focus {
+                @include transition(.3s, ease, all);
+
+                outline: none;
+                border-bottom-color: $colorBlue;
+
+                ~ .input-label, ~ .select-label {
+                    color: $colorBlue;
+                    @include transition(.3s, ease, all);
+                }
+            }
+        }
+
+        .input-label, .select-label, .textarea-label {
+            position: absolute;
+            top: -1rem;
+            left: 0;
+
+            color:$colorPink;
+
+            @extend %Font-Regular-15px;
+
+            @include transition(.5s, ease, all);
+
+            pointer-events: none;
+        }
+    }
+
+    &__textarea-component:last-child {
+        grid-column: span 2;
+
+        .v2-textarea {
+            overflow: auto;
+
+            resize: vertical;
+
+            &::-webkit-scrollbar {
+                background: $colorBlack;
+                width: .6rem;
+            }
+    
+            &::-webkit-scrollbar-thumb {
+                background: $colorGreen;
+    
+                border-radius: .5rem
+            }
+        }
+    }
+}

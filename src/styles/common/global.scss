@@ -21,17 +21,29 @@ html {
         font-family: 'Roboto-Regular';
         src: url(../../fonts/Roboto-Regular.woff2);
     }
+
+    &::-webkit-scrollbar {
+        width: .5rem;
+        
+        background-color: $colorBlack;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: $colorPink;
+
+        border-radius: .5rem;
+    }
 }
 
 .container {
     padding: 0 20%;
 
     @media screen and (max-width: 2500px) {
-        padding: 0 15%;
+        padding: 0 10%;
     }
 
     @media screen and (max-width: 2000px) {
-        padding: 0 10%;
+        padding: 0 6.4rem;
     }
 
     @media screen and (max-width: 1440px) {
@@ -44,5 +56,5 @@ html {
 }
 
 section {
-    padding: 5rem 0;
+    padding: 3rem 0;
 }

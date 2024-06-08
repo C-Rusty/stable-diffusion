@@ -1,0 +1,23 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+
+.generation-result {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: $colorPink;
+
+    grid-column: span 8;
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+
+    h1 {
+        @extend %Font-Headline;
+        font-size: 3rem;
+        text-align: center;
+    }
+}

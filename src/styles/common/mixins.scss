@@ -1,0 +1,5 @@
+@mixin transition ($number, $type, $duration) {
+    transition: $number $type $duration; 
+    -moz-transition: $number $type $duration; 
+    -webkit-transition: $number $type $duration;;
+}

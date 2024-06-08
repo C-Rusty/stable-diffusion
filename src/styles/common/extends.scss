@@ -1,0 +1,50 @@
+@import './mixins.scss';
+@import './variables.scss';
+
+%headline-main-animation {
+    @keyframes reveal {
+        80%{
+          letter-spacing: 8px;
+        }
+        100% {
+          background-size: 300% 300%;
+        }
+      }
+      @keyframes glow {
+        40% {
+          text-shadow: 0 0 8px #fff;
+        }
+      }
+
+  background: 50% 100% / 50% 50% no-repeat radial-gradient(ellipse at bottom, #fff, transparent, transparent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: reveal 3000ms ease-in-out forwards 200ms, glow 2500ms linear infinite 2000ms;
+}
+
+%select-input-hover {
+    @include transition(.5s, ease, all);
+
+    &:hover {
+        border-bottom-color: $colorBlue;
+
+        @include transition(.5s, ease, all);
+    }
+}
+
+%button {
+    @extend %Font-Regular-15px;
+
+    border: none;
+    border-radius: .5rem;
+
+    padding: 1.5rem 1rem;
+
+    @include transition(.3s, ease, all);
+
+    &:hover {
+        @include transition(.3s, ease, all);
+        cursor: pointer;    
+    }
+}
