@@ -2,37 +2,32 @@
 @import '../../../styles/common/fonts.scss';
 @import '../../../styles/common/mixins.scss';
 
-$arrow-bg: rgba(255, 255, 255, 0.3);
-$arrow-icon: url(https://upload.wikimedia.org/wikipedia/commons/9/9d/Caret_down_font_awesome_whitevariation.svg);
-$option-bg: white;
-$select-bg: rgba(255, 255, 255, 0.2);
-
 .generator-v2 {
     &__inner {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         column-gap: 2rem;
-        row-gap: 4rem;
+        row-gap: 2.5rem;
     }
 
-    &__select-component, &__input-component {
+    &__select-component, &__input-component , &__textarea-component {
         position: relative;
 
         &:hover {
             cursor: pointer;
 
-            .v2-input, .v2-select{
+            .v2-input, .v2-select, .v2-textarea{
                 border-bottom-color: $colorBlue;
                 @include transition(.5s, ease, all);
             }
 
-            .input-label, .select-label {
+            .input-label, .select-label, .textarea-label {
                 color: $colorBlue;
                 @include transition(.5s, ease, all);
             }
         }
 
-        .v2-input, .v2-select {
+        .v2-input, .v2-select, .v2-textarea {
             width: 100%;
 
             color: $colorPink;
@@ -60,7 +55,7 @@ $select-bg: rgba(255, 255, 255, 0.2);
             }
         }
 
-        .input-label, .select-label {
+        .input-label, .select-label, .textarea-label {
             position: absolute;
             top: -1rem;
             left: 0;
@@ -73,9 +68,26 @@ $select-bg: rgba(255, 255, 255, 0.2);
 
             pointer-events: none;
         }
-    } 
+    }
+
+    &__textarea-component:last-child {
+        grid-column: span 2;
+
+        .v2-textarea {
+            overflow: auto;
+
+            resize: vertical;
+
+            &::-webkit-scrollbar {
+                background: $colorBlack;
+                width: .6rem;
+            }
     
-    &__input-component:last-child {
-        grid-column: span 4;
+            &::-webkit-scrollbar-thumb {
+                background: $colorGreen;
+    
+                border-radius: .5rem
+            }
+        }
     }
 }

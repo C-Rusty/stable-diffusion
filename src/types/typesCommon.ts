@@ -15,8 +15,8 @@ export type InputProps = {
     placeholder: string
 };
 
-export type GenModelsValue = `sd3` | `core` | `stable-diffusion-v1-6` | `stable-diffusion-xl-1024-v1-0`;
-export type GenModelsText = `SD3 (powerful)` | `Core (fast and stable)` | `SD 1.6 (base model)` | `SDXL 1.0 (flexible-resolution base)`;
+export type GenModelsValue =  `ultra` | `sd3` | `sd3-turbo` | `core` | `stable-diffusion-v1-6` | `stable-diffusion-xl-1024-v1-0`;
+export type GenModelsText = `SI Ultra` |`SI 3` | `SI 3 Turbo` | `Core` | `SD XL (legacy)` | `SD 1.6 (legacy)`;
 
 export type GenModelsProps = {
     value: GenModelsValue,

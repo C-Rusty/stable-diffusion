@@ -1,23 +1,16 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { ApiV2ModelParams, AspectRatios, OutputFormat, PresetStyle } from "../../../types/typesV2Model";
 import { v2ModelCommonPropsForSelect } from "../../../utilities/ModelProps/V2ModelPropsForSelect";
 import { generatorCommonPropsForSelect } from "../../../utilities/ModelProps/GeneralPropsForSelect";
 import './modelV2Selects.scss';
 import Select from "../../common/select/Select";
-import { inputCommonClassName, selectCommonClassName } from "../../../utilities/commonVars";
+import { inputCommonClassName, selectCommonClassName, textAreaCommonClassName } from "../../../utilities/commonVars";
 import Input from "../../common/Input";
 
 
 const ModelV2Selects = (
-    {
-        data,
-        setData
-    } 
-    :
-    {
-        data: ApiV2ModelParams | {},
-        setData: Dispatch<SetStateAction<ApiV2ModelParams | {}>>
-    }
+    {setData} : 
+    {setData: Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
 ) => {
 
     const { 
@@ -35,12 +28,12 @@ const ModelV2Selects = (
     const [stylePreset, setStylePreset] = useState<PresetStyle>(`3d-model`);
     const [outputFormat, setOutputFormat] = useState<OutputFormat>(`png`);
     const [seed, setSeed] = useState<number>(0);    
-    const [negativePrompt, setNegativePrompt] = useState<string | null>(null);
+    const negativePrompt = useRef<HTMLTextAreaElement | null>(null);
 
     useEffect(() => {
         setData({
             aspect_ratio: aspectRatio,
-            negative_prompt: negativePrompt,
+            negative_prompt: negativePrompt.current?.value,
             seed: seed,
             style_preset: stylePreset,
             output_format: outputFormat
@@ -68,7 +61,7 @@ const ModelV2Selects = (
                         value={seed}
                         setValue={setSeed}
                     />
-                    <label className="input-label">Seed</label>
+                    <label className="input-label">Seed (radnomness)</label>
                 </div>
                 <div className="generator-v2__select-component">
                     <Select 
@@ -88,17 +81,16 @@ const ModelV2Selects = (
                     />
                     <label className="select-label">Output Format</label>
                 </div>
-                <div className="generator-v2__input-component">
-                    <Input 
-                        type={negativeInputProps.inputType} 
+                <div className="generator-v2__textarea-component">
+                    <textarea
                         name={negativeInputProps.name} 
-                        className={inputCommonClassName} 
+                        className={textAreaCommonClassName} 
                         placeholder={negativeInputProps.placeholder}
-                        value={negativePrompt}
-                        setValue={setNegativePrompt}
+                        ref={negativePrompt}
                         id={negativeInputProps.id}
+                        rows={1}
                     />
-                    <label className="input-label">Negative Prompt</label>
+                    <label className="textarea-label">Negative Prompt</label>
                 </div>
             </div>
         </div>

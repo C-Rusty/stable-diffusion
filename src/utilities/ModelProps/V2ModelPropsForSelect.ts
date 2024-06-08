@@ -26,7 +26,7 @@ const negativeInputProps: {
     id: string
 } = {
     inputValue: ``,
-    placeholder: `what you do not wish to see in the output image`,
+    placeholder: `Type what you do not wish to see in the output image`,
     inputType: `text`,
     name: `negative-prompt`,
     id: `negative-prompt`,

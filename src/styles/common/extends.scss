@@ -32,3 +32,19 @@
         @include transition(.5s, ease, all);
     }
 }
+
+%button {
+    @extend %Font-Regular-15px;
+
+    border: none;
+    border-radius: .5rem;
+
+    padding: 1.5rem 1rem;
+
+    @include transition(.3s, ease, all);
+
+    &:hover {
+        @include transition(.3s, ease, all);
+        cursor: pointer;    
+    }
+}

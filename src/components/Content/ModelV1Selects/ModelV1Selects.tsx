@@ -5,12 +5,10 @@ import { ApiV1ModelParams, Resolutions } from '../../../types/typesV1Model';
 
 const ModelV1Selects = (
     {
-        data,
         setData
     }
     :
     {
-        data: ApiV1ModelParams | {},
         setData: Dispatch<SetStateAction<ApiV1ModelParams | {}>>
     }
 ) => {

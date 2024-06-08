@@ -1,0 +1,100 @@
+@import '../../styles/common/variables.scss';
+@import '../../styles/common/fonts.scss';
+@import '../../styles/common/mixins.scss';
+@import '../../styles/common/extends.scss';
+
+@keyframes reveal {
+    80%{
+        letter-spacing: 8px;
+    }
+    100% {
+        background-size: 300% 300%;
+    }
+}
+
+.auth-modal {
+    height: 100vh;
+    width: 100%;
+
+    background: $colorBlack;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__inner {
+        min-width: 60rem;
+        max-width: 60rem;
+
+        position: relative;
+    }
+
+    &__headline {
+        @extend %Font-Headline;
+        font-size: 3rem;
+        color: $colorPink;
+        text-align: center;
+
+        @extend %headline-main-animation;
+
+        margin-bottom: 4rem;
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        gap: 3rem;
+    }
+
+    &__input, &__btn {
+       width: 100%;
+
+       padding: 1.5rem 1rem;
+
+       border: none;
+       border-bottom: .1rem solid $colorGreen;
+       border-radius: .5rem;
+
+       color: $colorPink;
+
+       @extend %Font-Regular-15px;
+
+        @include transition(.3s, ease, all);
+    }
+
+    &__input {
+        background: $colorBlack;
+
+        &:focus {
+            outline: none;
+
+            border-bottom-color: $colorBlue;
+
+            padding-left: 2rem;
+
+            @include transition(.3s, ease, all);
+        }
+    }
+
+    &__btn-container {
+        display: flex;
+        justify-content: center;
+        
+        width: 50%;
+    }
+
+    &__btn {
+        background: $colorBlue;
+        color: $colorPink;
+
+        &:hover {
+            cursor: pointer;
+            background: $colorDarkBlue;
+
+            @include transition(.3s, ease, all);
+        }
+    }
+}

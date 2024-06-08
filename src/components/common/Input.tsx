@@ -8,7 +8,7 @@ interface InputProps<T> {
     placeholder?: string,
     value: T,
     setValue: SetStateAction<T>
-}
+};
 
 const Input = <T,> ({ type, name, id, className, placeholder, value, setValue} : InputProps<T>) => {
 
@@ -21,7 +21,7 @@ const Input = <T,> ({ type, name, id, className, placeholder, value, setValue} :
             placeholder={placeholder ? placeholder : undefined} 
             value={value as unknown as string}
             onChange={(e) => setValue(e.target.value as unknown as T)}
-            {...type === "number" && { min: 0 }}
+            {...type === "number" && { min: 0, max: 4294967294  }}
         />
     );
 };

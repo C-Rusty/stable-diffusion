@@ -1,0 +1,45 @@
+@import '../../styles/common/fonts.scss';
+@import '../../styles/common/variables.scss';
+@import '../../styles/common/mixins.scss';
+
+.footer {
+    background: $colorBlack;
+
+    .container {
+        border-top: .1rem $colorPink solid;
+    }
+
+    &__inner {
+        padding: 3rem;
+
+        display: flex;
+        justify-content: center;
+        
+        align-items: center;
+    }
+
+    &__list {
+        display: flex;
+        align-items: center;
+        gap: 5rem;
+
+        list-style-type: none
+    }
+
+    &__list-item {
+        a {
+            @extend %Font-Regular-15px;
+            color: $colorPink;
+
+            text-decoration: none;
+
+            @include transition(.5s, ease, all);
+
+            &:hover {
+                color: $colorBlue;
+
+                @include transition(.5s, ease, all);
+            }
+        }
+    }
+}

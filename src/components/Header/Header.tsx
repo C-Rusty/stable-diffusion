@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom';
 import './header.scss';
-import { urlPaths } from '../../routes/urlPaths';
 
 const Header = () => {
 
@@ -8,10 +6,7 @@ const Header = () => {
         <header className="header">
             <div className="container">
                 <div className="header__inner">
-                    <nav className="header__nav">
-                        <Link className="header__nav-item" to={urlPaths.home}>Generator</Link>
-                        <Link className="header__nav-item" to={urlPaths.signIn}>Sign In</Link>
-                    </nav>
+                    <h1 className="header__headline">Stable Diffusion</h1>
                 </div>
             </div>
         </header>
