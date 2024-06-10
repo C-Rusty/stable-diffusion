@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 import { generatorCommonPropsForSelect } from '../../../utilities/ModelProps/GeneralPropsForSelect';
 import { GenModelsValue } from '../../../types/typesCommon';
 import { ApiV2ModelParams } from '../../../types/typesV2Model';
@@ -7,6 +7,7 @@ import { ApiV1ModelParams } from '../../../types/typesV1Model';
 import ModelV2Selects from '../ModelV2Selects/ModelV2Selects';
 import ModelV1Selects from '../ModelV1Selects/ModelV1Selects';
 import './sidebar.scss';
+import { Context } from '../../app/App';
 
 const Sidebar = (
     {setGeneratedImage, setIsLoading} 
@@ -33,6 +34,16 @@ const Sidebar = (
         document.getElementById(id)?.classList.add(`active-model-btn`);
     };
 
+    const {store} = useContext(Context);
+    const [apiKey, setApiKey] = useState<string>(store.SDApiKey);
+    const { SDApiKey } = store;
+
+    useEffect(() => {
+        // setApiKey(store.SDApiKey);
+        console.log(apiKey);
+        
+    }, [store.SDApiKey]);
+
     const [data, setData] = useState<ApiV1ModelParams | ApiV2ModelParams | {}>({});
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,26 +53,32 @@ const Sidebar = (
             throw new Error(`Prompt is empty`);
         };
 
-        if (genModel === `core` || genModel === `sd3`) {
-            try {
-                setIsLoading(true);
-                const response = await api.getImageFromV2Model(prompt.current?.value, data as ApiV2ModelParams, genModel);
-                
-                if (!response) throw new Error(`Something went wrong with request: ${response}`);
-
-                setGeneratedImage(response as string);
-                
-            } catch (error) {
-                setIsLoading(false);
-                throw new Error(`Something went wrong: ${error}`);
-            };
-        } else {
-            try {
-                api.getImageFromV1Model(data as ApiV1ModelParams, genModel)
-            } catch (error) {
-                throw new Error(`Something went wrong: ${error}`);
-            };
+        if (!apiKey) {
+            throw new Error(`API key is empty`);
         };
+        console.log(apiKey);
+
+
+        // if (genModel === `core` || genModel === `sd3` || genModel === `sd3-turbo` || genModel === `ultra`) {
+        //     try {
+        //         setIsLoading(true);
+        //         const response = await api.getImageFromV2Model(prompt.current?.value, data as ApiV2ModelParams, genModel, apiKey);
+                
+        //         if (!response) throw new Error(`Something went wrong with request: ${response}`);
+
+        //         setGeneratedImage(response as string);
+                
+        //     } catch (error) {
+        //         setIsLoading(false);
+        //         throw new Error(`Something went wrong: ${error}`);
+        //     };
+        // } else {
+        //     try {
+        //         api.getImageFromV1Model(data as ApiV1ModelParams, genModel, apiKey)
+        //     } catch (error) {
+        //         throw new Error(`Something went wrong: ${error}`);
+        //     };
+        // };
     };
 
     return(

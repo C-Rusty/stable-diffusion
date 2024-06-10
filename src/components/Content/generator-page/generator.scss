@@ -1,0 +1,13 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/extends.scss';
+
+.generator {
+    background: $colorBlack;
+    
+    &__main {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 4rem;
+    }
+}

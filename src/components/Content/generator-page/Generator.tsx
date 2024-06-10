@@ -16,7 +16,7 @@ const Generator = () => {
     }, [generatedImage]);
 
     return(
-        <section className="generator">
+        <section className="generator page">
             <div className="container">
                 <div className="generator__inner">
                     <div className="generator__main">

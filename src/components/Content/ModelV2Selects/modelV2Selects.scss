@@ -6,8 +6,12 @@
     &__inner {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        column-gap: 2rem;
-        row-gap: 2.5rem;
+        gap: 4rem;
+        
+        @media screen and (max-height: 700px) {
+            column-gap: 2rem;
+            row-gap: 2.5rem;
+        }
     }
 
     &__select-component, &__input-component , &__textarea-component {
