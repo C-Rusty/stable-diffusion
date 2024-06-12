@@ -38,7 +38,7 @@ const Header = () => {
                             <Link 
                                 to={urlPaths.myImages}
                                 className={currentPage === urlPaths.myImages ? selectedNavItemClassName : ''}
-                            >My Images</Link>
+                            >My Collection</Link>
                             </li>
                         </ul>
                     </nav>

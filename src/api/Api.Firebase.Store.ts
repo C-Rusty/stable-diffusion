@@ -1,4 +1,4 @@
-import { auth, db } from "../utilities/firebaseConfig";
+import { db } from "../utilities/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore"; 
 
 export const getApiKeyFromFirebase = async () => {
@@ -7,8 +7,8 @@ export const getApiKeyFromFirebase = async () => {
         const docSnap = await getDoc(docRef);
     
         if (docSnap.exists()) {
-            const apiKey = docSnap.data();
-            return apiKey;
+            const response = docSnap.data();
+            return response;
         } else {
             return {
                 apiKey: `not found!`,

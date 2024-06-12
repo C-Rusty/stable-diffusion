@@ -7,7 +7,7 @@ import { cookieNameUser } from '../../utilities/commonVars';
 
 const AuthModal = () => {
 
-    const {store} = useContext(Context);
+    const {mobxStore} = useContext(Context);
 
     const [formFields, setFormFields] = useState<{
         userName: string,
@@ -53,7 +53,7 @@ const AuthModal = () => {
             const response: UserCredential = await signIn(formFields.email, formFields.password);
 
             if (response) {
-                store.login(true);
+                mobxStore.login(true);
                 setCookie(response.user.uid);
             };
             

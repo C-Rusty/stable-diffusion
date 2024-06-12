@@ -3,7 +3,86 @@ import './documentation.scss';
 const Documentation = () => {
     return (
         <div className="documentation">
-            <p>Instructions</p>
+            <div className="container">
+                <div className="documentation__inner">
+                    <div className="documentation__first-block">
+                        <h1 className='headline'>
+                            Welcome to the Stable Diffusion!
+                        </h1>
+                        <p className="text">
+                            There are two versions of Stable Diffusion: v1 and v2.
+                        </p>
+                        <div className="blocks">
+                            <div className="blocks__item">
+                                <h2 className="blocks__headline">v1</h2>
+                                <p className='blocks__text'>
+                                    To the v1 version of Stable Diffusion, you can generate images with more than 10 images per request.
+                                </p>
+                                <ul className='blocks__list'>
+                                    <li className='blocks__list-item'>Stable Diffusion XL</li>
+                                    <li className='blocks__list-item'>Stable Diffusion v1.6</li>
+                                </ul>
+                            </div>
+                            <div className="blocks__item">
+                                <h2 className="blocks__headline">v2</h2>
+                                <p className='blocks__text'>
+                                    To the v2 version of Stable Diffusion, you can generate images with more than 10 images per request.
+                                </p>
+                                <ul className='blocks__list'>
+                                    <li className='blocks__list-item'>Stable Diffusion Utra</li>
+                                    <li className='blocks__list-item'>Stable Diffusion 3</li>
+                                    <li className='blocks__list-item'>Stable Diffusion 3 Turbo</li>
+                                    <li className='blocks__list-item'>Stable Diffusion Core</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="documentation__second-block">
+                        <h1 className='headline'>
+                            Models` description
+                        </h1>
+                        <div className="block">
+                            <h2 className='block__headline'>Stable Diffusion XL & v1.6</h2>
+                            <p className='block__text'>
+                                These are legacy models and they have some limitations and specificities.
+                            </p>
+                            <li className="block__list">
+                                <li className='block__list-item'>
+                                    You can generate from 1 to 10 images per request.
+                                </li>
+                                <li className='block__list-item'>
+                                    Limitation of resolutions for XL:
+                                    <ul className="block__list-item-sublist">
+                                    <li className='block__list-item'>1024x1024</li>
+                                    <li className='block__list-item'>1152x896</li>
+                                    <li className='block__list-item'>896x1152</li>
+                                    <li className='block__list-item'>1216x832</li>
+                                    <li className='block__list-item'>1344x768</li>
+                                    <li className='block__list-item'>768x1344</li>
+                                    <li className='block__list-item'>1536x640</li>
+                                    <li className='block__list-item'>640x1536</li>
+                                    </ul>
+                                </li>
+                                <li className='block__list-item'>
+                                    Limitation of resolutions for 1.6:
+                                    <ul className="block__list-item-sublist">
+                                        <li className='block__list-item'>
+                                            No dimension can be less than 320 pixels
+                                        </li>
+                                        <li className='block__list-item'>
+                                            No dimension can be greater than 1536 pixels
+                                        </li>
+                                    </ul>
+                                </li>
+                            </li>
+                        </div>
+                    </div>
+                    <h3 className='blocks__sub-headline'>Descrptions of models</h3>
+                        <p className='blocks__text'>
+                            They are generated by the Stable Diffusion legacy XL and v1.6 models. So keep in mind that their quality may be poor or inacurate. But, they are faster than v2 models, but they are limited by .
+                        </p>
+                </div>
+            </div>
         </div>
     );
 };

@@ -26,3 +26,9 @@ export type GenModelsProps = {
 export type MyState = AspectRatios | Resolutions;
 
 export type SetStateAction<T> = Dispatch<React.SetStateAction<T>>;
+
+export type ModalProps = {
+    headline: string | undefined,
+    text: string | undefined,
+    isModalOpen: boolean
+};

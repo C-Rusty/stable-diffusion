@@ -3,7 +3,6 @@ import FormData from "form-data";
 import { ApiV2ModelParams } from "../types/typesV2Model";
 import { ApiV1ModelParams } from "../types/typesV1Model";
 
-const API_KEY = `TNhiPu6VzuDIEsp28aUQO9GJF8emJ1GJkTEu5P5FklwLaE47`;
 const API_URL = `https://api.stability.ai`;
 
 const getImageFromV2Model = async (prompt: string, params: ApiV2ModelParams, model: string, apiKey: string) => {
