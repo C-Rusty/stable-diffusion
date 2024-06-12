@@ -2,6 +2,10 @@
 @import '../../styles/common/fonts.scss';
 @import '../../styles/common/extends.scss';
 
+.selected-page-nav {
+    color: $colorBlue !important;
+}
+
 .header {
     background: $colorBlack;
 
@@ -10,7 +14,10 @@
     }
 
     &__inner {
-        padding: 2rem 0;
+        display: flex;
+        justify-content: space-between;
+
+        padding: 4rem 0;
     }
 
     &__headline {
@@ -19,5 +26,26 @@
         text-align: center;
 
         @extend %headline-main-animation;
+    }
+
+    &__nav-list {
+        display: flex;
+        gap: 4rem;
+
+        &-item {
+            a {
+                @extend %Font-Regular-20px;
+                color: $colorPink;
+
+                text-decoration: none;
+
+                @include transition(.3s, ease, all);
+
+                &:hover {
+                    color: $colorBlue;
+                    @include transition(.3s, ease, all);
+                }
+            }
+        }
     }
 }

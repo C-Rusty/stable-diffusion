@@ -1,4 +1,6 @@
 export const urlPaths = {
     home: '/',
-    signIn: '/sign-in',
+    instructions: 'instructions',
+    generator: 'generator',
+    myImages: `my-images`,
 }

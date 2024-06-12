@@ -1,15 +1,24 @@
-import { useState } from "react";
-import Main from "../../routes/Routes";
 import './app.scss';
-import AuthModal from "../auth-modal/AuthModal";
+import Routes from "../../routes/Routes";
+import { createContext } from 'react';
+import Store from '../../store/mobxStore';
+
+interface State {
+  mobxStore: Store;
+}
+
+const mobxStore = new Store();
+export const Context = createContext<State>({
+  mobxStore
+});
 
 function App() {
 
-  const [isAuth, setIsAuth] = useState(false);
-
   return (
     <div className="main">
-      {isAuth ? <Main/> : <AuthModal setIsAuth={setIsAuth}/>}
+        <Context.Provider value={{ mobxStore }}>
+          <Routes/>
+        </Context.Provider>
     </div>
   );
 }

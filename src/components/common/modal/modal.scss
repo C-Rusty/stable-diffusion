@@ -1,0 +1,64 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/mixins.scss';
+@import '../../../styles/common/extends.scss';
+
+.modal {
+    position: absolute;
+    top: 40%;
+    left: 25%;
+
+    background-color: $colorBlack;
+
+    border: none;
+    border-radius: 1rem;
+
+    z-index: 999;
+
+    @include transition(.3s, ease, all);
+
+    min-width: 50%;
+
+
+    &__inner {
+        padding: 5rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        gap: 2rem;
+    }
+    
+    &__headline {
+        @extend %Font-Headline;
+        color: $colorPink;
+    }
+
+    &__text {
+        @extend %Font-Regular-20px;
+        color: $colorPink;
+    }
+
+    &__btn-container {
+        width: 100%;
+
+        display: flex;
+        justify-content: center;
+    }
+
+    &__close-btn {
+        @extend %button;
+        @extend %Font-Regular-20px;
+
+        color: $colorPink;
+
+        background-color: $colorBlue;
+
+        min-width: max-content;
+        width: 50%;
+
+        &:hover {
+            background-color: $colorDarkBlue;
+        }
+    }
+}

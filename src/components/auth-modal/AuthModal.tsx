@@ -1,16 +1,20 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import './authModal.scss';
-import { createUser, signIn } from '../../api/firebase';
+import { signIn } from '../../api/Api.FirebaseAuth';
+import { Context } from '../app/App';
+import { UserCredential } from 'firebase/auth';
+import { cookieNameUser } from '../../utilities/commonVars';
 
-const AuthModal = (
-    { setIsAuth }: 
-    { setIsAuth: Dispatch<SetStateAction<boolean>>}
-) => {
+const AuthModal = () => {
+
+    const {mobxStore} = useContext(Context);
 
     const [formFields, setFormFields] = useState<{
-        email: string;
-        password: string
+        userName: string,
+        email: string,
+        password: string,
     }>({
+        userName: ``,
         email: '',
         password: ''
     });
@@ -24,29 +28,40 @@ const AuthModal = (
 
     const clearForm = () => {
         setFormFields({
+            userName: ``,
             email: '',
             password: ''
         });
     };
 
-    const setAuthCookie = () => {
-        const d = new Date();
-        d.setTime(d.getTime() + (30*24*60*60*1000));
-        let expires = "expires="+ d.toUTCString();
-        document.cookie = `auth` + "=" + "true" + ";" + expires + ";path=/";
-    };
+    const setCookie = (userId: string) => {
+        const now: Date = new Date();
+        const daysAmount: number = 7;
+        
+        now.setTime(now.getTime() + (daysAmount*24*60*60*1000));
 
+        const cookieExpires: string = `expires=` + now.toUTCString();
+        console.log(userId);
+
+        document.cookie = cookieNameUser + "=" + userId + ";" + cookieExpires + ";path=/";
+    };
+    
     const submitForm = async (e: React.FormEvent) => {
         e.preventDefault()
-   
+
         try {
-            await signIn(formFields.email, formFields.password);
-            setIsAuth(true);
-            setAuthCookie();
-        } catch (error) {
-            throw new Error(`Something went wrong: ${error}`);
-        };
+            const response: UserCredential = await signIn(formFields.email, formFields.password);
+
+            if (response) {
+                mobxStore.login(true);
+                setCookie(response.user.uid);
+            };
             
+            console.log(response.user);
+        } catch (error) {
+            throw new Error(`Something went wrong with sign in: ${error}`);
+        };
+
         clearForm();
     };
 
@@ -60,13 +75,15 @@ const AuthModal = (
                     <form 
                         action="POST" 
                         method="post" 
-                        className='auth-modal__form'
+                        className={`auth-modal__form`}
                         onSubmit={(e) => submitForm(e)}
                     >
                         <input 
                             type="email" 
                             name="email" 
+                            required
                             placeholder="email" 
+                            autoComplete='on'
                             className='auth-modal__input'
                             onChange={(e) => handleChange(e)}
                             value={formFields.email}
@@ -74,6 +91,7 @@ const AuthModal = (
                         <input 
                             type="password" 
                             name="password" 
+                            required
                             placeholder="password" 
                             className='auth-modal__input'
                             onChange={(e) => handleChange(e)}
@@ -83,7 +101,7 @@ const AuthModal = (
                             <button 
                                 type="submit"
                                 className={'auth-modal__btn'}
-                            >Log In</button>
+                            >Sign in</button>
                         </div>
                     </form>
                 </div>
