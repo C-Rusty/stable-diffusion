@@ -24,6 +24,24 @@
   animation: reveal 3000ms ease-in-out forwards 200ms, glow 2500ms linear infinite 2000ms;
 }
 
+%select-component {
+  position: relative;
+
+  &:hover {
+    cursor: pointer;
+
+    .v2-input, .v2-select, .v2-textarea{
+        border-bottom-color: $colorBlue;
+        @include transition(.5s, ease, all);
+    }
+
+    .input-label, .select-label, .textarea-label {
+        color: $colorBlue;
+        @include transition(.5s, ease, all);
+    }
+  }
+}
+
 %select-input-hover {
     @include transition(.5s, ease, all);
 

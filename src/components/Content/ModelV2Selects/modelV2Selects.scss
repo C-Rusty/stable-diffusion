@@ -5,13 +5,8 @@
 .generator-v2 {
     &__inner {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 4rem;
-        
-        @media screen and (max-height: 700px) {
-            column-gap: 2rem;
-            row-gap: 2.5rem;
-        }
     }
 
     &__select-component, &__input-component , &__textarea-component {
@@ -22,17 +17,20 @@
 
             .v2-input, .v2-select, .v2-textarea{
                 border-bottom-color: $colorBlue;
-                @include transition(.5s, ease, all);
+                @include transition(.3s, ease, all);
             }
 
             .input-label, .select-label, .textarea-label {
                 color: $colorBlue;
-                @include transition(.5s, ease, all);
+                @include transition(.3s, ease, all);
             }
         }
 
         .v2-input, .v2-select, .v2-textarea {
             width: 100%;
+
+            display: flex;
+            align-items: center;
 
             color: $colorPink;
 
@@ -42,7 +40,7 @@
             border-bottom: .1rem solid $colorGreen;
             border-radius: .5rem;
 
-            padding: 2rem 0;
+            padding: 1rem 0;
 
             @include transition(.3s, ease, all);
             
@@ -57,25 +55,30 @@
                     @include transition(.3s, ease, all);
                 }
             }
+
+        }
+
+        .v2-input, .v2-select {
+            height: 100%;
+        }
+
+        .v2-textarea {
+            padding: 2rem 0;
         }
 
         .input-label, .select-label, .textarea-label {
-            position: absolute;
-            top: -1rem;
-            left: 0;
-
             color:$colorPink;
 
             @extend %Font-Regular-15px;
 
-            @include transition(.5s, ease, all);
+            @include transition(.3s, ease, all);
 
             pointer-events: none;
         }
     }
 
     &__textarea-component:last-child {
-        grid-column: span 2;
+        grid-column: span 4;
 
         .v2-textarea {
             overflow: auto;

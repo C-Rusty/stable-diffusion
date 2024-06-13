@@ -4,6 +4,8 @@ import { Context } from '../../app/App';
 import { saveImageToFireStorage } from '../../../api/Api.Firebase.Storage';
 import { useDispatch } from 'react-redux';
 import { setModalContent } from '../../../store/reduxReducers/modalReducer';
+import { urlPaths } from '../../../routes/urlPaths';
+import { Link } from 'react-router-dom';
 
 const GenResult = (
     {generatedImage, imgName} 
@@ -64,12 +66,15 @@ const GenResult = (
                         />
                     </div>
                 }
-                <div className="generation-result__btn-container">
+                <div className="generation-result__actions-container">
                     <button 
                         className="generation-result__btn" 
                         disabled={!generatedImage}
                         onClick={() => handleSaveImgClick(base64String, userId, imgName!)}
                     >Save image to my collection</button>
+                    <Link to={`/` + urlPaths.myImages} 
+                        className="generation-result__link" 
+                    >Go to my collection</Link>
                 </div>
             </div>
         </div>

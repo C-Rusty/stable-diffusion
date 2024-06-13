@@ -30,7 +30,6 @@ const ModelV1Selects = (
 
     const [resolution, setResolution] = useState<Resolutions>(`1024x1024`);
     
-
     return(
         <>
             <label htmlFor="" className='generator__select-container'>
