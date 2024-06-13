@@ -32,7 +32,7 @@ const Header = () => {
                             <Link 
                                 to={urlPaths.instructions}
                                 className={currentPage === urlPaths.instructions ? selectedNavItemClassName : ''}
-                            >Documentation</Link>
+                            >How To Use</Link>
                             </li>
                             <li className="header__nav-list-item">
                             <Link 

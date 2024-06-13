@@ -33,7 +33,7 @@ const Documentation = () => {
                     </div>
                     <div className="documentation__second-block">
                         <h1 className='headline'>
-                            Stable Diffusion XL & 1.6
+                            LegacyModels: Stable Diffusion XL & 1.6
                         </h1>
                         <h2 className='subheadline'>
                             Details
@@ -168,7 +168,7 @@ const Documentation = () => {
                                 <div className="text-block__item">
                                     <h3 className='name'>Seed</h3>
                                     <div className="description">
-                                        <p className='description__text'>A specific value that is used to guide the 'randomness' of the generation. B</p>
+                                        <p className='description__text'>A specific value that is used to guide the 'randomness' of the generation.</p>
                                         <p className='description__text'>By default is set to 0. Max number: 4294967294.</p>
                                     </div>
                                 </div>
