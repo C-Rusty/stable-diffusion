@@ -4,7 +4,7 @@ import { ModalProps } from "../../types/typesCommon";
 const initialState: ModalProps = {
     headline: ``,
     text: ``,
-    isModalOpen: true
+    isModalOpen: false
 };
 
 export const ModalContentReducer = createSlice({

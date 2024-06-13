@@ -1,0 +1,65 @@
+@import '../../../styles/common/variables.scss';
+
+.switch {
+    position: relative;
+    display: inline-block;
+
+    width: 5rem;
+    height: 2.4rem;
+
+    &__input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        
+        &:checked + .switch__slider {
+            background-color: $colorBlue;
+        }
+
+        &:focus + .switch__slider {
+            box-shadow: 0 0 .1rem $colorBlue;
+        }
+          
+        &:checked + .switch__slider:before {
+            -webkit-transform: translateX(2.5rem);
+            -ms-transform: translateX(2.5rem);
+            transform: translateX(2.5rem);
+        }
+    }
+
+    &__slider {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        cursor: pointer;
+
+        background-color: #ccc;
+
+        -webkit-transition: .4s;
+        transition: .4s;
+
+        border-radius: 3.4rem;
+
+        &::before {
+            position: absolute;
+            bottom: .4rem;
+            left: .4rem;
+
+            content: "";
+
+            height: 1.5rem;
+            width: 1.5rem;
+            
+            background-color: white;
+
+            -webkit-transition: .4s;
+            transition: .4s;
+
+            border-radius: 50%;
+        }
+    }
+}

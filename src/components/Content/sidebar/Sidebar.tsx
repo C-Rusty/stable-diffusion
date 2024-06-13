@@ -8,6 +8,8 @@ import ModelV1Selects from '../ModelV1Selects/ModelV1Selects';
 import './sidebar.scss';
 import { Context } from '../../app/App';
 import { api } from '../../../api/Api.SD.TextToImage';
+import Models from '../../models/Models';
+import Switcher from '../../common/switcher/Switcher';
 
 const Sidebar = (
     {setGeneratedImage, setIsLoading, setImgName} 
@@ -34,6 +36,8 @@ const Sidebar = (
 
         document.getElementById(id)?.classList.add(`active-model-btn`);
     };
+
+    const [isOptionsShown, setIsOptionsShown] = useState<boolean>(false);
 
     const {mobxStore} = useContext(Context);
     const apiKey = mobxStore.SDApiKey;
@@ -73,13 +77,16 @@ const Sidebar = (
                 throw new Error(`Something went wrong: ${error}`);
             };
         };
+
+        const imgGenResultBlock = document.querySelector('.generation-result');
+        imgGenResultBlock?.scrollIntoView({behavior: 'smooth'});
     };
 
     return(
         <form 
             action="submit"
             method='POST'
-            className="submit-form" 
+            className="submit-form"
             onSubmit={(e) => handleSubmit(e)}
         >
             <textarea 
@@ -87,8 +94,8 @@ const Sidebar = (
                 id="generate-image-prompt"
                 placeholder='Image description'
                 className="submit-form__prompt"
-                required 
-                rows={2}
+                required={true} 
+                rows={1}
                 ref={prompt} 
             />
             <div className="submit-form__model-select">
@@ -96,39 +103,32 @@ const Sidebar = (
                     Select Model
                 </span>
                 <div className="submit-form__model-select-main">
-                {genModelSelectProps.options.map((optionItem, index) =>  
-                    <div className="button-container">
-                        <button 
-                            className={`button-container__btn ${index === 0 ? 'active-model-btn' : ""} `} 
-                            key={optionItem.value}
-                            id={optionItem.value}
-                            type='button'
-                            onClick={() => handleModelClick(optionItem.value,optionItem.value)}
-                        >{optionItem.text}</button>
-                        <div className="button-container__tip">
-                            <span className='button-container__tip-text'>
-                                    {optionItem.tip.description}
-                            </span>
-                            <span className='button-container__tip-text'>
-                                {optionItem.tip.imgGenAmount}
-                            </span>
-                            <span className='button-container__tip-text'>
-                                Price: {optionItem.tip.price}
-                            </span>
-                        </div>
-                    </div>
-                )}
+                    <Models 
+                        genModelSelectProps={genModelSelectProps} 
+                        handleModelClick={handleModelClick}
+                    />
                 </div>
             </div>
-            {genModel === `core` || genModel === `sd3` || genModel === `ultra` || genModel === `sd3-turbo` ? 
-                <ModelV2Selects 
-                    setData={setData as Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
+            <div className="submit-form__show-options">
+                <p className='submit-form__show-options-headline'>Show Options</p>
+                <Switcher 
+                    value={isOptionsShown}
+                    setValue={setIsOptionsShown}
                 />
-                : 
-                <ModelV1Selects 
-                    setData={setData as Dispatch<SetStateAction<ApiV1ModelParams | {}>>}
-                />
-            }
+            </div>
+            {isOptionsShown && 
+                <div className="submit-form__options-container">
+                    {genModel === `core` || genModel === `sd3` || genModel === `ultra` || genModel === `sd3-turbo` ? 
+                        <ModelV2Selects 
+                            setData={setData as Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
+                        />
+                        : 
+                        <ModelV1Selects 
+                            setData={setData as Dispatch<SetStateAction<ApiV1ModelParams | {}>>}
+                        />
+                    }
+                </div>
+            } 
             <div className="submit-form__btn-container">
                 <button 
                     type="submit" 

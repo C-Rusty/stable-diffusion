@@ -4,18 +4,16 @@
 
 .selected-page-nav {
     color: $colorBlue !important;
+    border-color: $colorBlue !important;
 }
 
 .header {
     background: $colorBlack;
 
-    .container {
-        border-bottom: .1rem $colorPink solid;
-    }
-
     &__inner {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         padding: 4rem 0;
     }
@@ -30,12 +28,17 @@
 
     &__nav-list {
         display: flex;
-        gap: 4rem;
+        gap: 2rem;
 
         &-item {
             a {
                 @extend %Font-Regular-20px;
                 color: $colorPink;
+
+                padding: 1rem 2rem;
+
+                border: .1rem solid $colorPink;
+                border-radius: 5rem;
 
                 text-decoration: none;
 
@@ -43,6 +46,8 @@
 
                 &:hover {
                     color: $colorBlue;
+                    border-color: $colorBlue;
+                    
                     @include transition(.3s, ease, all);
                 }
             }

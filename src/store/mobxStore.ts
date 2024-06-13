@@ -44,7 +44,7 @@ export default class mobxStore {
             this.setApiKey();
             this.setUserId(cookieUser.split('=')[1]);
         } else {
-            throw new Error(`CookieUser not found`);
+            console.log(`User is not authorized`);
         };
     };
 

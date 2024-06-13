@@ -11,6 +11,7 @@ const Main = () => {
     return(
         <Routes>
             <Route path={urlPaths.home} element={<Home/>}>
+                <Route index={true} element={<Generator/>} />
                 <Route path={urlPaths.generator} element={<Generator/>} />
                 <Route path={urlPaths.instructions} element={<Documentation/>} />
                 <Route path={urlPaths.myImages} element={<ImgCollection/>}/>

@@ -1,5 +1,6 @@
 @import '../../../styles/common/variables.scss';
 @import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/mixins.scss';
 
 .v2-select {
     position: relative;
@@ -8,7 +9,7 @@
 
     &:active {
         &__inner {
-            z-index: 2;
+            z-index: 20;
         }
     }
 
@@ -27,7 +28,11 @@
 
         @extend %Font-Regular-15px;
 
-        padding: .5rem 0;
+        padding: .5rem .5rem;
+
+        &:hover {
+            color: $colorBlue;
+        }
     }
 
     &__value {
@@ -49,14 +54,19 @@
 
     overflow-y: auto;
 
-    background: $colorBlack;
+    background: $colorLightBlack;
+
+    border: .1rem solid $colorBlue;
+    border-top: none;
+
+    border-radius: .5rem;
 
     &::-webkit-scrollbar {
         width: .4rem;
     }
 
     &::-webkit-scrollbar-thumb {
-        background-color: $colorGreen;
+        background-color: $colorBlue;
         border-radius: .5rem;
     }
 }

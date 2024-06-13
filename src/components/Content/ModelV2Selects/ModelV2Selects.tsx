@@ -5,8 +5,7 @@ import { generatorCommonPropsForSelect } from "../../../utilities/ModelProps/Gen
 import './modelV2Selects.scss';
 import Select from "../../common/select/Select";
 import { inputCommonClassName, selectCommonClassName, textAreaCommonClassName } from "../../../utilities/commonVars";
-import Input from "../../common/Input";
-
+import Input from "../../common/input/Input";
 
 const ModelV2Selects = (
     {setData} : 
@@ -44,15 +43,16 @@ const ModelV2Selects = (
         <div className="generator-v2">
             <div className='generator-v2__inner'>
                 <div className="generator-v2__select-component">
+                <label className="select-label">Aspect Ratio</label>
                     <Select 
                         setValue={setAspectRatio} 
                         options={aspectRatiSelectProps.options} 
                         className={selectCommonClassName} 
                         id={aspectRatiSelectProps.id}
                     />
-                    <label className="select-label">Aspect Ratio</label>
                 </div>
                 <div className="generator-v2__input-component">
+                    <label className="input-label">Seed (radnomness)</label>
                     <Input 
                         type={seedInputProps.inputType} 
                         name={seedInputProps.name} 
@@ -61,36 +61,36 @@ const ModelV2Selects = (
                         value={seed}
                         setValue={setSeed}
                     />
-                    <label className="input-label">Seed (radnomness)</label>
                 </div>
                 <div className="generator-v2__select-component">
+                    <label className="select-label">Style Preset</label>
                     <Select 
                         setValue={setStylePreset} 
                         options={stylePresetSelectProps.options} 
                         className={selectCommonClassName} 
                         id={stylePresetSelectProps.id}
                     />
-                    <label className="select-label">Style Preset</label>
                 </div>
                 <div className="generator-v2__select-component">
+                    <label className="select-label">Output Format</label>
                     <Select 
                         setValue={setOutputFormat} 
                         options={outputFormmatSelectProps.options} 
                         className={selectCommonClassName} 
                         id={outputFormmatSelectProps.id}
                     />
-                    <label className="select-label">Output Format</label>
                 </div>
                 <div className="generator-v2__textarea-component">
+                    <label className="textarea-label">Negative Prompt</label>
                     <textarea
                         name={negativeInputProps.name} 
                         className={textAreaCommonClassName} 
                         placeholder={negativeInputProps.placeholder}
                         ref={negativePrompt}
+                        required={false}
                         id={negativeInputProps.id}
                         rows={1}
                     />
-                    <label className="textarea-label">Negative Prompt</label>
                 </div>
             </div>
         </div>

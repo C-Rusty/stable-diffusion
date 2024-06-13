@@ -1,0 +1,56 @@
+@import '../../styles/common/fonts.scss';
+@import '../../styles/common/variables.scss';
+@import '../../styles/common/mixins.scss';
+@import '../../styles/common/extends.scss';
+
+.button-container {
+    display: flex;
+
+    position: relative;
+
+    &:hover {
+        .button-container__tip {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+    }
+
+    &__btn, &__tip-text {
+        @extend %Font-Regular-15px;
+        color: $colorPink;
+    }
+
+    &__btn {
+        width: 100%;
+        height: 100%;
+
+        @extend %button;
+
+        background: $colorGreen;
+
+        &:hover {
+            background: $colorBlue;
+        }
+    }
+
+    &__tip {
+        position: absolute;
+        top: 5rem;
+        left: 0;
+
+        width: 30rem;
+        height: auto;
+
+        z-index: 2;
+        
+        background: $colorBlack;
+
+        padding: 1.5rem 1rem;
+
+        border: .1rem $colorPink solid;
+        border-radius: .5rem;
+
+        display: none;
+    }
+}

@@ -15,21 +15,27 @@
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
+
+        gap: 2rem;
+
+        padding: 3rem;
+
+        background: $colorLightBlack;
+
+        border-radius: 3rem;
     }
 
     &__img-container {
         display: flex;
         justify-content: center;
         align-items: center;
-
-        height: 85%;
     }
 
     &__img {
         width: 100%;
         height: auto;
 
-        grid-row: span 3;
+        border-radius: .5rem;
     }
 
     &__headline {
@@ -38,29 +44,36 @@
         text-align: center;
     }
 
-    &__btn-container {  
+    &__actions-container {  
         display: flex;
         justify-content: center;
         align-items: center;
+        gap: 2rem;
 
         width: 100%;
     }
 
-    &__btn {
+    &__btn, &__link {
         @extend %button;
 
-        background: $colorGreen;
+        background: $colorBlue;
 
-        @extend %Font-Regular-20px;
+        @extend %Font-Regular-15px;
         color: $colorPink;
 
-        @include transition(.3s, ease, all);
+        @include transition(.3s, ease, ease);
 
         min-width: max-content;
         width: 20%;
 
         &:hover {
-            background: $colorDarkGreen;
+            background: $colorDarkBlue;
+            @include transition(.3s, ease, ease);
         }
+    }
+
+    &__link {
+        text-align: center;
+        text-decoration: none;
     }
 }
