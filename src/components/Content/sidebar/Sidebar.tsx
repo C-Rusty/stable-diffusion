@@ -110,7 +110,7 @@ const Sidebar = (
                 </div>
             </div>
             <div className="submit-form__show-options">
-                <p className='submit-form__show-options-headline'>Show Options</p>
+                <p className='submit-form__show-options-headline'>Show Options (advanced)</p>
                 <Switcher 
                     value={isOptionsShown}
                     setValue={setIsOptionsShown}
