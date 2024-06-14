@@ -23,7 +23,17 @@
         color: $colorPink;
         text-align: center;
 
+        text-decoration: none;
+
         @extend %headline-main-animation;
+
+        @include transition(.3s, ease, all);
+
+        &:hover {
+            color: $colorBlue;
+
+            @include transition(.3s, ease, all);
+        }
     }
 
     &__nav-list {

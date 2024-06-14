@@ -19,7 +19,7 @@ const Header = () => {
         <header className="header">
             <div className="container">
                 <div className="header__inner">
-                    <h1 className="header__headline">Stable Diffusion</h1>
+                    <Link to={urlPaths.home} className="header__headline">Stable Diffusion</Link>
                     <nav className='header__nav'>
                         <ul className="header__nav-list">
                             <li className="header__nav-list-item">
@@ -32,7 +32,7 @@ const Header = () => {
                             <Link 
                                 to={urlPaths.instructions}
                                 className={currentPage === urlPaths.instructions ? selectedNavItemClassName : ''}
-                            >How To Use</Link>
+                            >Guide & FAQ</Link>
                             </li>
                             <li className="header__nav-list-item">
                             <Link 
