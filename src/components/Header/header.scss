@@ -5,6 +5,8 @@
 .selected-page-nav {
     color: $colorBlue !important;
     border-color: $colorBlue !important;
+
+    border-bottom: .1rem solid $colorPink;
 }
 
 .header {
@@ -46,9 +48,6 @@
                 color: $colorPink;
 
                 padding: 1rem 2rem;
-
-                border: .1rem solid $colorPink;
-                border-radius: 5rem;
 
                 text-decoration: none;
 

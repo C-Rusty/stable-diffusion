@@ -14,7 +14,7 @@ const Header = () => {
     }, [location]);
 
     const selectedNavItemClassName: string = `selected-page-nav`;
-
+    
     return(
         <header className="header">
             <div className="container">
