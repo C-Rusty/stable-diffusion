@@ -29,12 +29,12 @@
 
         @extend %headline-main-animation;
 
-        @include transition(.3s, ease, all);
+        @include transition(.3s, ease);
 
         &:hover {
             color: $colorBlue;
 
-            @include transition(.3s, ease, all);
+            @include transition(.3s, ease);
         }
     }
 
@@ -51,13 +51,13 @@
 
                 text-decoration: none;
 
-                @include transition(.3s, ease, all);
+                @include transition(.3s, ease);
 
                 &:hover {
                     color: $colorBlue;
                     border-color: $colorBlue;
                     
-                    @include transition(.3s, ease, all);
+                    @include transition(.3s, ease);
                 }
             }
         }

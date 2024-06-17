@@ -32,3 +32,9 @@ export type ModalProps = {
     text: string | undefined,
     isModalOpen: boolean
 };
+
+export type ImageProps = {
+    generatedImage: string | null,
+    imgName: string | null,
+    imgFormat: string | null
+};

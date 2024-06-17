@@ -51,7 +51,7 @@
 
        @extend %Font-Regular-15px;
 
-       @include transition(.3s, ease, all);
+       @include transition(.3s, ease);
     }
 
     &__input {
@@ -64,7 +64,7 @@
 
             padding-left: 2rem;
 
-            @include transition(.3s, ease, all);
+            @include transition(.3s, ease);
         }
     }
 
@@ -83,7 +83,7 @@
             cursor: pointer;
             background: $colorDarkBlue;
 
-            @include transition(.3s, ease, all);
+            @include transition(.3s, ease);
         }
     }
 }

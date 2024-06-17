@@ -61,14 +61,14 @@
         @extend %Font-Regular-15px;
         color: $colorPink;
 
-        @include transition(.3s, ease, ease);
+        @include transition(.3s, ease);
 
         min-width: max-content;
         width: 20%;
 
         &:hover {
             background: $colorDarkBlue;
-            @include transition(.3s, ease, ease);
+            @include transition(.3s, ease);
         }
     }
 

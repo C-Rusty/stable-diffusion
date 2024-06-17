@@ -6,14 +6,9 @@ import { useDispatch } from 'react-redux';
 import { setModalContent } from '../../../store/reduxReducers/modalReducer';
 import { urlPaths } from '../../../routes/urlPaths';
 import { Link } from 'react-router-dom';
+import { ImageProps } from '../../../types/typesCommon';
 
-const GenResult = (
-    {generatedImage, imgName} 
-    : 
-    {
-        generatedImage: string | null,
-        imgName: string
-    }) => {
+const GenResult = ({imageProps}: {imageProps: ImageProps}) => {
 
     const dispatch = useDispatch();
 
@@ -24,6 +19,7 @@ const GenResult = (
 
     const convertImgToBlob = async (img: string) => {
         const base = await (fetch(img));
+        
         const blob = await base.blob();
         
         const reader = new FileReader();
@@ -35,17 +31,24 @@ const GenResult = (
     };
 
     useEffect(() => {
-        if (generatedImage) {
-            convertImgToBlob(generatedImage);
+        if (imageProps.generatedImage) {
+            convertImgToBlob(imageProps.generatedImage);
         };
-    }, [generatedImage]);
+    }, [imageProps.generatedImage]);
 
-    const handleSaveImgClick = async (base64String: string | null, userId: string | undefined, imgName: string) => {
-        if (!base64String || !userId || !imgName) {
-            throw new Error(`Something went wrong with request: img: ${base64String}, userId: ${userId}, imgName: ${imgName}`);
+    const handleSaveImgClick = async (base64String: string | null, userId: string | undefined, imageProps: ImageProps) => {
+
+        if (!base64String || !userId || !imageProps) {
+            console.log(`Something went wrong with a request: 
+                img: ${base64String}.png, 
+                userId: ${userId}, 
+                imgName: ${imageProps}`
+            );
+
+            return;
         };
 
-        const isUploaded: boolean = await saveImageToFireStorage(base64String.split(',')[1], userId, imgName.split(` `).join(`_`));
+        const isUploaded: boolean = await saveImageToFireStorage(base64String, userId, imageProps.imgName!.split(` `).join(`_`) + `.${imageProps.imgFormat}`);
 
         if (isUploaded) {
             dispatch(setModalContent({headline: `Image has been saved`, text: ``, isModalOpen: true}));
@@ -55,22 +58,22 @@ const GenResult = (
     return(
         <div className="generation-result">
             <div className="generation-result__inner">
-                {!generatedImage ? 
+                {!imageProps ? 
                     <h1 className='generation-result__headline'>Waiting for your request</h1>
                     :
                     <div className="generation-result__img-container">
                         <img 
-                            src={generatedImage} 
-                            alt={generatedImage}
-                            className='generation-result__img' 
+                            src={imageProps.generatedImage ? imageProps.generatedImage : undefined} 
+                            alt={imageProps.imgName ? imageProps.imgName : undefined}
+                            className='generation-result__img'
                         />
                     </div>
                 }
                 <div className="generation-result__actions-container">
                     <button 
                         className="generation-result__btn" 
-                        disabled={!generatedImage}
-                        onClick={() => handleSaveImgClick(base64String, userId, imgName!)}
+                        disabled={!imageProps.generatedImage}
+                        onClick={() => handleSaveImgClick(base64String, userId, imageProps)}
                     >Save image to my collection</button>
                     <Link to={`/` + urlPaths.myImages} 
                         className="generation-result__link" 

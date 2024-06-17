@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 import { generatorCommonPropsForSelect } from '../../../utilities/ModelProps/GeneralPropsForSelect';
-import { GenModelsValue } from '../../../types/typesCommon';
+import { GenModelsValue, ImageProps } from '../../../types/typesCommon';
 import { ApiV2ModelParams } from '../../../types/typesV2Model';
 import { ApiV1ModelParams } from '../../../types/typesV1Model';
 import ModelV2Selects from '../ModelV2Selects/ModelV2Selects';
@@ -12,12 +12,11 @@ import Models from '../../models/Models';
 import Switcher from '../../common/switcher/Switcher';
 
 const Sidebar = (
-    {setGeneratedImage, setIsLoading, setImgName} 
+    {setIsLoading, setImageProps} 
     : 
     {
-        setGeneratedImage: Dispatch<SetStateAction<string | null>>, 
         setIsLoading: Dispatch<SetStateAction<boolean>>,
-        setImgName: Dispatch<SetStateAction<string>>
+        setImageProps: Dispatch<SetStateAction<ImageProps>>
     }
 ) => {
 
@@ -42,7 +41,7 @@ const Sidebar = (
     const {mobxStore} = useContext(Context);
     const apiKey = mobxStore.SDApiKey;
 
-    const [data, setData] = useState<ApiV1ModelParams | ApiV2ModelParams | {}>({});
+    const [options, setOptions] = useState<ApiV1ModelParams | ApiV2ModelParams | {}>({});
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -58,21 +57,27 @@ const Sidebar = (
         };
 
         if (genModel === `core` || genModel === `sd3` || genModel === `sd3-turbo` || genModel === `ultra`) {
+
             try {
                 setIsLoading(true);
-                const response = await api.getImageFromV2Model(promptValue, data as ApiV2ModelParams, genModel, apiKey);
+                const selectedOptions = options as ApiV2ModelParams;
+
+                const response = await api.getImageFromV2Model(promptValue, selectedOptions, genModel, apiKey);
                 
                 if (!response) throw new Error(`Something went wrong with request: ${response}`);
 
-                setGeneratedImage(response as string);
-                setImgName(promptValue);
+                setImageProps({
+                    generatedImage: response as string,
+                    imgName: promptValue,
+                    imgFormat: selectedOptions.output_format,
+                });
             } catch (error) {
                 setIsLoading(false);
                 throw new Error(`Something went wrong: ${error}`);
             };
         } else {
             try {
-                api.getImageFromV1Model(data as ApiV1ModelParams, genModel, apiKey)
+                api.getImageFromV1Model(options as ApiV1ModelParams, genModel, apiKey)
             } catch (error) {
                 throw new Error(`Something went wrong: ${error}`);
             };
@@ -120,11 +125,11 @@ const Sidebar = (
                 <div className="submit-form__options-container">
                     {genModel === `core` || genModel === `sd3` || genModel === `ultra` || genModel === `sd3-turbo` ? 
                         <ModelV2Selects 
-                            setData={setData as Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
+                            setData={setOptions as Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
                         />
                         : 
                         <ModelV1Selects 
-                            setData={setData as Dispatch<SetStateAction<ApiV1ModelParams | {}>>}
+                            setData={setOptions as Dispatch<SetStateAction<ApiV1ModelParams | {}>>}
                         />
                     }
                 </div>

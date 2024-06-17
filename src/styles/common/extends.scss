@@ -32,23 +32,23 @@
 
     .v2-input, .v2-select, .v2-textarea{
         border-bottom-color: $colorBlue;
-        @include transition(.5s, ease, all);
+        @include transition(.5s, ease);
     }
 
     .input-label, .select-label, .textarea-label {
         color: $colorBlue;
-        @include transition(.5s, ease, all);
+        @include transition(.5s, ease);
     }
   }
 }
 
 %select-input-hover {
-    @include transition(.5s, ease, all);
+    @include transition(.5s, ease);
 
     &:hover {
         border-bottom-color: $colorBlue;
 
-        @include transition(.5s, ease, all);
+        @include transition(.5s, ease);
     }
 }
 
@@ -60,10 +60,10 @@
 
     padding: 1.5rem 1rem;
 
-    @include transition(.3s, ease, all);
+    @include transition(.3s, ease);
 
     &:hover {
-        @include transition(.3s, ease, all);
+        @include transition(.3s, ease);
         cursor: pointer;    
     }
 }
