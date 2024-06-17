@@ -1,5 +1,5 @@
-@mixin transition ($time, $type, $type_2) {
-    transition: $time $type $type_2; 
-    -moz-transition: $time $type $type_2; 
-    -webkit-transition: $time $type $type_2;;
+@mixin transition ($time, $type) {
+    transition: $time $type; 
+    -moz-transition: $time $type; 
+    -webkit-transition: $time $type;
 }

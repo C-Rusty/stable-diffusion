@@ -1,5 +1,13 @@
 {
   "projects": {
-    "default": "stable-diffusion-c2074"
-  }
+    "default": "stable-diffusion-c2074",
+    "gsutil cors set cors.json": "stable-diffusion-c2074",
+    "staging": "stable-diffusion-c2074",
+    "gsutil set cors.json gs://stable-diffusion-c2074.appspot.com": "stable-diffusion-c2074",
+    "gsutil set cors.json       gs://stable-diffusion-c2074.appspot.com": "stable-diffusion-c2074",
+    "gsutil cors set cors.json gs://stable-diffusion-c2074.appshot.com": "stable-diffusion-c2074"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
 }

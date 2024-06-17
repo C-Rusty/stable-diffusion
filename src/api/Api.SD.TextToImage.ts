@@ -25,6 +25,7 @@ const getImageFromV2Model = async (prompt: string, params: ApiV2ModelParams, mod
     if (response.status === 200) {
         const blob = new Blob([response.data], {type: `image/${params.output_format}`});
         const url = URL.createObjectURL(blob);
+        
         return url;
     } else {
         const error: {

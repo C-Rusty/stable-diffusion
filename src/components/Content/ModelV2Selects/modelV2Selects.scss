@@ -17,12 +17,12 @@
 
             .v2-input, .v2-select, .v2-textarea{
                 border-bottom-color: $colorBlue;
-                @include transition(.3s, ease, all);
+                @include transition(.3s, ease);
             }
 
             .input-label, .select-label, .textarea-label {
                 color: $colorBlue;
-                @include transition(.3s, ease, all);
+                @include transition(.3s, ease);
             }
         }
 
@@ -42,17 +42,17 @@
 
             padding: 1rem 0;
 
-            @include transition(.3s, ease, all);
+            @include transition(.3s, ease);
             
             &:focus {
-                @include transition(.3s, ease, all);
+                @include transition(.3s, ease);
 
                 outline: none;
                 border-bottom-color: $colorBlue;
 
                 ~ .input-label, ~ .select-label {
                     color: $colorBlue;
-                    @include transition(.3s, ease, all);
+                    @include transition(.3s, ease);
                 }
             }
 
@@ -71,7 +71,7 @@
 
             @extend %Font-Regular-15px;
 
-            @include transition(.3s, ease, all);
+            @include transition(.3s, ease);
 
             pointer-events: none;
         }

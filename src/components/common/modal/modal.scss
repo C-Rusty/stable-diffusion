@@ -14,7 +14,7 @@
 
     z-index: 999;
 
-    @include transition(.3s, ease, all);
+    @include transition(.3s, ease);
 
     min-width: 50%;
 

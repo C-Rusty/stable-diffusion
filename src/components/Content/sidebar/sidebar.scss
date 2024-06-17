@@ -39,7 +39,7 @@
 
         min-height: 6rem;
 
-        @include transition(.3s, ease, all);
+        @include transition(.3s, ease);
 
         &::-webkit-scrollbar {
             background: $colorBlack;
@@ -56,11 +56,11 @@
             outline: none;
             border-color: $colorBlue;
 
-            @include transition(.3s, ease, all);
+            @include transition(.3s, ease);
         }
 
         &:hover {
-            @include transition(.3s, ease, all);
+            @include transition(.3s, ease);
             border-color: $colorBlue;
         }
     }

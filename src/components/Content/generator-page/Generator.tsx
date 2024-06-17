@@ -4,18 +4,18 @@ import Sidebar from '../sidebar/Sidebar';
 import GenResult from '../genResult/GenResult';
 import Loader from '../../common/loader/Loader';
 import noise from '../../../imgs/noise.png';
+import { ImageProps } from '../../../types/typesCommon';
 
 const Generator = () => {
 
-    const [generatedImage, setGeneratedImage] = useState<string | null>(noise);
-    const [imgName, setImgName] = useState<string>('');
+    const [imageProps, setImageProps] = useState<ImageProps>({generatedImage: noise, imgName: null, imgFormat: null});
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (generatedImage) {
+        if (imageProps.generatedImage) {
             setIsLoading(false);
         };
-    }, [generatedImage]);
+    }, [imageProps.generatedImage]);
 
     return(
         <section className="generator page">
@@ -23,16 +23,14 @@ const Generator = () => {
                 <div className="generator__inner">
                     <div className="generator__main">
                         <Sidebar 
-                            setGeneratedImage={setGeneratedImage}
                             setIsLoading={setIsLoading} 
-                            setImgName={setImgName}
+                            setImageProps={setImageProps}
                         />
                         {isLoading ? 
                             <Loader /> 
                             : 
                             <GenResult 
-                                generatedImage={generatedImage}
-                                imgName={imgName}
+                                imageProps={imageProps}
                             />
                         }
                     </div>

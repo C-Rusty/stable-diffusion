@@ -15,7 +15,7 @@ export const Context = createContext<State>({
 function App() {
 
   return (
-    <div className="main">
+    <div className="app">
         <Context.Provider value={{ mobxStore }}>
           <Routes/>
         </Context.Provider>

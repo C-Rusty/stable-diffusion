@@ -1,0 +1,107 @@
+@import '../../styles/common/extends.scss';
+@import '../../styles/common/mixins.scss';
+
+.gallery {
+    .container {
+        background: $colorBlack;
+
+        min-height: calc(100vh - 10.5rem - 7.9rem);
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4rem;
+
+        width: 100%;
+        height: 100%;
+        
+        padding-bottom: 4rem;
+
+    }
+
+    .arrow-container {
+        height: 100%;
+        width: 6rem;
+
+        &:hover {
+            .arr-left, .arr-right {
+                fill: $colorBlue;
+                @include transition(.3s, ease);
+
+                cursor: pointer;
+            }
+        }
+
+        .arr-left, .arr-right {
+            width: 100%;
+            height: 100%;
+
+            fill: $colorGreen;
+        }
+
+        .arr-left {
+            transform: rotate(180deg);
+        }
+    }
+
+    &__main {
+        display: flex; 
+        justify-content: space-between;
+        align-items: center;
+        gap: 2rem;
+
+        width: 100%;
+        height: 100%;
+    }
+
+    &__center {
+        width: 100%;
+        
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 2rem;
+    }
+
+    &__img {
+        max-width: 100%;
+        max-height: 50rem;
+
+        border-radius: .5rem;
+    }
+
+    &__btns-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+
+        width: 100%;
+    }
+
+    &__btn {
+        @extend %button;
+        @extend %Font-Regular-15px;
+
+        color: $colorPink;
+
+        width: 30%;
+
+        background: $colorGreen;
+
+        &:hover {
+            cursor: pointer;
+            @include transition(.3s, ease);
+
+            background: $colorDarkGreen;
+        }
+    }
+}

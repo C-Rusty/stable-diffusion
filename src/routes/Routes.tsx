@@ -16,6 +16,7 @@ const Main = () => {
                 <Route path={urlPaths.instructions} element={<Documentation/>} />
                 <Route path={urlPaths.myImages} element={<ImgCollection/>}/>
             </Route>
+
             <Route path="*" element={<NotFound/>}/>
         </Routes>
     );
