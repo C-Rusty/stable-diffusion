@@ -55,6 +55,7 @@
     }
 
     .disabled {
-        background: $colorDarkGreen;
+        background: gray;
+        color: $colorBlack !important;
     }
 }

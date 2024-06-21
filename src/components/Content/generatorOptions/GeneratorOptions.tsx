@@ -5,13 +5,13 @@ import { ApiV2ModelParams } from '../../../types/typesV2Model';
 import { ApiV1ModelParams } from '../../../types/typesV1Model';
 import ModelV2Selects from '../ModelV2Selects/ModelV2Selects';
 import ModelV1Selects from '../ModelV1Selects/ModelV1Selects';
-import './sidebar.scss';
+import './generatorOptions.scss';
 import { Context } from '../../app/App';
 import { api } from '../../../api/Api.SD.TextToImage';
 import Models from '../../models/Models';
 import Switcher from '../../common/switcher/Switcher';
 
-const Sidebar = (
+const GeneratorOptions = (
     {setIsLoading, setImageProps} 
     : 
     {
@@ -91,38 +91,38 @@ const Sidebar = (
         <form 
             action="submit"
             method='POST'
-            className="submit-form"
+            className="generator-options"
             onSubmit={(e) => handleSubmit(e)}
         >
             <textarea 
                 name="input" 
                 id="generate-image-prompt"
                 placeholder='Image description'
-                className="submit-form__prompt"
+                className="generator-options__prompt"
                 required={true} 
                 rows={1}
                 ref={prompt} 
             />
-            <div className="submit-form__model-select">
-                <span className='submit-form__model-select-headline'>
+            <div className="generator-options__model-select">
+                <span className='generator-options__model-select-headline'>
                     Select Model
                 </span>
-                <div className="submit-form__model-select-main">
+                <div className="generator-options__model-select-main">
                     <Models 
                         genModelSelectProps={genModelSelectProps} 
                         handleModelClick={handleModelClick}
                     />
                 </div>
             </div>
-            <div className="submit-form__show-options">
-                <p className='submit-form__show-options-headline'>Show Options (advanced)</p>
+            <div className="generator-options__show-options">
+                <p className='generator-options__show-options-headline'>Show Options (advanced)</p>
                 <Switcher 
                     value={isOptionsShown}
                     setValue={setIsOptionsShown}
                 />
             </div>
             {isOptionsShown && 
-                <div className="submit-form__options-container">
+                <div className="generator-options__options-container">
                     {genModel === `core` || genModel === `sd3` || genModel === `ultra` || genModel === `sd3-turbo` ? 
                         <ModelV2Selects 
                             setData={setOptions as Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
@@ -134,14 +134,14 @@ const Sidebar = (
                     }
                 </div>
             } 
-            <div className="submit-form__btn-container">
+            <div className="generator-options__btn-container">
                 <button 
                     type="submit" 
-                    className='submit-form__button'
+                    className='generator-options__button'
                 >Generate Image</button>
             </div>
         </form>
     );
 };
 
-export default Sidebar;
+export default GeneratorOptions;

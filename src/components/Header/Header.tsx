@@ -10,7 +10,11 @@ const Header = () => {
     const location = useLocation();
 
     useEffect(() => {
-        setCurrentPage(location.pathname.substring(1));
+        if (location.pathname === '/') {
+            setCurrentPage(urlPaths.home);
+        } else {
+            setCurrentPage(location.pathname.substring(1));
+        }
     }, [location]);
 
     const selectedNavItemClassName: string = `selected-page-nav`;
@@ -24,8 +28,8 @@ const Header = () => {
                         <ul className="header__nav-list">
                             <li className="header__nav-list-item">
                             <Link 
-                                to={urlPaths.generator}
-                                className={currentPage === urlPaths.generator ? selectedNavItemClassName : ''}
+                                to={urlPaths.home}
+                                className={currentPage === urlPaths.home ? selectedNavItemClassName : ''}
                             >Generator</Link>
                             </li>
                             <li className="header__nav-list-item">
@@ -36,9 +40,9 @@ const Header = () => {
                             </li>
                             <li className="header__nav-list-item">
                             <Link 
-                                to={urlPaths.myImages}
-                                className={currentPage === urlPaths.myImages ? selectedNavItemClassName : ''}
-                            >My Collection</Link>
+                                to={urlPaths.gallery}
+                                className={currentPage === urlPaths.gallery ? selectedNavItemClassName : ''}
+                            >My Gallery</Link>
                             </li>
                         </ul>
                     </nav>

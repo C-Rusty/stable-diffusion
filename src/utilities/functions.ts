@@ -1,15 +1,13 @@
-export const generateRandomString = () => {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:",.<>?/`~';
-    const charactersLength = characters.length;
+import saveAs from "file-saver";
 
-    let stringLength: number = 64;
-
-    let result = '';
-
-    for (let i = 0; i < stringLength; i++) {
-        const randomIndex = Math.floor(Math.random() * charactersLength);
-        result += characters[randomIndex];
-    }
-
-    return result;
+export async function saveImageToPC (url: string, name: string) {
+    try {
+        const image = await fetch(url)
+        const imageBlog = await image.blob();
+        const imageURL = URL.createObjectURL(imageBlog);
+    
+        saveAs(imageURL, name);
+    } catch (error) {
+        console.log(error);
+    };
 };

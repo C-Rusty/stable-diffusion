@@ -38,3 +38,14 @@ export type ImageProps = {
     imgName: string | null,
     imgFormat: string | null
 };
+
+export type ImageItem = {
+    name: string,
+    url: string
+}
+
+export type ImgInfoForUpload = {
+    base64String: string | null,
+    userId: string | undefined,
+    imageProps: ImageProps
+}

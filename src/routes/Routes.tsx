@@ -1,23 +1,21 @@
 import { Route, Routes } from "react-router-dom";
 import { urlPaths } from "./urlPaths";
 import Home from "../components/Content/home/Home";
-import Generator from "../components/Content/generator-page/Generator";
-import Documentation from "../components/Content/documentation/Documentation";
-import ImgCollection from "../components/Content/imgCollection/ImgCollection";
-import NotFound from "../components/notFound/NotFound";
+import GeneratorPage from "../components/Content/generatorPage/GeneratorPage";
+import DocumentationPage from "../components/Content/documentationPage/DocumentationPage";
+import ImgCollectionPage from "../components/Content/imgCollectionPage/ImgCollectionPage";
+import NotFoundPage from "../components/notFoundPage/NotFoundPage";
 
 const Main = () => {
 
     return(
         <Routes>
             <Route path={urlPaths.home} element={<Home/>}>
-                <Route index={true} element={<Generator/>} />
-                <Route path={urlPaths.generator} element={<Generator/>} />
-                <Route path={urlPaths.instructions} element={<Documentation/>} />
-                <Route path={urlPaths.myImages} element={<ImgCollection/>}/>
+                <Route index={true} element={<GeneratorPage/>} />
+                <Route path={urlPaths.instructions} element={<DocumentationPage/>} />
+                <Route path={urlPaths.gallery} element={<ImgCollectionPage/>}/>
             </Route>
-
-            <Route path="*" element={<NotFound/>}/>
+            <Route path="*" element={<NotFoundPage/>}/>
         </Routes>
     );
 };

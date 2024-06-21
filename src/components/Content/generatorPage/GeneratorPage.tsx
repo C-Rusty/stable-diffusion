@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import './generator.scss';
-import Sidebar from '../sidebar/Sidebar';
-import GenResult from '../genResult/GenResult';
+import './generatorPage.scss';
+import Sidebar from '../generatorOptions/GeneratorOptions';
+import GenerationResult from '../generationResult/GenerationResult';
 import Loader from '../../common/loader/Loader';
 import noise from '../../../imgs/noise.png';
 import { ImageProps } from '../../../types/typesCommon';
 
-const Generator = () => {
+const GeneratorPage = () => {
 
     const [imageProps, setImageProps] = useState<ImageProps>({generatedImage: noise, imgName: null, imgFormat: null});
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -18,10 +18,10 @@ const Generator = () => {
     }, [imageProps.generatedImage]);
 
     return(
-        <section className="generator page">
+        <section className="generator-page">
             <div className="container">
-                <div className="generator__inner">
-                    <div className="generator__main">
+                <div className="generator-page__inner">
+                    <div className="generator-page__main">
                         <Sidebar 
                             setIsLoading={setIsLoading} 
                             setImageProps={setImageProps}
@@ -29,7 +29,7 @@ const Generator = () => {
                         {isLoading ? 
                             <Loader /> 
                             : 
-                            <GenResult 
+                            <GenerationResult 
                                 imageProps={imageProps}
                             />
                         }
@@ -40,4 +40,4 @@ const Generator = () => {
     );
 };
 
-export default Generator;
+export default GeneratorPage;

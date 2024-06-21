@@ -1,0 +1,20 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/extends.scss';
+
+.close-btn {
+    @extend %action-btn;
+    
+    &:hover {
+        svg {
+            path {
+                fill: $colorBlue;
+            }
+        }
+    }
+
+    svg {
+        path {
+            fill: $colorGreen;
+        }
+    }
+}

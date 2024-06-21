@@ -2,13 +2,13 @@ import { Fragment } from "react/jsx-runtime";
 import { useContext, useEffect } from "react";
 import { Context } from "../../app/App";
 import { observer } from 'mobx-react-lite';
-import AuthModal from "../../auth-modal/AuthModal";
+import LoginForm from "../../logInForm/LogInForm";
 import Modal from "../../common/modal/Modal";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/reduxStore";
-import Header from "../../Header/Header";
-import Footer from "../../Footer/Footer";
 import { Outlet } from "react-router-dom";
+import Header from "../../header/Header";
+import Footer from "../../footer/Footer";
 
 const Home = () => {
 
@@ -28,7 +28,7 @@ const Home = () => {
                     <Footer/>
                 </Fragment>
                 :
-                <AuthModal/>
+                <LoginForm/>
             }
             {isModalOpen && <Modal/>}
         </Fragment>    

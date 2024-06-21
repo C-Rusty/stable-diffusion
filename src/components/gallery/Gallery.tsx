@@ -1,20 +1,20 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { ImageItem } from "../../types/typesCommon";
+import ImageGallery from "react-image-gallery";
 import './gallery.scss';
-import {ReactComponent as Arrow} from '../../imgs/arrow.svg';
+import DownloadButton from "../common/download-btn/DownloadButton";
+import CloseButton from "../common/close-btn/CloseButton";
 
 const Gallery = (
     {
-        setIsClosed,
+        setIsOpened,
         imgCollection,
         clickedImgIndex
     }
     :
     {
-        setIsClosed: Dispatch<SetStateAction<boolean>>,
-        imgCollection: Array<{
-            name: string,
-            url: string
-        }>,
+        setIsOpened: Dispatch<SetStateAction<boolean>>,
+        imgCollection: Array<ImageItem>,
         clickedImgIndex: number | undefined
     }
 ) => {
@@ -42,49 +42,20 @@ const Gallery = (
         <div className="gallery">
             <div className="container">
                 <div className="gallery__inner">
-                    {/* <div 
-                        className="gallery__cls-btn" 
-                        onClick={() => setIsClosed(false)}
-                    >X</div> */}
                     <div className="gallery__main">
-                        {imgIndex !== 0 ?
-                            <div className="gallery__left arrow-container">
-                                <Arrow
-                                    className="arr-left"
-                                    onClick={() => setImgIndex((prev) => prev! - 1)}
-                                />
-                            </div>
-                            :
-                            <div className="gallery__left arrow-container"></div>
-                        }
-                        <div className="gallery__center">
-                            <img
-                                src={currentImg ? currentImg.url : undefined} 
-                                alt={currentImg ? currentImg.name : undefined}
-                                className="gallery__img"
-                            />
-                        </div>
-                        {imgIndex !== imgCollection.length - 1 ?
-                            <div className="gallery__right arrow-container">
-                                <Arrow
-                                    className="arr-right"
-                                    onClick={() => setImgIndex((prev) => prev! + 1)}
-                                />
-                            </div>
-
-                            :
-                            <div className="gallery__right arrow-container"></div>
-                        }
+                        <ImageGallery
+                            showBullets={true}
+                            startIndex={imgIndex}
+                            items={imgCollection.map((img) => ({original: img.url}))}
+                        />
                     </div>
-                    <div className="gallery__btns-container">
-                        <button 
-                            onClick={() => setIsClosed(false)}
-                            className="gallery__btn"
-                        >Close</button>
-                        <button 
-                            // onClick={() => setIsClosed(false)}
-                            className="gallery__btn"
-                        >Download</button>
+                    <div className="gallery__action-btn-container">
+                        <div className="gallery__btn-container">
+                            <DownloadButton currentImg={currentImg}/>
+                        </div>
+                        <div className="gallery__btn-container">
+                            <CloseButton setState={setIsOpened}/>
+                        </div>
                     </div>
                 </div>
             </div>
