@@ -1,0 +1,20 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/extends.scss';
+
+.download-btn {
+    @extend %action-btn;
+    
+    &:hover {
+        svg {
+            path {
+                stroke: $colorBlue;
+            }
+        }
+    }
+
+    svg {
+        path {
+            stroke: $colorGreen;
+        }
+    }
+}

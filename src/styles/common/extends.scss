@@ -67,3 +67,37 @@
         cursor: pointer;    
     }
 }
+
+%action-btn {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    text-decoration: none;
+  
+    @include transition(.3s, ease);
+    
+    &:hover {
+      @include transition(.3s, ease);
+
+      cursor: pointer;
+
+      p {
+        color: $colorBlue;
+        @include transition(.3s, ease);
+      }
+    }
+  
+    svg {
+      width: 4rem;
+      height: 4rem;
+    }
+
+    p {
+      @extend %Font-Regular-15px;
+      color: $colorPink;
+      text-transform: uppercase;
+
+      white-space: nowrap;
+  }
+}

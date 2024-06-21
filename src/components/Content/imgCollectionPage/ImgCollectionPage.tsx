@@ -1,11 +1,11 @@
 import { Fragment, useContext, useEffect, useState } from 'react';
-import './imgCollection.scss';
+import './imgCollectionPage.scss';
 import { Context } from '../../app/App';
 import { getImagesFromFireStorage } from '../../../api/Api.Firebase.Storage';
-import { saveAs } from 'file-saver'
 import Gallery from '../../gallery/Gallery';
+import DownloadButton from '../../common/download-btn/DownloadButton';
 
-const ImgCollection = () => {
+const ImgCollectionPage = () => {
 
     const [imgCollection, setImgCollection] = useState<Array<{
         name: string,
@@ -26,14 +26,6 @@ const ImgCollection = () => {
         getUserImgCollection();
     }, []);
 
-    const downloadImg = async (url: string, name: string) => {
-        const image = await fetch(url)
-        const imageBlog = await image.blob();
-        const imageURL = URL.createObjectURL(imageBlog);
-
-        saveAs(imageURL, name);
-    };
-
     const [isGalleryOpened, setIsGalleryOpened] = useState(false);
     const [clickedImgIndex, setClickedImg] = useState<number | undefined>(undefined);
 
@@ -46,7 +38,7 @@ const ImgCollection = () => {
         <Fragment>
             {isGalleryOpened ? 
                 <Gallery
-                    setIsClosed={setIsGalleryOpened}
+                    setIsOpened={setIsGalleryOpened}
                     imgCollection={imgCollection}
                     clickedImgIndex={clickedImgIndex}
                 />
@@ -69,10 +61,7 @@ const ImgCollection = () => {
                                             loading="lazy"
                                         />
                                         <div className="collection__btn-container">
-                                            <button 
-                                                className="collection__download-btn"
-                                                onClick={() => downloadImg(img.url, img.name)}
-                                            >Download</button>
+                                            <DownloadButton currentImg={img}/>
                                         </div>
                                     </div>
                                 ))}
@@ -87,4 +76,4 @@ const ImgCollection = () => {
     );
 };
 
-export default ImgCollection;
+export default ImgCollectionPage;

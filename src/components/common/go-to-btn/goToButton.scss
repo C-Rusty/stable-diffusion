@@ -1,0 +1,21 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/extends.scss';
+
+.go-to-btn {
+    @extend %action-btn;
+
+    
+    &:hover {
+        svg {
+            path {
+                stroke: $colorBlue;
+            }
+        }
+    }
+
+    svg {
+        path {
+            stroke: $colorGreen;
+        }
+    }
+}
