@@ -1,9 +1,7 @@
 [
     {
         "origin": [
-            "localhost:**", 
-            "https://stable-diffusion-c2074.web.app/", 
-            "https://stable-diffusion-c2074.firebaseapp.com/"
+            "*"
         ],
         "method": ["GET", "HEAD"],
         "maxAgeSeconds": 3600
