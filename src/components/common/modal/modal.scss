@@ -2,22 +2,42 @@
 @import '../../../styles/common/mixins.scss';
 @import '../../../styles/common/extends.scss';
 
+@keyframes reveal-modal {
+    0% {
+        transform: translateY(-100rem);
+        z-index: 999;
+    }
+    50% {
+        transform: translateY(0);
+    }
+    100% {
+        background: $colorBlack;
+        border: .1rem solid $colorBlue;
+        z-index: 999;
+    }
+}
+
+@keyframes hide-modal {
+    0% {
+        transform: translateY(0%);
+        z-index: -20;
+    }
+    100%{
+        transform: translateY(-100rem);
+        z-index: -20;
+    }
+}
+
 .modal {
-    position: absolute;
+    position: fixed;
     top: 40%;
     left: 25%;
 
     background-color: $colorBlack;
 
-    border: none;
     border-radius: 1rem;
 
-    z-index: 999;
-
-    @include transition(.3s, ease);
-
     min-width: 50%;
-
 
     &__inner {
         padding: 5rem;
@@ -47,18 +67,31 @@
     }
 
     &__close-btn {
-        @extend %button;
-        @extend %Font-Regular-20px;
+        @extend %action-btn;
 
+        @extend %Font-Regular-20px;
         color: $colorPink;
 
         background-color: $colorBlue;
 
+        border: none;
+
         min-width: max-content;
         width: 50%;
 
+        @include transition(.3s, ease);
+
         &:hover {
             background-color: $colorDarkBlue;
+            @include transition(.3s, ease);
         }
     }
+}
+
+.modal.open {
+    animation: reveal-modal .5s ease forwards;
+}
+
+.modal.hidden {
+    animation: hide-modal .5s ease forwards;
 }

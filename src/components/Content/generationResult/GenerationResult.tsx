@@ -46,18 +46,12 @@ const GenerationResult = ({imageProps}: {imageProps: ImageProps}) => {
                 </div>
                 <div className="generation-result__action-btns">
                     <div className="generation-result__action-btns-inner">
-                        <div className="upload-container">
-                            <UploadImgButton imgInfo={{base64String, userId, imageProps}}/>
-                        </div>
-                        <div className="go-to-page-container">
-                            <GoToButton urlPath={urlPaths.gallery}/>
-                        </div>
-                        <div className="go-to-page-container">
-                            <DownloadButton currentImg={{
-                                name: imageProps.imgName!,
-                                url: imageProps.generatedImage!
-                            }}/>
-                        </div>
+                        <UploadImgButton imgInfo={{base64String, userId, imageProps}}/>
+                        <GoToButton urlPath={urlPaths.gallery}/>
+                        <DownloadButton currentImg={{
+                            name: imageProps.imgName!,
+                            url: imageProps.generatedImage!
+                        }}/>
                     </div>
                 </div>
             </div>

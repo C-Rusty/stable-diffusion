@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './generatorPage.scss';
-import Sidebar from '../generatorOptions/GeneratorOptions';
+import GeneratorOptions from '../generatorOptions/GeneratorOptions';
 import GenerationResult from '../generationResult/GenerationResult';
 import Loader from '../../common/loader/Loader';
 import noise from '../../../imgs/noise.png';
@@ -22,12 +22,12 @@ const GeneratorPage = () => {
             <div className="container">
                 <div className="generator-page__inner">
                     <div className="generator-page__main">
-                        <Sidebar 
+                        <GeneratorOptions 
                             setIsLoading={setIsLoading} 
                             setImageProps={setImageProps}
                         />
                         {isLoading ? 
-                            <Loader /> 
+                            <Loader className="loader-generator-page" /> 
                             : 
                             <GenerationResult 
                                 imageProps={imageProps}
