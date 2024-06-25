@@ -41,4 +41,6 @@ const findUser = async (userId: string) => {
     };
 };
 
-export { signIn, findUser };
+export const firebaseUserAuth = {
+    signIn,
+};

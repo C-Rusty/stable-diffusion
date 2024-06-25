@@ -103,16 +103,21 @@
     &__button {
         background: $colorBlue;
 
-        @extend %button;
+        @extend %action-btn;
 
         @extend %Font-Regular-20px;
         color: $colorPink;
+
+        @include transition(.3s, ease);
         
         min-width: max-content;
         width: 20%;
 
+        border: none;
+
         &:hover {
             background: $colorDarkBlue;
+            @include transition(.3s, ease);
         }
     }
 }

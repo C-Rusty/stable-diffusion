@@ -15,7 +15,7 @@ const Modal = () => {
     const modalContent = useSelector<RootState, ModalProps>((state) => state.modalContent);
 
     return(
-        <div className="modal">
+        <div className={`modal ${modalContent.isModalOpen ? 'open' : 'hidden'}`}>
             <div className="modal__inner">
                 <h2 className="modal__headline">{modalContent.headline ? modalContent.headline : undefined}</h2>
                 <p className="modal__text">{modalContent.text ? modalContent.text : undefined}</p>

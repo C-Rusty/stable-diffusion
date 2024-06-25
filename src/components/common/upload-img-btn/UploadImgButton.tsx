@@ -1,9 +1,9 @@
 import './uploadImgButton.scss';
 import { ReactComponent as UploadIcon } from '../../../imgs/upload-icon.svg';
-import { saveImageToFireStorage } from '../../../api/Api.Firebase.Storage';
 import { useDispatch } from 'react-redux';
 import { ImgInfoForUpload } from '../../../types/typesCommon';
 import { setModalContent } from '../../../store/reduxReducers/modalReducer';
+import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
 
 const UploadImgButton = ( { imgInfo } : { imgInfo: ImgInfoForUpload }) => {
 
@@ -23,7 +23,7 @@ const UploadImgButton = ( { imgInfo } : { imgInfo: ImgInfoForUpload }) => {
             return;
         };
 
-        const isUploaded: boolean = await saveImageToFireStorage(base64String, userId, imageProps.imgName!.split(` `).join(`_`) + `.${imageProps.imgFormat}`);
+        const isUploaded: boolean = await apiFirebaseStorage.saveImage(base64String, userId, imageProps.imgName!.split(` `).join(`_`) + `.${imageProps.imgFormat}`);
 
         if (isUploaded) {
             dispatch(setModalContent({headline: `Image has been saved`, text: ``, isModalOpen: true}));

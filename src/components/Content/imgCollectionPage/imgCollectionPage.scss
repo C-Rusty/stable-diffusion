@@ -28,6 +28,10 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 4rem;
+
+        @media screen and (max-width: $screen1920) {
+            grid-template-columns: repeat(3, 1fr);
+        }
     }
 
     &__item-container {
@@ -54,7 +58,7 @@
         &:hover {
             cursor: pointer;
 
-            scale: 1.05;
+            scale: .95;
 
             border: .1rem solid $colorBlue;
             box-shadow: 0px 0px 10px 0px $colorBlue;
@@ -63,16 +67,25 @@
         }
     }
 
-    &__btn-container {
+    &__img-btns-container {
         width: 100%;
+
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
 
-        background: $colorLightBlack;
+        a {
+            border-radius: 0;
+            width: 50%;
+        }
 
-        padding: 1.5rem 3rem;
+        a:first-of-type {
+            border-bottom-left-radius: 3rem;
 
-        border-bottom-left-radius: 3rem;
-        border-bottom-right-radius: 3rem;
+            border-right: .1rem solid $colorGreen;
+        }
+
+        a:last-of-type {
+            border-bottom-right-radius: 3rem;
+        }
     }
 }

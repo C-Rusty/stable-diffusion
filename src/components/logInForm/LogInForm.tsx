@@ -1,10 +1,11 @@
 import { useContext, useState } from 'react';
 import './logInForm.scss';
-import { signIn } from '../../api/Api.FirebaseAuth';
+
 import { Context } from '../app/App';
 import { UserCredential } from 'firebase/auth';
 import { cookieNameUser } from '../../utilities/commonVars';
 import Loader from '../common/loader/Loader';
+import { firebaseUserAuth } from '../../api/Api.FirebaseAuth';
 
 const LogInForm = () => {
 
@@ -54,7 +55,7 @@ const LogInForm = () => {
 
         try {
             setIsLoading(true);
-            const response: UserCredential = await signIn(formFields.email, formFields.password);
+            const response: UserCredential = await firebaseUserAuth.signIn(formFields.email, formFields.password);
 
             if (response) {
                 mobxStore.login(true);
