@@ -8,7 +8,7 @@ import { ImageProps } from '../../../types/typesCommon';
 
 const GeneratorPage = () => {
 
-    const [imageProps, setImageProps] = useState<ImageProps>({generatedImage: noise, imgName: null, imgFormat: null});
+    const [imageProps, setImageProps] = useState<ImageProps>({generatedImage: noise, imgName: `noise`, imgFormat: `png`});
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -27,7 +27,7 @@ const GeneratorPage = () => {
                             setImageProps={setImageProps}
                         />
                         {isLoading ? 
-                            <Loader className="loader-generator-page" /> 
+                            <Loader className="generator-page" /> 
                             : 
                             <GenerationResult 
                                 imageProps={imageProps}

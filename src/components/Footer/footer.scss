@@ -5,16 +5,11 @@
 .footer {
     background: $colorBlack;
 
-    .container {
-        border-top: .1rem $colorPink solid;
-    }
-
     &__inner {
         padding: 3rem;
 
         display: flex;
         justify-content: center;
-        
         align-items: center;
     }
 

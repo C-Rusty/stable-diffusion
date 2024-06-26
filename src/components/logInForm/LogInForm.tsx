@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import './logInForm.scss';
-
 import { Context } from '../app/App';
 import { UserCredential } from 'firebase/auth';
 import { cookieNameUser } from '../../utilities/commonVars';
@@ -87,7 +86,7 @@ const LogInForm = () => {
         <div className='log-in-form'>
             <div className="container">
                 {isLoading ? 
-                    <Loader />
+                    <Loader className="log-in" />
                     :
                     <div className="log-in-form__inner">
                         <h1 className='log-in-form__headline'>

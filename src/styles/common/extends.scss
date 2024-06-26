@@ -72,7 +72,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1rem;
 
     text-decoration: none;
 
@@ -99,14 +99,13 @@
     }
   
     svg {
-      width: 4rem;
-      height: 4rem;
+      width: 2.4rem;
+      height: 2.4rem;
     }
 
     p {
       @extend %Font-Regular-15px;
       color: $colorPink;
-      text-transform: uppercase;
 
       white-space: nowrap;
   }

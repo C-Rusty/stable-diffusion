@@ -23,10 +23,15 @@ const UploadImgButton = ( { imgInfo } : { imgInfo: ImgInfoForUpload }) => {
             return;
         };
 
-        const isUploaded: boolean = await apiFirebaseStorage.saveImage(base64String, userId, imageProps.imgName!.split(` `).join(`_`) + `.${imageProps.imgFormat}`);
+        const isUploaded: boolean = await apiFirebaseStorage.uploadImage(base64String, userId, imageProps.imgName!.split(` `).join(`_`) + `.${imageProps.imgFormat}`);
 
         if (isUploaded) {
-            dispatch(setModalContent({headline: `Image has been saved`, text: ``, isModalOpen: true}));
+            dispatch(setModalContent({
+                headline: `Image has been saved`, 
+                text: ``, 
+                isModalOpen: true,
+                event: `img-upload`
+            }));
         };
     };
 
