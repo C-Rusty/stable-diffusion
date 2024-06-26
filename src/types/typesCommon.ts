@@ -30,7 +30,8 @@ export type SetStateAction<T> = Dispatch<React.SetStateAction<T>>;
 export type ModalProps = {
     headline: string | undefined,
     text: string | undefined,
-    isModalOpen: boolean
+    isModalOpen: boolean,
+    event: `img-delete` | `img-upload` | undefined
 };
 
 export type ImageProps = {
@@ -42,10 +43,18 @@ export type ImageProps = {
 export type ImageItem = {
     name: string,
     url: string
-}
+};
 
 export type ImgInfoForUpload = {
     base64String: string | null,
     userId: string | undefined,
     imageProps: ImageProps
-}
+};
+
+export type LoaderClassName = undefined | `generator-page` | `component-loading` | `log-in`;
+
+export type GoToButtonText = `Go to gallery` | `Go to documentation` | `Go to generator`;
+
+export type DownloadButtonText = `Download` | `Download selected images`;
+
+export type DeleteButtonText = `Delete` | `Delete selected images`;

@@ -99,17 +99,15 @@
 
     &__second-block {
         .main {
-            display: flex;
-            justify-content: space-between;
-            gap: 4rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
 
             &__left, &__right {
                 display: flex;
                 flex-direction: column;
                 gap: 1rem;
                 
-                width: 45%;
-
                 padding: 2rem;
 
                 background-color: $colorGreen;

@@ -50,7 +50,7 @@ const Gallery = (
                         />
                     </div>
                     <div className="gallery__action-btn-container">
-                        <DownloadButton currentImg={currentImg}/>
+                        <DownloadButton imgsToDownload={[currentImg!]} text="Download"/>
                         <CloseButton setState={setIsOpened}/>
                     </div>
                 </div>

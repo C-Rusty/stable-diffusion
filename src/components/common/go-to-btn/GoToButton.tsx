@@ -1,8 +1,9 @@
 import './goToButton.scss';
 import { ReactComponent as Arrow } from '../../../imgs/arrow.svg';
 import { Link } from 'react-router-dom';
+import { GoToButtonText } from '../../../types/typesCommon';
 
-const GoToButton = ({ urlPath }: { urlPath: string}) => {
+const GoToButton = ({ urlPath, text }: { urlPath: string, text: GoToButtonText}) => {
     
     return(
         <Link 
@@ -11,7 +12,7 @@ const GoToButton = ({ urlPath }: { urlPath: string}) => {
             aria-label="go-to-page"
             className="go-to-btn"
         >
-            <p className="go-to-btn__text">Go to gallery</p>
+            <p className="go-to-btn__text">{text}</p>
             <Arrow className="go-to-btn__icon"/>
         </Link>
     );

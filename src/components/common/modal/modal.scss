@@ -30,7 +30,7 @@
 
 .modal {
     position: fixed;
-    top: 40%;
+    top: 45%;
     left: 25%;
 
     background-color: $colorBlack;
@@ -64,25 +64,25 @@
 
         display: flex;
         justify-content: center;
+
+        gap: 2rem
     }
 
-    &__close-btn {
+    &__btn {
         @extend %action-btn;
 
-        @extend %Font-Regular-20px;
+        @extend %Font-Regular-15px;
         color: $colorPink;
-
-        background-color: $colorBlue;
 
         border: none;
 
         min-width: max-content;
-        width: 50%;
+        width: 17.7rem;
 
         @include transition(.3s, ease);
 
         &:hover {
-            background-color: $colorDarkBlue;
+            color: $colorBlue;
             @include transition(.3s, ease);
         }
     }

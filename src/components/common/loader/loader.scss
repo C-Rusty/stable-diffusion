@@ -27,6 +27,22 @@
 
     grid-column: span 7;
 
+    &.generator-page, &.log-in {
+        min-height: 50vh;
+    
+        &__item {
+            @include wave-item-size(1rem, 20rem);
+        }
+    }
+
+    &.component-loading {
+        min-height: 100vh;
+
+        &__item {
+            @include wave-item-size(1rem, 30rem);
+        }
+    }
+
     &__item{
         @include wave-item-size(.5rem, 10rem);
         background: linear-gradient(45deg, $colorGreen, $colorBlue);
@@ -61,13 +77,5 @@
     }
     &__item:nth-child(10) {
         animation-delay: 0.9s;
-    }
-}
-
-.loader-generator-page {
-    min-height: 50vh;
-
-    &__item {
-        @include wave-item-size(1rem, 20rem);
     }
 }

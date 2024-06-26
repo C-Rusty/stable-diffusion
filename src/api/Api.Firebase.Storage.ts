@@ -1,8 +1,8 @@
 import { ref, uploadString } from "@firebase/storage";
 import { storage } from "../utilities/firebaseConfig";
-import { deleteObject, getDownloadURL, listAll} from "firebase/storage";
+import { deleteObject, getDownloadURL, getMetadata, listAll} from "firebase/storage";
 
-const saveImage = async (imgBase64StringUrl: string, userId: string, imgName: string = ``) =>{
+const uploadImage = async (imgBase64StringUrl: string, userId: string, imgName: string = ``) =>{
     try {
         const imageRef = ref(storage, `users/${userId}/generatedImages/${imgName}`);
 
@@ -24,15 +24,18 @@ const getImages = async (userId: string) => {
 
         const imgs: Array<{
             name: string,
-            url: string
+            url: string,
+            createdAt: string
         }> = [];
         
-        const urls = await Promise.all(items.map(item => getDownloadURL(item)));
+        const imgUrls = await Promise.all(items.map(item => getDownloadURL(item)));
+        const imgsMetadata = await Promise.all(items.map(item => getMetadata(item)));
 
-        items.map((item, index) => {
+        items.forEach((item, index) => {
             imgs.push({
                 name: item.name,
-                url: urls[index]
+                url: imgUrls[index],
+                createdAt: imgsMetadata[index].timeCreated
             });
         });
 
@@ -48,21 +51,30 @@ const deleteImage = async (
     imagesToDelete: Array<{name: string, format: string}>
 ) => {
 
-    imagesToDelete.map(async (img) => {
-        const imageRef = ref(storage, `/users/${userId}/generatedImages/${img.name}`);
+    let response: boolean | undefined = undefined;
+    
+    try {
+        imagesToDelete.map(async (img) => {
+            const imageRef = ref(storage, `/users/${userId}/generatedImages/${img.name}`);
+    
+            try {
+                await deleteObject(imageRef);
+            } catch (error) {
+                console.log(`Something went wrong with deleting an image: ${error}. 
+                Image name: ${img.name}`);
+            };
+        });
+        response = true;
+    } catch (error) {
+        console.log(`Something went wrong with deleting images: ${error}`);
+        response = false;
+    };
 
-        try {
-            await deleteObject(imageRef);
-            
-        } catch (error) {
-            console.log(`Something went wrong with deleting an image: ${error}. 
-            Image name: ${img.name}`);
-        };
-    });
+    return response;
 };
 
 export const apiFirebaseStorage = {
-    saveImage,
+    uploadImage,
     getImages,
     deleteImage
 };
