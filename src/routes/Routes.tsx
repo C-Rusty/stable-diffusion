@@ -7,8 +7,9 @@ import Loader from "../components/common/loader/Loader";
 const Main = () => {
 
     const GeneratorPage = lazy(() => import('../components/Content/generatorPage/GeneratorPage'));
+    const GenerationHistoryPage = lazy(() => import('../components/Content/generationHistoryPage/GenerationHistoryPage'));
+    const FavouritesPage = lazy(() => import('../components/Content/favouritesPage/FavouritesPage'));
     const DocumentationPage = lazy(() => import('../components/Content/documentationPage/DocumentationPage'));
-    const ImgCollectionPage = lazy(() => import('../components/Content/imgCollectionPage/ImgCollectionPage'));
     const NotFoundPage = lazy(() => import('../components/notFoundPage/NotFoundPage'));
 
     return(
@@ -16,8 +17,9 @@ const Main = () => {
             <Routes>
                 <Route path={urlPaths.home} element={<Home/>}>
                     <Route index={true} element={<GeneratorPage/>} />
-                    <Route path={urlPaths.instructions} element={<DocumentationPage/>} />
-                    <Route path={urlPaths.gallery} element={<ImgCollectionPage/>}/>
+                    <Route path={urlPaths.generationHistory} element={<GenerationHistoryPage/>} />
+                    <Route path={urlPaths.favourites} element={<FavouritesPage/>}/>
+                    <Route path={urlPaths.documentation} element={<DocumentationPage/>} />
                     <Route path="*" element={<NotFoundPage/>}/>
                 </Route>
             </Routes>

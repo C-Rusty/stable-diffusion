@@ -1,25 +1,18 @@
 import { ref, uploadString } from "@firebase/storage";
 import { storage } from "../utilities/firebaseConfig";
 import { deleteObject, getDownloadURL, getMetadata, listAll} from "firebase/storage";
+import { DeleteImgProps, GetAllImgsProps, GetImgProps, ImageItemGallery, UploadImgProps } from "../types/typesCommon";
+import { ApiFirebaseStore } from "./Api.Firebase.Store";
 
-const uploadImage = async (imgBase64StringUrl: string, userId: string, imgName: string = ``) =>{
+const storagePath = `generatedImages`;
+
+const getImages = async (imagsToGetProps: GetAllImgsProps) => {
+
+    const { userId } = imagsToGetProps;
+
+    const pathRef = ref(storage, `/users/${userId}/${storagePath}/`);
+
     try {
-        const imageRef = ref(storage, `users/${userId}/generatedImages/${imgName}`);
-
-        uploadString(imageRef, imgBase64StringUrl, "data_url");
-
-        return true;
-
-    } catch (error) {
-        console.log(`Something went wrong with uploading an image: ${error}`);
-        return false;
-    };
-};
-
-const getImages = async (userId: string) => {
-    try {
-        const pathRef = ref(storage, `/users/${userId}/generatedImages/`);
-
         const { items } = await listAll(pathRef);
 
         const imgs: Array<{
@@ -42,20 +35,74 @@ const getImages = async (userId: string) => {
         return imgs;
         
     } catch (error) {
-        throw new Error(`Something went wrong with getting images: ${error}`);
+        console.log(`Something went wrong with getting images: ${error}`);
     };
 };
 
-const deleteImage = async (
-    userId: string, 
-    imagesToDelete: Array<{name: string, format: string}>
-) => {
+const getFavouritesImgsPaths = async (userId: string) => {
+    try {
+        const favouritesImgPaths = await ApiFirebaseStore.getFavouritesImgsPaths(userId);
+
+        if (!favouritesImgPaths) return console.log(`favouritesImgs get error...`);
+
+        const sortedFavouritesImgPaths = favouritesImgPaths.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
+        const imagesPromises = sortedFavouritesImgPaths.map(async (item) => {
+            const fullName = item.name.split(` `).join(`_`) + `.` + item.format;
+            const url = await getImage({ userId, imgName: fullName });
+            return { name: item.name, url: url };
+        });
+
+        const images = await Promise.all(imagesPromises);
+        
+        return images;
+        
+    } catch (error) {
+        console.log(`Something went wrong with getting favourites imgs: ${error}`);
+    };
+};
+
+const getImage = async (ImgItemProps: GetImgProps) => {
+    try {
+        const { userId, imgName } = ImgItemProps;
+
+        const imageRef = ref(storage, `/users/${userId}/${storagePath}/${imgName}`);
+
+        let imageUrl = await getDownloadURL(imageRef);
+
+        return imageUrl;
+
+    } catch (error) {
+        console.log(`Something went wrong with getting an image: ${error}`);
+    };
+};
+
+const uploadImages = async (imgsToUploadProps: UploadImgProps) =>{
+
+    const { base64String, userId, imgName } = imgsToUploadProps;
+
+    try {
+        const imageRef = ref(storage, `users/${userId}/${storagePath}/${imgName}`);
+
+        uploadString(imageRef, base64String!, "data_url");
+
+        return true;
+
+    } catch (error) {
+        console.log(`Something went wrong with uploading an image: ${error}`);
+        return false;
+    };
+};
+
+const deleteImages = async (imgsToDeleteProps: DeleteImgProps) => {
 
     let response: boolean | undefined = undefined;
+
+    const { userId, imgsToDelete } = imgsToDeleteProps;
     
     try {
-        imagesToDelete.map(async (img) => {
-            const imageRef = ref(storage, `/users/${userId}/generatedImages/${img.name}`);
+        imgsToDelete.map(async (img) => {
+            const imageRef = ref(storage, `/users/${userId}/${storagePath}/${img.name}`);
     
             try {
                 await deleteObject(imageRef);
@@ -74,7 +121,9 @@ const deleteImage = async (
 };
 
 export const apiFirebaseStorage = {
-    uploadImage,
     getImages,
-    deleteImage
+    getImage,
+    getFavouritesImgsPaths,
+    uploadImages,
+    deleteImages
 };

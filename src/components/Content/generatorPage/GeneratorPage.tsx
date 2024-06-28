@@ -4,18 +4,25 @@ import GeneratorOptions from '../generatorOptions/GeneratorOptions';
 import GenerationResult from '../generationResult/GenerationResult';
 import Loader from '../../common/loader/Loader';
 import noise from '../../../imgs/noise.png';
-import { ImageProps } from '../../../types/typesCommon';
+import { generatedImageItem } from '../../../types/typesCommon';
 
 const GeneratorPage = () => {
 
-    const [imageProps, setImageProps] = useState<ImageProps>({generatedImage: noise, imgName: `noise`, imgFormat: `png`});
+    const [image, setImage] = useState<generatedImageItem>(
+        {
+            path: noise, 
+            name: `noise`, 
+            format: `png`,
+            timestamp: new Date().getTime().toString(),
+        }
+    );
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (imageProps.generatedImage) {
+        if (image.path) {
             setIsLoading(false);
         };
-    }, [imageProps.generatedImage]);
+    }, [image.path]);
 
     return(
         <section className="generator-page">
@@ -24,13 +31,13 @@ const GeneratorPage = () => {
                     <div className="generator-page__main">
                         <GeneratorOptions 
                             setIsLoading={setIsLoading} 
-                            setImageProps={setImageProps}
+                            setImage={setImage}
                         />
                         {isLoading ? 
                             <Loader className="generator-page" /> 
                             : 
                             <GenerationResult 
-                                imageProps={imageProps}
+                                image={image}
                             />
                         }
                     </div>

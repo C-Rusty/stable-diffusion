@@ -1,0 +1,37 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/mixins.scss';
+@import '../../../styles/common/extends.scss';
+
+.generation-history {
+    background: $colorBlack;   
+
+    padding: 5rem 0;
+
+    min-height: calc(100vh - 10.5rem - 7.9rem);
+
+    &__inner {
+        display: flex;flex-direction: column;
+        gap: 4rem;
+    }
+
+    &__headline {
+        @extend %Font-Headline;
+        color: $colorPink;
+        text-align: center;
+    }
+
+    &__main {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    &__subheadline {
+        @extend %Font-Headline;
+        color: $colorPink;
+        text-align: center;
+
+        margin-top: 20vh;
+    }
+}

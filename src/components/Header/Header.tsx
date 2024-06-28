@@ -27,22 +27,28 @@ const Header = () => {
                     <nav className='header__nav'>
                         <ul className="header__nav-list">
                             <li className="header__nav-list-item">
-                            <Link 
-                                to={urlPaths.home}
-                                className={currentPage === urlPaths.home ? selectedNavItemClassName : ''}
-                            >Generator</Link>
+                                <Link 
+                                    to={urlPaths.home}
+                                    className={currentPage === urlPaths.home ? selectedNavItemClassName : ''}
+                                >Generator</Link>
                             </li>
                             <li className="header__nav-list-item">
-                            <Link 
-                                to={urlPaths.instructions}
-                                className={currentPage === urlPaths.instructions ? selectedNavItemClassName : ''}
-                            >Guide & FAQ</Link>
+                                <Link 
+                                    to={urlPaths.generationHistory}
+                                    className={currentPage === urlPaths.generationHistory ? selectedNavItemClassName : ''}
+                                >Generation History</Link>
                             </li>
                             <li className="header__nav-list-item">
-                            <Link 
-                                to={urlPaths.gallery}
-                                className={currentPage === urlPaths.gallery ? selectedNavItemClassName : ''}
-                            >My Gallery</Link>
+                                <Link 
+                                    to={urlPaths.favourites}
+                                    className={currentPage === urlPaths.favourites ? selectedNavItemClassName : ''}
+                                >Favourites</Link>
+                            </li>
+                            <li className="header__nav-list-item">
+                                <Link 
+                                    to={urlPaths.documentation}
+                                    className={currentPage === urlPaths.documentation ? selectedNavItemClassName : ''}
+                                >Documentation</Link>
                             </li>
                         </ul>
                     </nav>

@@ -1,9 +1,9 @@
 import { useDispatch } from 'react-redux';
-import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
-import { ReactComponent as DeleteIcon } from '../../../imgs/delete-icon.svg';
+import { apiFirebaseStorage } from '../../../../api/Api.Firebase.Storage';
+import { ReactComponent as DeleteImgIcon } from '../../../../imgs/delete-img-icon.svg';
+import { setModalContent } from '../../../../store/reduxReducers/modalReducer';
+import { DeleteButtonText, DeleteImgProps } from '../../../../types/typesCommon';
 import './deleteImgButton.scss';
-import { setModalContent } from '../../../store/reduxReducers/modalReducer';
-import { DeleteButtonText } from '../../../types/typesCommon';
 
 const DeleteButton = (
     {
@@ -32,10 +32,15 @@ const DeleteButton = (
         if (!userId) return console.log(`DeleteImgBtn error: userId is ${userId}`);
         if (!imgsToDelete) return console.log(`DeleteImgBtn error: imgsToDelete is ${imgsToDelete}`);
 
-        const isDeleted = await apiFirebaseStorage.deleteImage(userId, imgsToDelete.map(img => ({
-            name: img.name,
-            format: img.format  
-        })));
+        const imagesToDeleteProps: DeleteImgProps = {
+            userId,
+            imgsToDelete: imgsToDelete.map(img => ({
+                name: img.name,
+                format: img.format
+            })),
+        };
+
+        const isDeleted = await apiFirebaseStorage.deleteImages(imagesToDeleteProps);
 
         switch (isDeleted) {
             case true:
@@ -70,10 +75,10 @@ const DeleteButton = (
             title="Delete Image"
             aria-label="Delete Image"
             onClick={handleClick}
-            className="delete-btn"
+            className="delete-img-btn"
         >
-            <p className="delete-btn__text">{text}</p>
-            <DeleteIcon className="delete-btn__icon"/>
+            <p className="delete-img-btn__text">{text}</p>
+            <DeleteImgIcon className="delete-img-btn__icon"/>
         </a>
     );
 };

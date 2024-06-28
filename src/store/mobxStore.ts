@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import {  cookieNameUser, cookieNameSD } from "../utilities/commonVars";
-import { getApiKeyFromFirebase } from "../api/Api.Firebase.Store";
+import { ApiFirebaseStore } from "../api/Api.Firebase.Store";
 
 export default class mobxStore {
     isAuth = false;
@@ -58,7 +58,7 @@ export default class mobxStore {
             this.SDApiKey = SDCookie.split('=')[1];
         } else {
             try {
-                const { APIKEY } = await getApiKeyFromFirebase();
+                const { APIKEY } = await ApiFirebaseStore.getSDApiKey() as { APIKEY: string };
                 
                 this.SDApiKey = APIKEY;
     

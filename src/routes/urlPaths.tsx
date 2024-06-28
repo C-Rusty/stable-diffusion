@@ -1,5 +1,6 @@
 export const urlPaths = {
     home: '/',
-    instructions: 'instructions',
-    gallery: `gallery`,
+    favourites: `favourites`,
+    generationHistory: `generation-history`,
+    documentation: 'documentation',
 }
