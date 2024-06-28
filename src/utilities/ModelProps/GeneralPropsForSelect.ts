@@ -26,14 +26,6 @@ const genModelSelectProps: {
             value: `sd3`, 
             text: `SI 3`,
         },
-        {
-            value: 'stable-diffusion-xl-1024-v1-0', 
-            text: `SD XL (legacy)`,
-        },
-        {
-            value: 'stable-diffusion-v1-6', 
-            text: `SD 1.6 (legacy)`,
-        },
     ],
 };
 

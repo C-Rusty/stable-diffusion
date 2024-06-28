@@ -27,8 +27,6 @@
 
         text-decoration: none;
 
-        @extend %headline-main-animation;
-
         @include transition(.3s, ease);
 
         &:hover {

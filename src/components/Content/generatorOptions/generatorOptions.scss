@@ -75,21 +75,26 @@
 
         &-main {
             display: grid;
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
 
             margin-top: 1rem;
         }
     }
 
-    &__show-options {
+    &__options-switcher {
         display: flex;
-        align-items: center;
         gap: 2rem;
 
-        &-headline {
-            @extend %Font-Regular-15px;
-            color: $colorPink;
+        &-item {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+
+            .headline {
+                @extend %Font-Regular-15px;
+                color: $colorPink;
+            }
         }
     }
 

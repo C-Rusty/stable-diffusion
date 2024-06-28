@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ImageItem } from "../../types/typesCommon";
+import { ImageItemGallery } from "../../types/typesCommon";
 import ImageGallery from "react-image-gallery";
 import './gallery.scss';
-import DownloadButton from "../common/download-btn/DownloadButton";
-import CloseButton from "../common/close-btn/CloseButton";
+import DownloadButton from "../common/buttons/download-btn/DownloadButton";
+import CloseButton from "../common/buttons/close-btn/CloseButton";
 
 const Gallery = (
     {
@@ -14,15 +14,12 @@ const Gallery = (
     :
     {
         setIsOpened: Dispatch<SetStateAction<boolean>>,
-        imgCollection: Array<ImageItem>,
+        imgCollection: Array<ImageItemGallery>,
         clickedImgIndex: number | undefined
     }
 ) => {
 
-    const [currentImg, setCurrentImg] = useState<{
-        name: string,
-        url: string
-    } | undefined>(undefined);
+    const [currentImg, setCurrentImg] = useState<ImageItemGallery | undefined>(undefined);
 
     const [imgIndex, setImgIndex] = useState<number | undefined>(clickedImgIndex);
 

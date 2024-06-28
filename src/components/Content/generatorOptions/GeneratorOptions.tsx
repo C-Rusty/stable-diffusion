@@ -1,30 +1,36 @@
-import { Dispatch, SetStateAction, useContext, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 import { generatorCommonPropsForSelect } from '../../../utilities/ModelProps/GeneralPropsForSelect';
-import { GenModelsValue, ImageProps } from '../../../types/typesCommon';
+import { GenModelsValue, GenerationHistoryItemType, UploadImgProps, generatedImageItem } from '../../../types/typesCommon';
 import { ApiV2ModelParams } from '../../../types/typesV2Model';
-import { ApiV1ModelParams } from '../../../types/typesV1Model';
 import ModelV2Selects from '../ModelV2Selects/ModelV2Selects';
-import ModelV1Selects from '../ModelV1Selects/ModelV1Selects';
 import './generatorOptions.scss';
 import { Context } from '../../app/App';
 import { api } from '../../../api/Api.SD.TextToImage';
 import Models from '../../models/Models';
 import Switcher from '../../common/switcher/Switcher';
+import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
+import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
 
 const GeneratorOptions = (
-    {setIsLoading, setImageProps} 
+    {setIsLoading, setImage} 
     : 
     {
         setIsLoading: Dispatch<SetStateAction<boolean>>,
-        setImageProps: Dispatch<SetStateAction<ImageProps>>
+        setImage: Dispatch<SetStateAction<generatedImageItem>>
     }
 ) => {
 
-    const prompt = useRef<HTMLTextAreaElement | null>(null);
-
     const { genModelSelectProps } = generatorCommonPropsForSelect;
 
+    const {mobxStore} = useContext(Context);
+    const apiKey = mobxStore.SDApiKey;
+    const userId = mobxStore.userId;
+
+    const prompt = useRef<HTMLTextAreaElement | null>(null);
     const [genModel, setGenModel] = useState<GenModelsValue>(`core`);
+    const [options, setOptions] = useState<ApiV2ModelParams | {}>({});
+    const [isOptionsShown, setIsOptionsShown] = useState<boolean>(false);
+    const [isGenerationHistorySavingOptionEnabled, setIsGenerationHistorySavingOptionEnabled] = useState<boolean>(true);
 
     const handleModelClick = (value: GenModelsValue, id: string) => {
         setGenModel(value);
@@ -36,12 +42,21 @@ const GeneratorOptions = (
         document.getElementById(id)?.classList.add(`active-model-btn`);
     };
 
-    const [isOptionsShown, setIsOptionsShown] = useState<boolean>(false);
+    const [base64Img, setBase64Img] = useState<string>('');
 
-    const {mobxStore} = useContext(Context);
-    const apiKey = mobxStore.SDApiKey;
-
-    const [options, setOptions] = useState<ApiV1ModelParams | ApiV2ModelParams | {}>({});
+    const convertImgToBlob = async (img: string) => {
+        const base = await (fetch(img));
+        
+        const blob = await base.blob();
+    
+        const reader = new FileReader();
+    
+        reader.readAsDataURL(blob);
+    
+        reader.onloadend = () => {
+            setBase64Img(reader.result as string);
+        };
+    };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -49,43 +64,75 @@ const GeneratorOptions = (
         const promptValue = prompt.current?.value;
 
         if (!promptValue) {
-            throw new Error(`Prompt is empty`);
+            return console.log(`Prompt is empty. ${promptValue}`);
         };
 
         if (!apiKey) {
-            throw new Error(`API key is empty`);
+            return console.log(`API key is empty. ${apiKey}`);
         };
 
-        if (genModel === `core` || genModel === `sd3` || genModel === `sd3-turbo` || genModel === `ultra`) {
+        if (!userId) {
+            return console.log(`userId is empty. ${userId}`);
+        };
 
-            try {
-                setIsLoading(true);
+        try {
+            const imgGenResultBlock = document.querySelector('.generation-result');
+            imgGenResultBlock?.scrollIntoView({behavior: 'smooth'});
+            
+            setIsLoading(true);
+
+            let response: string | { name: string; errors: string[]; } | undefined = undefined;
+            const timestamp: string = new Date().getTime().toString();
+
                 const selectedOptions = options as ApiV2ModelParams;
 
-                const response = await api.getImageFromV2Model(promptValue, selectedOptions, genModel, apiKey);
+                response = await api.getImageFromV2Model(promptValue, selectedOptions, genModel, apiKey);
                 
-                if (!response) throw new Error(`Something went wrong with request: ${response}`);
+                if (!response) console.log(`Something went wrong with request: ${response}`);
 
-                setImageProps({
-                    generatedImage: response as string,
-                    imgName: promptValue,
-                    imgFormat: selectedOptions.output_format,
+                setImage({
+                    path: response as string,
+                    name: promptValue,
+                    format: selectedOptions.output_format,
+                    timestamp,
                 });
-            } catch (error) {
-                setIsLoading(false);
-                throw new Error(`Something went wrong: ${error}`);
+
+            convertImgToBlob(response as string);
+
+            if (isGenerationHistorySavingOptionEnabled) {
+
+                const generationHistoryItem: GenerationHistoryItemType = {
+                    userId,
+                    prompt: promptValue,
+                    options: options as ApiV2ModelParams,
+                    timestamp,
+                    isFavourite: false,
+                };
+
+                ApiFirebaseStore.uploadGenerationHistoryItem(generationHistoryItem);
             };
-        } else {
-            try {
-                api.getImageFromV1Model(options as ApiV1ModelParams, genModel, apiKey)
-            } catch (error) {
-                throw new Error(`Something went wrong: ${error}`);
-            };
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setIsLoading(false);
+        };
+    };
+
+    const uploadImageToStorage = async () => {
+        const optionsV2 = options as ApiV2ModelParams;
+
+        const imgItemToUpload: UploadImgProps = {
+            userId: userId,
+            base64String: base64Img,
+            imgName: `${prompt.current!.value.split(` `).join(`_`)}.${optionsV2.output_format}`,
         };
 
-        const imgGenResultBlock = document.querySelector('.generation-result');
-        imgGenResultBlock?.scrollIntoView({behavior: 'smooth'});
+        await apiFirebaseStorage.uploadImages(imgItemToUpload);
     };
+
+    useEffect(() => {
+        uploadImageToStorage();
+    }, [base64Img]);
 
     return(
         <form 
@@ -114,16 +161,27 @@ const GeneratorOptions = (
                     />
                 </div>
             </div>
-            <div className="generator-options__show-options">
-                <p className='generator-options__show-options-headline'>Show Options (advanced)</p>
-                <Switcher 
-                    value={isOptionsShown}
-                    setValue={setIsOptionsShown}
-                />
+            <div className="generator-options__options-switcher">
+                <div className="generator-options__options-switcher-item">
+                    <p className='headline'>Show options (advanced)</p>
+                    <Switcher 
+                        value={isOptionsShown}
+                        setValue={setIsOptionsShown}
+                    />
+                </div>
+                <div className="generator-options__options-switcher-item">
+                    <p className='headline'>Save image and options to history</p>
+                    <Switcher 
+                        value={isGenerationHistorySavingOptionEnabled}
+                        setValue={setIsGenerationHistorySavingOptionEnabled}
+                    />
+                </div>
             </div>
             {isOptionsShown && 
                 <div className="generator-options__options-container">
-                    {genModel === `core` || genModel === `sd3` || genModel === `ultra` || genModel === `sd3-turbo` ? 
+                    <ModelV2Selects  setData={setOptions as Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
+                    />
+                    {/* {genModel === `core` || genModel === `sd3` || genModel === `ultra` || genModel === `sd3-turbo` ? 
                         <ModelV2Selects 
                             setData={setOptions as Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
                         />
@@ -131,7 +189,7 @@ const GeneratorOptions = (
                         <ModelV1Selects 
                             setData={setOptions as Dispatch<SetStateAction<ApiV1ModelParams | {}>>}
                         />
-                    }
+                    } */}
                 </div>
             } 
             <div className="generator-options__btn-container">

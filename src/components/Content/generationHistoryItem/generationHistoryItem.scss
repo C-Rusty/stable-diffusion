@@ -1,0 +1,158 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/mixins.scss';
+@import '../../../styles/common/extends.scss';
+
+%block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    background: $colorLightBlack;
+
+    padding: 2rem;
+
+    border-radius: 2rem;
+}
+
+@keyframes show-img {
+    0% {
+        min-height: 0;
+    }
+
+    100% {
+        min-height: 20rem;
+    }
+}
+
+@keyframes hide-img {
+    0% {
+        min-height: 20rem;
+    }
+
+    100% {
+        min-height: 0;
+    }
+}
+
+.generation-history-item {
+    &__inner {
+        padding: 2rem;
+
+        border: .2rem solid $colorGreen;
+        border-radius: 3rem;
+
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+
+        margin-bottom: 2rem;
+    }
+
+    &__headline {
+        @extend %Font-Regular-15px;
+        color: #fff;
+
+        @extend %block;
+    }
+
+    &__block {
+        @extend %block;
+
+        .name, .value {
+            @extend %Font-Regular-15px;
+            color: #fff;
+        }
+    }
+
+    &__btns-container, &__img-container {
+        grid-column: span 2;
+    }
+
+    &__block.model-options {
+        .model-options-container {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 1rem;
+
+            max-height: 15rem;
+            overflow-x: auto;
+
+            padding-right: 1rem;
+
+            &::-webkit-scrollbar {
+                background: $colorLightBlack;
+                width: .5rem;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: $colorGreen;
+
+                height: .1rem;
+                width: .1rem;
+                
+                border-radius: 1rem;
+            }
+            
+            &__item {
+                display: flex;
+                gap: 1rem;
+
+                background: $colorGreen;
+
+                padding: 1rem 2rem;
+                border-radius: 2rem;
+            }
+        }
+
+        .headline {
+            @extend %Font-Regular-15px;
+            color: #fff;
+        }
+
+    }
+
+    &__btns-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+
+        &-btn {
+            @extend %action-btn;
+        }
+
+        a:last-child {
+            grid-column: span 2;
+        }
+    }
+
+    &__img-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 3rem;
+
+        background: $colorLightBlack;
+
+        @include transition(.5s, ease);
+
+        &.active {
+            padding: 2rem;
+
+            min-height: 20rem;
+
+            animation: show-img .5s forwards;
+
+            @include transition(.5s, ease);
+        }
+
+        img {
+            width: 100%;
+            max-height: 50rem;
+
+            border-radius: 2rem;
+        };
+    }
+}

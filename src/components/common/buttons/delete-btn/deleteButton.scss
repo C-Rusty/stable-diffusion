@@ -1,0 +1,25 @@
+@import '../../../../styles/common/variables.scss';
+@import '../../../../styles/common/extends.scss';
+
+
+.delete-btn {
+    @extend %action-btn;
+
+    &:hover {
+        svg {
+            path {
+                stroke: $colorRed;
+            }
+        }
+
+        p {
+            color: $colorRed;
+        }
+    }
+
+    svg {
+        path {
+            stroke: $colorGreen;
+        }
+    }
+}

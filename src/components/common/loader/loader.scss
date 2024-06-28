@@ -43,6 +43,14 @@
         }
     }
 
+    &.img-loading {
+        min-height: 20rem;
+
+        &__item {
+            @include wave-item-size(1rem, 30rem);
+        }
+    }
+
     &__item{
         @include wave-item-size(.5rem, 10rem);
         background: linear-gradient(45deg, $colorGreen, $colorBlue);

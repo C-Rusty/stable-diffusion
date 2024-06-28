@@ -1,11 +1,9 @@
-@import '../../../styles/common/variables.scss';
-@import '../../../styles/common/extends.scss';
+@import '../../../../styles/common/variables.scss';
+@import '../../../../styles/common/extends.scss';
 
-.delete-btn {
+.delete-img-btn {
     @extend %action-btn;
 
-    $colorRed: rgb(215, 25, 11);
-    
     &:hover {
         svg {
             path {

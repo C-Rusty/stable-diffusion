@@ -3,7 +3,7 @@ import './modal.scss';
 import { setModalContent } from "../../../store/reduxReducers/modalReducer";
 import { RootState } from "../../../store/reduxStore";
 import { ModalProps } from "../../../types/typesCommon";
-import GoToButton from "../go-to-btn/GoToButton";
+import GoToButton from "../buttons/go-to-btn/GoToButton";
 import { urlPaths } from "../../../routes/urlPaths";
 
 const Modal = () => {
@@ -36,7 +36,7 @@ const Modal = () => {
                         Close
                     </a>
                     {modalContent.event === `img-upload` &&
-                        <GoToButton urlPath={urlPaths.gallery} text={"Go to gallery"}/>
+                        <GoToButton urlPath={urlPaths.favourites} text={"Go to favourites"}/>
                     }
                 </div>
             </div>

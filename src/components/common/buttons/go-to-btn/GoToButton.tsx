@@ -1,7 +1,7 @@
 import './goToButton.scss';
-import { ReactComponent as Arrow } from '../../../imgs/arrow.svg';
+import { ReactComponent as Arrow } from '../../../../imgs/arrow.svg';
 import { Link } from 'react-router-dom';
-import { GoToButtonText } from '../../../types/typesCommon';
+import { GoToButtonText } from '../../../../types/typesCommon';
 
 const GoToButton = ({ urlPath, text }: { urlPath: string, text: GoToButtonText}) => {
     
