@@ -1,8 +1,9 @@
 import { GenerationHistoryItemType, updateImgItemFavouriteProps } from "../types/typesCommon";
+import { loadItemsLimit } from "../utilities/commonVars";
 import { db } from "../utilities/firebaseConfig";
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from "firebase/firestore"; 
+import { collection, deleteDoc, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter, updateDoc, where } from "firebase/firestore"; 
 
-const imgItemHistoryStoragePath = `GenerationHistory`;
+const generationHistoryItemsFolder = `GenerationHistory`;
 
 const getSDApiKey = async () => {
     try {
@@ -22,19 +23,36 @@ const getSDApiKey = async () => {
     };
 };
 
-const getGenerationHistory = async (userId: string) => {
+const getGenerationHistory = async (userId: string, genHistoryItemCounter: number, lastTimestamp: string | null) => {
 
     try {
-        const generationHistoryResponse = await getDocs(collection(db, `users/${userId}/${imgItemHistoryStoragePath}`));
+        const ref = collection(db, `users`, userId, generationHistoryItemsFolder);
 
-        if (!generationHistoryResponse) console.log(`generationHistory get error...`);
-        
         let generationHistory: Array<GenerationHistoryItemType> = [];
 
-        generationHistoryResponse.forEach((doc) => {
-            generationHistory.push(doc.data() as GenerationHistoryItemType);
-        });
-        
+        if (genHistoryItemCounter === loadItemsLimit)  {
+            const q = query(ref, orderBy(`timestamp`, `desc`), limit(loadItemsLimit));
+
+            const generationHistoryResponse = await getDocs(q);
+
+            if (!generationHistoryResponse) console.log(`generationHistory get error...`);
+
+            generationHistoryResponse.forEach((doc) => {
+                generationHistory.push(doc.data() as GenerationHistoryItemType);
+            });
+            
+        } else if (genHistoryItemCounter % loadItemsLimit === 0 && genHistoryItemCounter !== loadItemsLimit) {
+            const q = query(ref, orderBy(`timestamp`, `desc`), startAfter(lastTimestamp), limit(loadItemsLimit));
+
+            const generationHistoryResponse = await getDocs(q);
+
+            if (!generationHistoryResponse) console.log(`generationHistory get error...`);
+
+            generationHistoryResponse.forEach((doc) => {
+                generationHistory.push(doc.data() as GenerationHistoryItemType);
+            });
+        };
+
         return generationHistory;
         
     } catch (error) {
@@ -47,7 +65,7 @@ const uploadGenerationHistoryItem = async (generationHistoryItem: GenerationHist
     const { timestamp, userId } = generationHistoryItem;
 
     try {
-        await setDoc(doc(db, `users/${userId}/${imgItemHistoryStoragePath}/`, timestamp), generationHistoryItem);
+        await setDoc(doc(db, `users/${userId}/${generationHistoryItemsFolder}/`, timestamp), generationHistoryItem);
     } catch (error) {
         console.log(`Error with uploading generation history: ${error}`);
     };
@@ -58,7 +76,7 @@ const updateGenerationHistoryItem = async (userId: string, timestamp: string, pr
     value: string | boolean
 }) => {
 
-    const docRef = doc(db, `users/${userId}/${imgItemHistoryStoragePath}/`, timestamp);
+    const docRef = doc(db, `users/${userId}/${generationHistoryItemsFolder}/`, timestamp);
 
     try {
         await updateDoc(docRef, {
@@ -71,7 +89,7 @@ const updateGenerationHistoryItem = async (userId: string, timestamp: string, pr
 
 const deleteGenerationHistoryItem = async (userId: string, timestamp: string) => {
     try {
-        await deleteDoc(doc(db, `users/${userId}/${imgItemHistoryStoragePath}/`, timestamp));
+        await deleteDoc(doc(db, `users/${userId}/${generationHistoryItemsFolder}/`, timestamp));
     } catch (error) {
         console.log(`Error with deleting generation history: ${error}`);
     };
@@ -79,7 +97,7 @@ const deleteGenerationHistoryItem = async (userId: string, timestamp: string) =>
 
 const getFavouritesImgsPaths = async (userId: string) => {
     try {
-        const imgsRef = collection(db, `users/${userId}/${imgItemHistoryStoragePath}`);
+        const imgsRef = collection(db, `users/${userId}/${generationHistoryItemsFolder}`);
         const favouritesImgsQuery = query(imgsRef, where(`isFavourite`, `==`, true));
 
         const favouritesImgsDocs = await getDocs(favouritesImgsQuery);
@@ -106,7 +124,7 @@ const addImgToFavourites = async (imgsToUploadProps: updateImgItemFavouriteProps
     const { userId, timestamp } = imgsToUploadProps;
 
     try {
-        const imgRef = doc(db, `users/${userId}/${imgItemHistoryStoragePath}/`, timestamp);
+        const imgRef = doc(db, `users/${userId}/${generationHistoryItemsFolder}/`, timestamp);
 
         await updateDoc(imgRef, {isFavourite: true});
 
@@ -117,6 +135,17 @@ const addImgToFavourites = async (imgsToUploadProps: updateImgItemFavouriteProps
     };
 };
 
+const getCollectionAmount = async (userId: string) => {
+    const collectionRef = collection(db, `users/${userId}/${generationHistoryItemsFolder}`);
+
+    try {
+        const response = await getCountFromServer(collectionRef);
+        return response.data().count;        
+    } catch (error) {
+      console.log(`Error with getting collection amount: ${error}`);
+    };
+};
+
 export const ApiFirebaseStore = {
     getSDApiKey,
     getGenerationHistory,
@@ -124,5 +153,6 @@ export const ApiFirebaseStore = {
     updateGenerationHistoryItem,
     deleteGenerationHistoryItem,
     getFavouritesImgsPaths,
-    addImgToFavourites
+    addImgToFavourites,
+    getCollectionAmount
 };
