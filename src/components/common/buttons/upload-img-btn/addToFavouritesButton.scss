@@ -1,13 +1,15 @@
-@import '../../../styles/common/variables.scss';
-@import '../../../styles/common/extends.scss';
+@import '../../../../styles/common/variables.scss';
+@import '../../../../styles/common/extends.scss';
 
-.upload-btn {
+
+.add-to-favourites-btn {
     @extend %action-btn;
     
     &:hover {
         svg {
             path {
                 stroke: $colorBlue;
+                fill: $colorBlue;
             }
         }
     }
@@ -15,6 +17,7 @@
     svg {
         path {
             stroke: $colorGreen;
+            fill: $colorBlue;
         }
     }
 }

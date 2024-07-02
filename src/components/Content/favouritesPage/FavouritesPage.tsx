@@ -1,38 +1,35 @@
 import { Suspense, lazy, useContext, useEffect, useState } from 'react';
-import './imgCollectionPage.scss';
+import './favouritesPage.scss';
 import { Context } from '../../app/App';
-import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
 import ImgCollectionItem from '../imgColletionItem/ImgCollectionItem';
-import DownloadButton from '../../common/download-btn/DownloadButton';
-import DeleteButton from '../../common/delete-img-btn/DeleteImgButton';
+import DownloadButton from '../../common/buttons/download-btn/DownloadButton';
+import DeleteButton from '../../common/buttons/delete-img-btn/DeleteImgButton';
 import Loader from '../../common/loader/Loader';
+import { ImageItemGallery } from '../../../types/typesCommon';
+import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
 
-const ImgCollectionPage = () => {
+const FavouritesPage = () => {
 
     const Gallery = lazy(() => import('../../gallery/Gallery'));
 
-    const [imgCollection, setImgCollection] = useState<Array<{
-        name: string,
-        url: string
-    }>>([]);
+    const [imgCollection, setImgCollection] = useState<Array<ImageItemGallery>>([]);
 
     const { mobxStore } = useContext(Context);
     const userId = mobxStore.userId;
 
     const getUserImgCollection = async () => {
-        if (userId) {
-            const response = await apiFirebaseStorage.getImages(userId);
-            const imgsSortedByDate = response.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-            
-            setImgCollection(imgsSortedByDate);
-        };
+        const favouritesImgPaths = await apiFirebaseStorage.getFavouritesImgsPaths(userId!) as Array<ImageItemGallery>;
+    
+        console.log(favouritesImgPaths);
+        
+        setImgCollection(favouritesImgPaths);
     };
 
     useEffect(() => {
-        getUserImgCollection();
+        if (userId) getUserImgCollection();
     }, []);
 
-    const [isGalleryOpened, setIsGalleryOpened] = useState(false);
+    const [isGalleryOpened, setIsGalleryOpened] = useState(false);  
     const [clickedImgIndex, setClickedImg] = useState<number | undefined>(undefined);
 
     const handleImgClick = (imgIndex: number) => {
@@ -85,7 +82,7 @@ const ImgCollectionPage = () => {
                 <div className="collection">
                     <div className="container">
                         <div className="collection__inner">
-                            <h1 className='collection__headline'>My Gallery</h1>
+                            <h1 className='collection__headline'>Favourites</h1>
                             <div className="collection__action-btns">
                                 <a 
                                     href="#0" 
@@ -135,4 +132,4 @@ const ImgCollectionPage = () => {
     );
 };
 
-export default ImgCollectionPage;
+export default FavouritesPage;

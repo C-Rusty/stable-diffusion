@@ -1,11 +1,10 @@
 import { Dispatch } from "react";
-import { Resolutions, ResolutionsProps } from "./typesV1Model";
-import { AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesV2Model";
+import { ApiV2ModelParams, AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesV2Model";
 
 export type SelectProps = {
     className: string, 
     id: string,
-    options: Array<GenModelsProps | ResolutionsProps | AspectRatiosProps | PresetStyleProps | OutputFormatProps>
+    options: Array<GenModelsProps |  AspectRatiosProps | PresetStyleProps | OutputFormatProps>
 };
 
 export type InputProps = {
@@ -15,15 +14,15 @@ export type InputProps = {
     placeholder: string
 };
 
-export type GenModelsValue =  `ultra` | `sd3` | `sd3-turbo` | `core` | `stable-diffusion-v1-6` | `stable-diffusion-xl-1024-v1-0`;
-export type GenModelsText = `SI Ultra` |`SI 3` | `SI 3 Turbo` | `Core` | `SD XL (legacy)` | `SD 1.6 (legacy)`;
+export type GenModelsValue =  `ultra` | `sd3` | `sd3-turbo` | `core`;
+export type GenModelsText = `SI Ultra` |`SI 3` | `SI 3 Turbo` | `Core`;
 
 export type GenModelsProps = {
     value: GenModelsValue,
     text: GenModelsText
 };
 
-export type MyState = AspectRatios | Resolutions;
+export type MyState = AspectRatios;
 
 export type SetStateAction<T> = Dispatch<React.SetStateAction<T>>;
 
@@ -34,26 +33,61 @@ export type ModalProps = {
     event: `img-delete` | `img-upload` | undefined
 };
 
-export type ImageProps = {
-    generatedImage: string | null,
-    imgName: string | null,
-    imgFormat: string | null
+export type generatedImageItem = {
+    path: string | null,
+    name: string | null,
+    format: string | null,
+    timestamp: string | null,
 };
 
-export type ImageItem = {
+export type ImageItemGallery = {
     name: string,
+    format?: string,
+    index?: number,
+    img?: string,
     url: string
 };
 
-export type ImgInfoForUpload = {
-    base64String: string | null,
+export type UploadImgProps = {
     userId: string | undefined,
-    imageProps: ImageProps
+    base64String: string | undefined,
+    imgName: string | null,
 };
 
-export type LoaderClassName = undefined | `generator-page` | `component-loading` | `log-in`;
+export type DeleteImgProps = {
+    userId: string | undefined,
+    imgsToDelete: Array<{
+        name: string,
+        format: string,
+    }>,
+};
 
-export type GoToButtonText = `Go to gallery` | `Go to documentation` | `Go to generator`;
+export type GetAllImgsProps = {
+    userId: string | undefined,
+};
+
+export type GetImgProps = {
+    userId: string | undefined,
+    imgName: string
+};
+
+export type GenerationHistoryItemType = {
+    userId: string, 
+    prompt: string,
+    options: ApiV2ModelParams,
+    timestamp: string,
+    isFavourite: boolean
+};
+
+export type updateImgItemFavouriteProps = {
+    userId: string | undefined,
+    imgName: string,
+    timestamp: string
+};
+
+export type LoaderClassName = undefined | `generator-page` | `component-loading` | `log-in` | `img-loading`;
+
+export type GoToButtonText = `Go to favourites` | `Go to documentation` | `Go to generator`;
 
 export type DownloadButtonText = `Download` | `Download selected images`;
 

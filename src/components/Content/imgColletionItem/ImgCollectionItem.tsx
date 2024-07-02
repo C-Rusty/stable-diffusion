@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import DeleteButton from '../../common/delete-img-btn/DeleteImgButton';
-import DownloadButton from '../../common/download-btn/DownloadButton';
+import DeleteButton from '../../common/buttons/delete-img-btn/DeleteImgButton';
+import DownloadButton from '../../common/buttons/download-btn/DownloadButton';
 import './imgCollectionItem.scss';
 
 const ImgCollectionItem = (

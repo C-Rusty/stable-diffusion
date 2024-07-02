@@ -13,7 +13,7 @@ const Switcher = (
 ) => {
     return (
         <label className="switch" >
-            <input className="switch__input" type="checkbox" onChange={() => setValue(!value)}/>
+            <input className="switch__input" type="checkbox" checked={value} onChange={() => setValue(!value)}/>
             <span className="switch__slider round"></span>
         </label>
     );
