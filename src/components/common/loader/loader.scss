@@ -38,6 +38,8 @@
     &.component-loading {
         min-height: 100vh;
 
+        background: $colorBlack;
+
         &__item {
             @include wave-item-size(1rem, 30rem);
         }

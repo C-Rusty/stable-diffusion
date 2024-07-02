@@ -39,8 +39,8 @@ const GenerationHistoryItem = (
 
     useEffect(() => {
         if (isImageShown) getImgFromStorage();
-    }, [isImageShown]); 
-
+    }, [isImageShown]);
+    
     return(
         <div className='generation-history-item'>
             <div className="generation-history-item__inner">
@@ -51,28 +51,35 @@ const GenerationHistoryItem = (
                 <div className="generation-history-item__block model-options">
                     <p className="headline">Options:</p>
                     <div className="model-options-container">
-                        <div className="model-options-container__item">
-                            <p className="name">Aspect ratio:</p>
-                            <p className="value">{item.options.aspect_ratio}</p>
-                        </div>
-                        <div className="model-options-container__item">
-                            <p className="name">Negative prompt:</p>
-                            <p className="value">{item.options.negative_prompt}</p>
-                        </div>
+                        {item.options.aspect_ratio &&
+                            <div className="model-options-container__item">
+                                <p className="name">Aspect ratio:</p>
+                                <p className="value">{item.options.aspect_ratio}</p>
+                            </div>
+                        }
                         <div className="model-options-container__item">
                             <p className="name">Seed:</p>
                             <p className="value">{item.options.seed}</p>
                         </div>
-                        <div className="model-options-container__item">
-                            <p className="name">Style preset:</p>
-                            <p className="value">{item.options.style_preset}</p>
-                        </div>
-                        <div className="model-options-container__item">
-                            <p className="name">Output format:</p>
-                            <p className="value">{item.options.output_format}</p>
-                        </div>
+                        {item.options.style_preset && 
+                            <div className="model-options-container__item">
+                                <p className="name">Style preset:</p>
+                                <p className="value">{item.options.style_preset}</p>
+                            </div>
+                        }
+                        {item.options.output_format && 
+                            <div className="model-options-container__item">
+                                <p className="name">Output format:</p>
+                                <p className="value">{item.options.output_format}</p>
+                            </div>
+                        }
+                        {item.options.negative_prompt &&
+                            <div className="model-options-container__item model-options-container__item__negative">
+                                <p className="name">Negative prompt:</p>
+                                <p className="value">{item.options.negative_prompt}</p>
+                            </div>
+                        }
                     </div>
-
                 </div>
                 <div className="generation-history-item__btns-container">
                     <DeleteButton 
