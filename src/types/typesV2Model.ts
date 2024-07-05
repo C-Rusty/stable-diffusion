@@ -1,6 +1,8 @@
 export type PresetStyle =   '3d-model' | 'analog-film' | 'anime' | 'cinematic' | 'comic-book' | 'digital-art' | 'enhance' | 'fantasy-art' | 'isometric' | 'line-art' | 'low-poly' | 'modeling-compound' | 'neon-punk' | 'origami' | 'photographic' | 'pixel-art' | 'tile-texture';
 
-export type OutputFormat = `png` | `jpeg` | `webp`;
+export type OutputFormat = `png` | `jpeg`
+//  | `webp`
+ ;
 export type AspectRatios = `16:9` | `1:1` | `21:9` | `2:3` | `3:2` | `4:5` | `5:4` | `9:16` | `9:21`;
 
 export type AspectRatiosProps = {
@@ -17,12 +19,12 @@ export type OutputFormatProps = {
     value: OutputFormat,
     text: OutputFormat
 };
-
-export type ApiV2ModelParams = {
+export type SDModelParams = {
     prompt?: string,
     aspect_ratio: AspectRatios,
-    negative_prompt: string, 
-    seed: number, 
+    negative_prompt?: string, 
+    seed: number,
+    model?: string, 
     style_preset: PresetStyle
     output_format: OutputFormat
 }

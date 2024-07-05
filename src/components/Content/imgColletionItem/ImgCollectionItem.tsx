@@ -54,7 +54,6 @@ const ImgCollectionItem = (
                     ${isImgSelected ? 'selected' : ''}
                     
                 `}
-                loading="lazy"
             />
             <div className="img-container__btns-container">
             <DownloadButton 

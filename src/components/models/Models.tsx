@@ -1,24 +1,31 @@
 import { Fragment } from "react/jsx-runtime";
-import { GenModelsText, GenModelsValue } from "../../types/typesCommon";
+import { GenModelsValue } from "../../types/typesCommon";
 import './models.scss';
+import { Dispatch, SetStateAction } from "react";
+import { generatorCommonPropsForSelect } from "../../utilities/ModelProps/GeneralPropsForSelect";
 
 const Models = (
     {
-        genModelSelectProps,
-        handleModelClick
+        setGenModel
     }
     :
     {
-        genModelSelectProps: {
-            id: string
-            options: Array<{
-                value: GenModelsValue, 
-                text: GenModelsText, 
-            }>
-        },
-        handleModelClick: (value: GenModelsValue, id: string) => void
+        setGenModel: Dispatch<SetStateAction<GenModelsValue>>,
     }
 ) => {
+
+    const { genModelSelectProps } = generatorCommonPropsForSelect;
+
+    const handleModelClick = (value: GenModelsValue, id: string) => {
+        setGenModel(() => value as GenModelsValue);
+
+        const activeModelBtn = document.querySelector('.active-model-btn');
+        if (!activeModelBtn) throw new Error(`Model btn not found`);
+        activeModelBtn.classList.remove(`active-model-btn`);
+
+        document.getElementById(id)?.classList.add(`active-model-btn`);
+    };
+
     return(
         <Fragment>
             {genModelSelectProps.options.map((optionItem, index) =>  
@@ -29,9 +36,11 @@ const Models = (
                                     ${index === 0 ? 'active-model-btn' : ""}
                                 `} 
                             key={optionItem.value}
+                            value={optionItem.value}
+                            name={optionItem.text}
                             id={optionItem.value}
                             type='button'
-                            onClick={() => handleModelClick(optionItem.value,optionItem.value)}
+                            onClick={() => handleModelClick(optionItem.value, optionItem.value)}
                         >{optionItem.text}</button> 
                     </div>
                 )}

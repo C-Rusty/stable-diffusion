@@ -1,11 +1,10 @@
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
-import { generatorCommonPropsForSelect } from '../../../utilities/ModelProps/GeneralPropsForSelect';
 import { GenModelsValue, GenerationHistoryItemType, UploadImgProps, generatedImageItem } from '../../../types/typesCommon';
-import { ApiV2ModelParams } from '../../../types/typesV2Model';
+import { SDModelParams } from '../../../types/typesV2Model';
 import ModelV2Selects from '../ModelV2Selects/ModelV2Selects';
 import './generatorOptions.scss';
 import { Context } from '../../app/App';
-import { api } from '../../../api/Api.SD.TextToImage';
+import { apiStableDiffusion } from '../../../api/Api.SD.TextToImage';
 import Models from '../../models/Models';
 import Switcher from '../../common/switcher/Switcher';
 import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
@@ -20,27 +19,15 @@ const GeneratorOptions = (
     }
 ) => {
 
-    const { genModelSelectProps } = generatorCommonPropsForSelect;
-
     const {mobxStore} = useContext(Context);
     const apiKey = mobxStore.SDApiKey;
     const userId = mobxStore.userId;
 
     const prompt = useRef<HTMLTextAreaElement | null>(null);
-    const [genModel, setGenModel] = useState<GenModelsValue>(`core`);
-    const [options, setOptions] = useState<ApiV2ModelParams | {}>({});
+    const [genModel, setGenModel] = useState<GenModelsValue>(`ultra`);
+    const [options, setOptions] = useState<SDModelParams | {}>({});
     const [isOptionsShown, setIsOptionsShown] = useState<boolean>(false);
     const [isGenerationHistorySavingOptionEnabled, setIsGenerationHistorySavingOptionEnabled] = useState<boolean>(true);
-
-    const handleModelClick = (value: GenModelsValue, id: string) => {
-        setGenModel(value);
-
-        const activeModelBtn = document.querySelector('.active-model-btn');
-        if (!activeModelBtn) throw new Error(`Model btn not found`);
-        activeModelBtn.classList.remove(`active-model-btn`);
-
-        document.getElementById(id)?.classList.add(`active-model-btn`);
-    };
 
     const [base64Img, setBase64Img] = useState<string>('');
 
@@ -84,18 +71,18 @@ const GeneratorOptions = (
             let response: string | { name: string; errors: string[]; } | undefined = undefined;
             const timestamp: string = new Date().getTime().toString();
 
-                const selectedOptions = options as ApiV2ModelParams;
+            const selectedOptions = options as SDModelParams;
 
-                response = await api.getImageFromV2Model(promptValue, selectedOptions, genModel, apiKey);
-                
-                if (!response) console.log(`Something went wrong with request: ${response}`);
+            response = await apiStableDiffusion.getImage(promptValue, selectedOptions, genModel, apiKey);
+            
+            if (!response) console.log(`Something went wrong with request: ${response}`);
 
-                setImage({
-                    path: response as string,
-                    name: promptValue,
-                    format: selectedOptions.output_format,
-                    timestamp,
-                });
+            setImage({
+                path: response as string,
+                name: promptValue,
+                format: selectedOptions.output_format,
+                timestamp,
+            });
 
             convertImgToBlob(response as string);
 
@@ -104,7 +91,7 @@ const GeneratorOptions = (
                 const generationHistoryItem: GenerationHistoryItemType = {
                     userId,
                     prompt: promptValue,
-                    options: options as ApiV2ModelParams,
+                    options: options as SDModelParams,
                     timestamp,
                     isFavourite: false,
                 };
@@ -119,7 +106,7 @@ const GeneratorOptions = (
     };
 
     const uploadImageToStorage = async () => {
-        const optionsV2 = options as ApiV2ModelParams;
+        const optionsV2 = options as SDModelParams;
 
         const imgItemToUpload: UploadImgProps = {
             userId: userId,
@@ -155,10 +142,7 @@ const GeneratorOptions = (
                     Select Model
                 </span>
                 <div className="generator-options__model-select-main">
-                    <Models 
-                        genModelSelectProps={genModelSelectProps} 
-                        handleModelClick={handleModelClick}
-                    />
+                    <Models setGenModel={setGenModel} />
                 </div>
             </div>
             <div className="generator-options__options-switcher">
@@ -179,17 +163,9 @@ const GeneratorOptions = (
             </div>
             {isOptionsShown && 
                 <div className="generator-options__options-container">
-                    <ModelV2Selects  setData={setOptions as Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
+                    <ModelV2Selects  
+                        setData={setOptions as Dispatch<SetStateAction<SDModelParams | {}>>}
                     />
-                    {/* {genModel === `core` || genModel === `sd3` || genModel === `ultra` || genModel === `sd3-turbo` ? 
-                        <ModelV2Selects 
-                            setData={setOptions as Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
-                        />
-                        : 
-                        <ModelV1Selects 
-                            setData={setOptions as Dispatch<SetStateAction<ApiV1ModelParams | {}>>}
-                        />
-                    } */}
                 </div>
             } 
             <div className="generator-options__btn-container">

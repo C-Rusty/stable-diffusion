@@ -39,7 +39,7 @@ const outputFormmatSelectProps: {
     options: [
         {value: `png`, text: `png`},
         {value: `jpeg`, text: `jpeg`},
-        {value: `webp`, text: `webp`},
+        // {value: `webp`, text: `webp`},
     ],
     id: 'output-format',
 };

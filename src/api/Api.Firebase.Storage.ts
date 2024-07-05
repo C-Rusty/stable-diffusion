@@ -1,7 +1,7 @@
 import { ref, uploadString } from "@firebase/storage";
 import { storage } from "../utilities/firebaseConfig";
 import { deleteObject, getDownloadURL, getMetadata, listAll} from "firebase/storage";
-import { DeleteImgProps, GetAllImgsProps, GetImgProps, ImageItemGallery, UploadImgProps } from "../types/typesCommon";
+import { DeleteImgProps, GetAllImgsProps, GetImgProps, UploadImgProps } from "../types/typesCommon";
 import { ApiFirebaseStore } from "./Api.Firebase.Store";
 
 const storagePath = `generatedImages`;
@@ -39,22 +39,20 @@ const getImages = async (imagsToGetProps: GetAllImgsProps) => {
     };
 };
 
-const getFavouritesImgsPaths = async (userId: string) => {
+const getFavouritesImgs = async (userId: string, favouritesImgsItemCounter: number, lastItemTimestamp: string | null) => {
     try {
-        const favouritesImgPaths = await ApiFirebaseStore.getFavouritesImgsPaths(userId);
+        const favouritesImgPaths = await ApiFirebaseStore.getFavouritesImgsPaths(userId, favouritesImgsItemCounter, lastItemTimestamp);
 
         if (!favouritesImgPaths) return console.log(`favouritesImgs get error...`);
 
-        const sortedFavouritesImgPaths = favouritesImgPaths.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-        const imagesPromises = sortedFavouritesImgPaths.map(async (item) => {
+        const imagesPromises = favouritesImgPaths.map(async (item) => {
             const fullName = item.name.split(` `).join(`_`) + `.` + item.format;
             const url = await getImage({ userId, imgName: fullName });
-            return { name: item.name, url: url };
+            return { name: item.name, url: url, timestamp: item.timestamp };
         });
 
         const images = await Promise.all(imagesPromises);
-        
+
         return images;
         
     } catch (error) {
@@ -123,7 +121,7 @@ const deleteImages = async (imgsToDeleteProps: DeleteImgProps) => {
 export const apiFirebaseStorage = {
     getImages,
     getImage,
-    getFavouritesImgsPaths,
+    getFavouritesImgs,
     uploadImages,
     deleteImages
 };
