@@ -1,11 +1,19 @@
 import axios from "axios";
 import FormData from "form-data";
-import { ApiV2ModelParams } from "../types/typesV2Model";
+import { SDModelParams } from "../types/typesV2Model";
 
 const API_URL = `https://api.stability.ai`;
 
-const getImageFromV2Model = async (prompt: string, params: ApiV2ModelParams, model: string, apiKey: string) => {
-    const urlPath = `${API_URL}/v2beta/stable-image/generate/${model}`
+const getImage = async (prompt: string, params: SDModelParams, model: string, apiKey: string) => { 
+    const urlPath = `${API_URL}/v2beta/stable-image/generate/${model.split(`-`)[0]}`;
+
+    if (model.includes(`sd3`)) {
+        params = {
+            ...params,
+            model: model,
+        }
+    };
+
     const formData = {prompt, ...params};
 
     const response = await axios.postForm(
@@ -35,6 +43,6 @@ const getImageFromV2Model = async (prompt: string, params: ApiV2ModelParams, mod
     };
 };
 
-export const api = {
-    getImageFromV2Model,
+export const apiStableDiffusion = {
+    getImage,
 };

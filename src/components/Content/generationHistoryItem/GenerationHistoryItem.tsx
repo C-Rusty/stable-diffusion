@@ -44,10 +44,12 @@ const GenerationHistoryItem = (
     return(
         <div className='generation-history-item'>
             <div className="generation-history-item__inner">
-                <h2 className="generation-history-item__headline">
+                <div className="generation-history-item__prompt">
                     <p className="name">Prompt:</p>
-                    <p className="value">{item.prompt}</p>
-                </h2>
+                    <div className="value-container">
+                        <p className="value">{item.prompt}</p>
+                    </div>
+                </div>
                 <div className="generation-history-item__block model-options">
                     <p className="headline">Options:</p>
                     <div className="model-options-container">
@@ -61,20 +63,20 @@ const GenerationHistoryItem = (
                             <p className="name">Seed:</p>
                             <p className="value">{item.options.seed}</p>
                         </div>
-                        {item.options.style_preset && 
-                            <div className="model-options-container__item">
-                                <p className="name">Style preset:</p>
-                                <p className="value">{item.options.style_preset}</p>
-                            </div>
-                        }
                         {item.options.output_format && 
                             <div className="model-options-container__item">
                                 <p className="name">Output format:</p>
                                 <p className="value">{item.options.output_format}</p>
                             </div>
                         }
+                        {item.options.style_preset && 
+                            <div className={`model-options-container__item ${item.options.style_preset.length >= 8 ? 'column' : ''}`}>
+                                <p className="name">Style preset:</p>
+                                <p className="value">{item.options.style_preset}</p>
+                            </div>
+                        }
                         {item.options.negative_prompt &&
-                            <div className="model-options-container__item model-options-container__item__negative">
+                            <div className="model-options-container__item column">
                                 <p className="name">Negative prompt:</p>
                                 <p className="value">{item.options.negative_prompt}</p>
                             </div>
@@ -101,7 +103,7 @@ const GenerationHistoryItem = (
                     {isImageShown && 
                         <Fragment>
                             {img ? 
-                                <img src={img} alt="img" loading='lazy' /> 
+                                <img src={img} alt="img" /> 
                                 : 
                                 <Loader className='img-loading'/>
                             }

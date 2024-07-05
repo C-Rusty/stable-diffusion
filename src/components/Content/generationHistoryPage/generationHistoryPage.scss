@@ -8,7 +8,7 @@
 
     padding: 5rem 0;
 
-    min-height: calc(100vh - 10.5rem - 7.9rem);
+    @extend %page-min-height;
 
     &__inner {
         display: flex;flex-direction: column;
@@ -23,7 +23,7 @@
 
     &__main {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 2rem;
     }
 
@@ -35,34 +35,20 @@
         margin-top: 20vh;
     }
 
-    &__load-more {
-        grid-column: span 2;
+    &__action-btn-container {
+        grid-column: span 3;
+
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        &-btn {
-            @extend %action-btn;
-            @extend %Font-Regular-20px;
-            color: #fff;
-            text-decoration: none;
-
-            background: $colorDarkBlue;
-
-            margin-top: 2rem;
-
-            min-width: max-content;
-            width: 20%;
-
-            @include transition(0.2s, ease-in-out);
-
-            &:hover {
-                background: $colorBlue;
-
-                @include transition(0.2s, ease-in-out);
-            }
+        &-text {
+            @extend %Font-Regular-15px;
+            color: $colorPink;
         }
-
     }
 }

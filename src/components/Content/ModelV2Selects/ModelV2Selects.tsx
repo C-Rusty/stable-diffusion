@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import { ApiV2ModelParams, AspectRatios, OutputFormat, PresetStyle } from "../../../types/typesV2Model";
+import { SDModelParams, AspectRatios, OutputFormat, PresetStyle } from "../../../types/typesV2Model";
 import { v2ModelCommonPropsForSelect } from "../../../utilities/ModelProps/V2ModelPropsForSelect";
 import { generatorCommonPropsForSelect } from "../../../utilities/ModelProps/GeneralPropsForSelect";
 import './modelV2Selects.scss';
@@ -9,7 +9,7 @@ import Input from "../../common/input/Input";
 
 const ModelV2Selects = (
     {setData} : 
-    {setData: Dispatch<SetStateAction<ApiV2ModelParams | {}>>}
+    {setData: Dispatch<SetStateAction<SDModelParams | {}>>}
 ) => {
 
     const { 
