@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { ApiV2ModelParams, AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesV2Model";
+import { SDModelParams, AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesV2Model";
 
 export type SelectProps = {
     className: string, 
@@ -14,8 +14,8 @@ export type InputProps = {
     placeholder: string
 };
 
-export type GenModelsValue =  `ultra` | `sd3` | `sd3-turbo` | `core`;
-export type GenModelsText = `SI Ultra` |`SI 3` | `SI 3 Turbo` | `Core`;
+export type GenModelsValue =  `ultra` | `sd3-large-turbo` | `sd3-large` | `sd3-medium` | `core`;
+export type GenModelsText = `Ultra` |`Large Turbo` | `Large` | `Medium` | `Core`;
 
 export type GenModelsProps = {
     value: GenModelsValue,
@@ -45,7 +45,8 @@ export type ImageItemGallery = {
     format?: string,
     index?: number,
     img?: string,
-    url: string
+    url: string,
+    timestamp?: string
 };
 
 export type UploadImgProps = {
@@ -74,7 +75,7 @@ export type GetImgProps = {
 export type GenerationHistoryItemType = {
     userId: string, 
     prompt: string,
-    options: ApiV2ModelParams,
+    options: SDModelParams,
     timestamp: string,
     isFavourite: boolean
 };

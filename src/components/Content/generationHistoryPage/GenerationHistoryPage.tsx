@@ -4,7 +4,8 @@ import { GenerationHistoryItemType } from '../../../types/typesCommon';
 import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
 import { Context } from '../../app/App';
 import GenerationHistoryItem from '../generationHistoryItem/GenerationHistoryItem';
-import { loadItemsLimit } from '../../../utilities/commonVars';
+import { loadGenHistoryItemsLimit } from '../../../utilities/commonVars';
+import ShowMoreButton from '../../common/buttons/show-more-btn/ShowMoreButton';
 
 const GenerationHistoryPage = () => {
 
@@ -18,7 +19,7 @@ const GenerationHistoryPage = () => {
     const getCollectionLength = async () => {
         if (!userId) return console.log(`userId is empty. UserId is ${userId}`);
 
-        const response = await ApiFirebaseStore.getCollectionAmount(userId);
+        const response = await ApiFirebaseStore.getCollectionAmount(userId, `generationHistory`);
 
         if (!response) return console.log(`getCollectionLength response error. Response: ${response}`);
         
@@ -32,12 +33,11 @@ const GenerationHistoryPage = () => {
         const generationHistoryData = await ApiFirebaseStore.getGenerationHistory(userId, genHistoryItemCounter, lastItemTimestamp);
 
         if (!generationHistoryData) return console.log(`generationHistoryData response error. Response: ${generationHistoryData}`);
-
         
-        if (genHistoryItemCounter === loadItemsLimit) {
+        if (genHistoryItemCounter === loadGenHistoryItemsLimit) {
             setGenerationHistory(generationHistoryData);
             setMemorizedGenerationHistory(generationHistoryData);
-        } else if (genHistoryItemCounter % loadItemsLimit === 0 && genHistoryItemCounter !== loadItemsLimit) {
+        } else if (genHistoryItemCounter % loadGenHistoryItemsLimit === 0 && genHistoryItemCounter !== loadGenHistoryItemsLimit) {
             setGenerationHistory([...memorizedGenerationHistory, ...generationHistoryData]);
             setMemorizedGenerationHistory([...memorizedGenerationHistory, ...generationHistoryData]);
         } else {
@@ -50,19 +50,17 @@ const GenerationHistoryPage = () => {
         getGenerationHistory();
     }, []);
 
-    const [genHistoryItemCounter, setGenHistoryItemCounter] = useState<number>(loadItemsLimit);
+    const [genHistoryItemCounter, setGenHistoryItemCounter] = useState<number>(loadGenHistoryItemsLimit);
     const [lastItemTimestamp, setLastItemTimestamp] = useState<string | null>(null);
-
-    const showMoreClick = () => {
-        setGenHistoryItemCounter((prev) => prev + genHistoryItemCounter);
-    };
 
     useEffect(() => {
         setLastItemTimestamp(generationHistory[generationHistory.length - 1]?.timestamp);
     }, [genHistoryItemCounter]);
 
     useEffect(() => {
-        getGenerationHistory();
+        if (genHistoryItemCounter !== loadGenHistoryItemsLimit) {
+            getGenerationHistory();
+        };
     }, [lastItemTimestamp]);
 
     return(
@@ -81,14 +79,14 @@ const GenerationHistoryPage = () => {
                             <h2 className='generation-history__subheadline'>No history yet...</h2>
                         }
                         {collectionAmount > genHistoryItemCounter &&
-                            <div className="generation-history__load-more">
-                                <a 
-                                    href="#0" 
-                                    className="generation-history__load-more-btn"
-                                    onClick={showMoreClick}
-                                >
-                                    Load more
-                                </a>
+                            <div className="generation-history__action-btn-container">
+                                <p className="generation-history__action-btn-container-text">
+                                    {genHistoryItemCounter} of {collectionAmount} loaded
+                                </p>
+                                <ShowMoreButton 
+                                    page={'generationHistory'} 
+                                    setItemsCounter={setGenHistoryItemCounter} 
+                                />
                             </div>
                         }
                     </div>

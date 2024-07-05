@@ -5,8 +5,8 @@
 /.pnp
 .pnp.js
 /build
-/.firebase
-/.github
+/github
+/firebase
 
 # testing
 /coverage

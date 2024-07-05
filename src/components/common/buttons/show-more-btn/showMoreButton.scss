@@ -1,0 +1,27 @@
+@import '../../../../styles/common/variables.scss';
+@import '../../../../styles/common/extends.scss';
+
+.show-more-btn {
+    @extend %action-btn;
+
+    min-width: max-content;
+    width: 20%;
+
+    &__icon {
+        transform: rotate(90deg);
+    }
+
+    &:hover {
+        svg {
+            path {
+                stroke: $colorBlue;
+            }
+        }
+    }
+
+    svg {
+        path {
+            stroke: $colorGreen;
+        }
+    }
+}

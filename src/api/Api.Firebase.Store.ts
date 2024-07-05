@@ -1,7 +1,7 @@
 import { GenerationHistoryItemType, updateImgItemFavouriteProps } from "../types/typesCommon";
-import { loadItemsLimit } from "../utilities/commonVars";
+import { loadFavouriteItemsLimit, loadGenHistoryItemsLimit } from "../utilities/commonVars";
 import { db } from "../utilities/firebaseConfig";
-import { collection, deleteDoc, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter, updateDoc, where } from "firebase/firestore"; 
+import { DocumentData, QuerySnapshot, collection, deleteDoc, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter, updateDoc, where } from "firebase/firestore"; 
 
 const generationHistoryItemsFolder = `GenerationHistory`;
 
@@ -30,8 +30,8 @@ const getGenerationHistory = async (userId: string, genHistoryItemCounter: numbe
 
         let generationHistory: Array<GenerationHistoryItemType> = [];
 
-        if (genHistoryItemCounter === loadItemsLimit)  {
-            const q = query(ref, orderBy(`timestamp`, `desc`), limit(loadItemsLimit));
+        if (genHistoryItemCounter === loadGenHistoryItemsLimit)  {
+            const q = query(ref, orderBy(`timestamp`, `desc`), limit(loadGenHistoryItemsLimit));
 
             const generationHistoryResponse = await getDocs(q);
 
@@ -41,8 +41,8 @@ const getGenerationHistory = async (userId: string, genHistoryItemCounter: numbe
                 generationHistory.push(doc.data() as GenerationHistoryItemType);
             });
             
-        } else if (genHistoryItemCounter % loadItemsLimit === 0 && genHistoryItemCounter !== loadItemsLimit) {
-            const q = query(ref, orderBy(`timestamp`, `desc`), startAfter(lastTimestamp), limit(loadItemsLimit));
+        } else if (genHistoryItemCounter % loadGenHistoryItemsLimit === 0 && genHistoryItemCounter !== loadGenHistoryItemsLimit) {
+            const q = query(ref, orderBy(`timestamp`, `desc`), startAfter(lastTimestamp), limit(loadGenHistoryItemsLimit));
 
             const generationHistoryResponse = await getDocs(q);
 
@@ -95,23 +95,36 @@ const deleteGenerationHistoryItem = async (userId: string, timestamp: string) =>
     };
 };
 
-const getFavouritesImgsPaths = async (userId: string) => {
+const getFavouritesImgsPaths = async (userId: string, favouritesImgsItemCounter: number, lastItemTimestamp: string | null) => {
     try {
         const imgsRef = collection(db, `users/${userId}/${generationHistoryItemsFolder}`);
-        const favouritesImgsQuery = query(imgsRef, where(`isFavourite`, `==`, true));
+        let response: QuerySnapshot<DocumentData, DocumentData> | undefined = undefined;
 
-        const favouritesImgsDocs = await getDocs(favouritesImgsQuery);
+        if (favouritesImgsItemCounter === loadFavouriteItemsLimit) {
+            const favouritesImgsQuery = query(imgsRef, where(`isFavourite`, `==`, true), orderBy(`timestamp`, `desc`), limit(loadFavouriteItemsLimit));
 
-        if (!favouritesImgsDocs) return console.log(`favouritesImgs get error...`);
+            response = await getDocs(favouritesImgsQuery);
+        } else if (favouritesImgsItemCounter % loadFavouriteItemsLimit === 0 && favouritesImgsItemCounter !== loadFavouriteItemsLimit) {
+
+            const favouritesImgsQuery = query(imgsRef, where(`isFavourite`, `==`, true), orderBy(`timestamp`, `desc`), startAfter(lastItemTimestamp), limit(loadFavouriteItemsLimit));
+
+            response = await getDocs(favouritesImgsQuery);
+        };
+
+        if (!response) console.log(`favouritesImgs get error...`);
 
         let favouritesImgsItemProps: Array<GenerationHistoryItemType> = [];
 
-        favouritesImgsDocs.forEach((doc) => {
+        response!.forEach((doc) => {
             favouritesImgsItemProps.push(doc.data() as GenerationHistoryItemType);
         });
 
         return favouritesImgsItemProps.map((item) => {
-            return { name: item.prompt.split(` `).join(`_`), format: item.options.output_format, createdAt: item.timestamp };
+            return { 
+                name: item.prompt.split(` `).join(`_`), 
+                format: item.options.output_format, 
+                timestamp: item.timestamp 
+            };
         });
 
     } catch (error) {
@@ -135,14 +148,33 @@ const addImgToFavourites = async (imgsToUploadProps: updateImgItemFavouriteProps
     };
 };
 
-const getCollectionAmount = async (userId: string) => {
+const getCollectionAmount = async (userId: string, page: `generationHistory` | `favourites`) => {
+    
     const collectionRef = collection(db, `users/${userId}/${generationHistoryItemsFolder}`);
 
+    let totalAmount: number | undefined = undefined;
+
     try {
-        const response = await getCountFromServer(collectionRef);
-        return response.data().count;        
+        switch (page) {
+            case `favourites`:
+                const q = query(collectionRef, where(`isFavourite`, `==`, true));
+
+                const favouritesImgsAmount = await getCountFromServer(q);
+                totalAmount = favouritesImgsAmount.data().count;
+            break;
+
+            case `generationHistory`:
+                const historyItemsAmount = await getCountFromServer(collectionRef);
+                totalAmount = historyItemsAmount.data().count;
+            break;
+        
+            default: break;
+        };
+
+        return totalAmount;
+
     } catch (error) {
-      console.log(`Error with getting collection amount: ${error}`);
+        console.log(`Error with getting collection amount: ${error}`);
     };
 };
 

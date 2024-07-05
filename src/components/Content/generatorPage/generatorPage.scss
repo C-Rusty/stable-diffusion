@@ -4,4 +4,6 @@
 
 .generator-page {
     background: $colorBlack;
+
+    @extend %page-min-height;
 }

@@ -12,19 +12,23 @@ const genModelSelectProps: {
     options: [
         {
             value: `ultra`,
-            text: `SI Ultra`,
+            text: `Ultra`,
+        },
+        {
+            value: `sd3-large-turbo`,
+            text: `Large Turbo`,
+        },
+        {
+            value: `sd3-large`,
+            text: `Large`,
+        },
+        {
+            value: `sd3-medium`,
+            text: `Medium`,
         },
         {
             value: `core`, 
             text: `Core`,
-        },
-        {
-            value: `sd3-turbo`, 
-            text: `SI 3 Turbo`,
-        },
-        {
-            value: `sd3`, 
-            text: `SI 3`,
         },
     ],
 };
@@ -78,7 +82,7 @@ const outputFormatSelectProps: {
     options: [
         {value: `png`, text: `png`},
         {value: `jpeg`, text: `jpeg`},
-        {value: `webp`, text: `webp`},
+        // {value: `webp`, text: `webp`},
     ],
 };
 
