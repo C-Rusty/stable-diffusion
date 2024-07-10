@@ -1,19 +1,22 @@
-import './deleteButton.scss';
+import './deleteGenHistoryButton.scss';
 import { ReactComponent as DeleteItemIcon } from '../../../../imgs/delete-item-icon.svg';
 import { ApiFirebaseStore } from '../../../../api/Api.Firebase.Store';
 import { Context } from '../../../app/App';
 import { Dispatch, SetStateAction, useContext } from 'react';
-import { GenerationHistoryItemType } from '../../../../types/typesCommon';
+import { generationHistoryItem } from '../../../../types/typesCommon';
+import { apiFirebaseStorage } from '../../../../api/Api.Firebase.Storage';
 
-const DeleteButton = (
+const DeleteGenHistoryButton = (
     {
-        timestamp,
+        id,
+        storagePath,
         setGenerationHistory
     }
     : 
     {
-        timestamp: string,
-        setGenerationHistory: Dispatch<SetStateAction<GenerationHistoryItemType[]>>
+        id: string,
+        storagePath: string,
+        setGenerationHistory: Dispatch<SetStateAction<generationHistoryItem[]>>
     }
 ) => {
 
@@ -23,9 +26,13 @@ const DeleteButton = (
     const handleClick = () => {
         if (!userId) return console.log(`DeleteBtn error: userId is ${userId}`);
 
-        ApiFirebaseStore.deleteGenerationHistoryItem(userId, timestamp);
+        ApiFirebaseStore.deleteGenerationHistoryItem(userId, id);
+        apiFirebaseStorage.deleteImages({
+            userId,
+            imgsToDelete: [{ storagePath }]
+        });
 
-        setGenerationHistory((prev) => prev.filter(item => item.timestamp !== timestamp));
+        setGenerationHistory((prev) => prev.filter(item => item.generalInfo.id !== id));
     };
 
     return(
@@ -42,4 +49,4 @@ const DeleteButton = (
     );
 };
 
-export default DeleteButton;
+export default DeleteGenHistoryButton;

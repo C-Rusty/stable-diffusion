@@ -2,7 +2,11 @@ import axios from "axios";
 import FormData from "form-data";
 import { SDModelParams } from "../types/typesV2Model";
 
-const API_URL = `https://api.stability.ai`;
+const API_URL: string = `https://api.stability.ai`;
+
+interface Balance {
+    credits: number;
+}
 
 const getImage = async (prompt: string, params: SDModelParams, model: string, apiKey: string) => { 
     const urlPath = `${API_URL}/v2beta/stable-image/generate/${model.split(`-`)[0]}`;
@@ -43,6 +47,28 @@ const getImage = async (prompt: string, params: SDModelParams, model: string, ap
     };
 };
 
+const getBalance = async (apiKey: string) => {
+
+    const urlPath: string = `${API_URL}/v1/user/balance`;
+
+    try {    
+
+        const response = await axios.get(urlPath, {
+            headers: { 
+                Authorization: `Bearer sk-${apiKey}`, 
+                Accept: "application/json",
+            },
+        });
+
+        return response.data as Balance;
+        
+    } catch (error) {
+        console.log(`Error with getting balance: ${error}`);
+    };
+    
+};
+
 export const apiStableDiffusion = {
     getImage,
+    getBalance
 };

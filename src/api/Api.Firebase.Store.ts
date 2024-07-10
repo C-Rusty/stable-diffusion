@@ -1,9 +1,8 @@
-import { GenerationHistoryItemType, updateImgItemFavouriteProps } from "../types/typesCommon";
-import { loadFavouriteItemsLimit, loadGenHistoryItemsLimit } from "../utilities/commonVars";
+import { generationHistoryItem, updateImgItemFavouriteProps } from "../types/typesCommon";
+import { generationHistoryItemsFolder, loadFavouriteItemsLimit, loadGenHistoryItemsLimit } from "../utilities/commonVars";
 import { db } from "../utilities/firebaseConfig";
 import { DocumentData, QuerySnapshot, collection, deleteDoc, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter, updateDoc, where } from "firebase/firestore"; 
-
-const generationHistoryItemsFolder = `GenerationHistory`;
+import { createFullGenHistoryStorePath } from "../utilities/functions";
 
 const getSDApiKey = async () => {
     try {
@@ -28,28 +27,28 @@ const getGenerationHistory = async (userId: string, genHistoryItemCounter: numbe
     try {
         const ref = collection(db, `users`, userId, generationHistoryItemsFolder);
 
-        let generationHistory: Array<GenerationHistoryItemType> = [];
+        let generationHistory: Array<generationHistoryItem> = [];
 
         if (genHistoryItemCounter === loadGenHistoryItemsLimit)  {
-            const q = query(ref, orderBy(`timestamp`, `desc`), limit(loadGenHistoryItemsLimit));
+            const q = query(ref, orderBy(`generalInfo.timestamp`, `desc`), limit(loadGenHistoryItemsLimit));
 
             const generationHistoryResponse = await getDocs(q);
 
             if (!generationHistoryResponse) console.log(`generationHistory get error...`);
 
             generationHistoryResponse.forEach((doc) => {
-                generationHistory.push(doc.data() as GenerationHistoryItemType);
+                generationHistory.push(doc.data() as generationHistoryItem);
             });
             
         } else if (genHistoryItemCounter % loadGenHistoryItemsLimit === 0 && genHistoryItemCounter !== loadGenHistoryItemsLimit) {
-            const q = query(ref, orderBy(`timestamp`, `desc`), startAfter(lastTimestamp), limit(loadGenHistoryItemsLimit));
+            const q = query(ref, orderBy(`generalInfo.timestamp`, `desc`), startAfter(lastTimestamp), limit(loadGenHistoryItemsLimit));
 
             const generationHistoryResponse = await getDocs(q);
 
             if (!generationHistoryResponse) console.log(`generationHistory get error...`);
 
             generationHistoryResponse.forEach((doc) => {
-                generationHistory.push(doc.data() as GenerationHistoryItemType);
+                generationHistory.push(doc.data() as generationHistoryItem);
             });
         };
 
@@ -60,23 +59,27 @@ const getGenerationHistory = async (userId: string, genHistoryItemCounter: numbe
     };
 };
 
-const uploadGenerationHistoryItem = async (generationHistoryItem: GenerationHistoryItemType) => {
+const uploadGenerationHistoryItem = async (userId: string, generationHistoryItem: generationHistoryItem) => {
 
-    const { timestamp, userId } = generationHistoryItem;
+    const { id } = generationHistoryItem.generalInfo;
+
+    const genHistoryStorePath = createFullGenHistoryStorePath(userId, null);
 
     try {
-        await setDoc(doc(db, `users/${userId}/${generationHistoryItemsFolder}/`, timestamp), generationHistoryItem);
+        await setDoc(doc(db, genHistoryStorePath, id), generationHistoryItem);
     } catch (error) {
         console.log(`Error with uploading generation history: ${error}`);
     };
 };
 
-const updateGenerationHistoryItem = async (userId: string, timestamp: string, prop: {
+const updateGenerationHistoryItem = async (userId: string, id: string, prop: {
     field: `prompt` | `isSuccessfull`,
     value: string | boolean
 }) => {
 
-    const docRef = doc(db, `users/${userId}/${generationHistoryItemsFolder}/`, timestamp);
+    const genHistoryStorePath = createFullGenHistoryStorePath(userId, null);
+
+    const docRef = doc(db, genHistoryStorePath, id);
 
     try {
         await updateDoc(docRef, {
@@ -87,9 +90,11 @@ const updateGenerationHistoryItem = async (userId: string, timestamp: string, pr
     };
 };
 
-const deleteGenerationHistoryItem = async (userId: string, timestamp: string) => {
+const deleteGenerationHistoryItem = async (userId: string, id: string) => {
     try {
-        await deleteDoc(doc(db, `users/${userId}/${generationHistoryItemsFolder}/`, timestamp));
+        const genHistoryStorePath = createFullGenHistoryStorePath(userId, null);
+
+        await deleteDoc(doc(db, genHistoryStorePath, id));
     } catch (error) {
         console.log(`Error with deleting generation history: ${error}`);
     };
@@ -97,35 +102,32 @@ const deleteGenerationHistoryItem = async (userId: string, timestamp: string) =>
 
 const getFavouritesImgsPaths = async (userId: string, favouritesImgsItemCounter: number, lastItemTimestamp: string | null) => {
     try {
-        const imgsRef = collection(db, `users/${userId}/${generationHistoryItemsFolder}`);
+        const genHistoryStorePath = createFullGenHistoryStorePath(userId, null);
+
+        const imgsRef = collection(db, genHistoryStorePath);
         let response: QuerySnapshot<DocumentData, DocumentData> | undefined = undefined;
 
         if (favouritesImgsItemCounter === loadFavouriteItemsLimit) {
-            const favouritesImgsQuery = query(imgsRef, where(`isFavourite`, `==`, true), orderBy(`timestamp`, `desc`), limit(loadFavouriteItemsLimit));
+            const favouritesImgsQuery = query(imgsRef, where(`isFavourite`, `==`, true), orderBy(`generalInfo.timestamp`, `desc`), limit(loadFavouriteItemsLimit));
 
             response = await getDocs(favouritesImgsQuery);
+
         } else if (favouritesImgsItemCounter % loadFavouriteItemsLimit === 0 && favouritesImgsItemCounter !== loadFavouriteItemsLimit) {
 
-            const favouritesImgsQuery = query(imgsRef, where(`isFavourite`, `==`, true), orderBy(`timestamp`, `desc`), startAfter(lastItemTimestamp), limit(loadFavouriteItemsLimit));
+            const favouritesImgsQuery = query(imgsRef, where(`isFavourite`, `==`, true), orderBy(`generalInfo.timestamp`, `desc`), startAfter(lastItemTimestamp), limit(loadFavouriteItemsLimit));
 
             response = await getDocs(favouritesImgsQuery);
         };
 
         if (!response) console.log(`favouritesImgs get error...`);
 
-        let favouritesImgsItemProps: Array<GenerationHistoryItemType> = [];
+        let favouritesImgItems: Array<generationHistoryItem> = [];
 
         response!.forEach((doc) => {
-            favouritesImgsItemProps.push(doc.data() as GenerationHistoryItemType);
+            favouritesImgItems.push(doc.data() as generationHistoryItem);
         });
 
-        return favouritesImgsItemProps.map((item) => {
-            return { 
-                name: item.prompt.split(` `).join(`_`), 
-                format: item.options.output_format, 
-                timestamp: item.timestamp 
-            };
-        });
+        return favouritesImgItems;
 
     } catch (error) {
         console.log(`Error with getting favourites imgs: ${error}`);
@@ -134,10 +136,12 @@ const getFavouritesImgsPaths = async (userId: string, favouritesImgsItemCounter:
 
 const addImgToFavourites = async (imgsToUploadProps: updateImgItemFavouriteProps) => {
 
-    const { userId, timestamp } = imgsToUploadProps;
+    const { userId, id } = imgsToUploadProps;
+
+    const genHistoryStorePath = createFullGenHistoryStorePath(userId!, null);
 
     try {
-        const imgRef = doc(db, `users/${userId}/${generationHistoryItemsFolder}/`, timestamp);
+        const imgRef = doc(db, genHistoryStorePath, id);
 
         await updateDoc(imgRef, {isFavourite: true});
 
@@ -150,7 +154,9 @@ const addImgToFavourites = async (imgsToUploadProps: updateImgItemFavouriteProps
 
 const getCollectionAmount = async (userId: string, page: `generationHistory` | `favourites`) => {
     
-    const collectionRef = collection(db, `users/${userId}/${generationHistoryItemsFolder}`);
+    const genHistoryStorePath = createFullGenHistoryStorePath(userId!, null);
+
+    const collectionRef = collection(db, genHistoryStorePath);
 
     let totalAmount: number | undefined = undefined;
 

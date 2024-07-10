@@ -1,34 +1,63 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './generatorPage.scss';
 import GeneratorOptions from '../generatorOptions/GeneratorOptions';
 import GenerationResult from '../generationResult/GenerationResult';
 import Loader from '../../common/loader/Loader';
 import noise from '../../../imgs/noise.png';
-import { generatedImageItem } from '../../../types/typesCommon';
+import { ImageItem } from '../../../types/typesCommon';
+import { v4 as uuidv4 } from 'uuid';
+import { apiStableDiffusion } from '../../../api/Api.StableDiffusion';
+import { Context } from '../../app/App';
 
 const GeneratorPage = () => {
 
-    const [image, setImage] = useState<generatedImageItem>(
+    const id = uuidv4();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const [image, setImage] = useState<ImageItem>(
         {
-            path: noise, 
-            name: `noise`, 
+            id: id,
+            prompt: `noise`, 
             format: `png`,
+            url: noise,
+            storagePath: `${id}.noise.png`,
             timestamp: new Date().getTime().toString(),
         }
     );
-    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (image.path) {
+        if (image.url) {
             setIsLoading(false);
         };
-    }, [image.path]);
+    }, [image.url]);
+
+    const { mobxStore } = useContext(Context);
+    const SDApiKey = mobxStore.SDApiKey;
+
+    const [currentBalance, setCurrentBalance] = useState<number>(0);
+
+    const updateBalance = async (SDApiKey: string) => {
+        const response = await apiStableDiffusion.getBalance(SDApiKey);
+        
+        if (response) setCurrentBalance(response.credits);
+    };
+
+    useEffect(() => {
+        if (SDApiKey) updateBalance(SDApiKey);
+    }, [SDApiKey]);
+
+    useEffect(() => {
+        if (SDApiKey) updateBalance(SDApiKey);
+    }, [image]);
 
     return(
         <section className="generator-page">
             <div className="container">
                 <div className="generator-page__inner">
                     <div className="generator-page__main">
+                        <div className='generator-page__balance'>
+                            <p className='generator-page__balance-text'>Credits: {currentBalance ? currentBalance : `No data`}</p>
+                        </div>
                         <GeneratorOptions 
                             setIsLoading={setIsLoading} 
                             setImage={setImage}
@@ -36,9 +65,7 @@ const GeneratorPage = () => {
                         {isLoading ? 
                             <Loader className="generator-page" /> 
                             : 
-                            <GenerationResult 
-                                image={image}
-                            />
+                            <GenerationResult image={image} />
                         }
                     </div>
                 </div>

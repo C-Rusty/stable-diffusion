@@ -1,15 +1,16 @@
-import { Suspense, lazy, useContext, useEffect, useState } from 'react';
+import { Fragment, Suspense, lazy, useContext, useEffect, useState } from 'react';
 import './favouritesPage.scss';
 import { Context } from '../../app/App';
-import ImgCollectionItem from '../imgColletionItem/ImgCollectionItem';
 import DownloadButton from '../../common/buttons/download-btn/DownloadButton';
 import DeleteButton from '../../common/buttons/delete-img-btn/DeleteImgButton';
 import Loader from '../../common/loader/Loader';
-import { ImageItemGallery } from '../../../types/typesCommon';
+import { GalleryItem } from '../../../types/typesCommon';
 import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
 import ShowMoreButton from '../../common/buttons/show-more-btn/ShowMoreButton';
 import { loadFavouriteItemsLimit } from '../../../utilities/commonVars';
 import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
+import FavouritesItem from '../favouritesItem/FavouritesItem';
+import { getImgNameAndFormat } from '../../../utilities/functions';
 
 const FavouritesPage = () => {
 
@@ -18,8 +19,8 @@ const FavouritesPage = () => {
     const { mobxStore } = useContext(Context);
     const userId = mobxStore.userId;
 
-    const [imgCollection, setImgCollection] = useState<Array<ImageItemGallery>>([]);
-    const [memorizedImgCollection, setMemorizedImgCollection] = useState<Array<ImageItemGallery>>([]);
+    const [imgCollection, setImgCollection] = useState<Array<GalleryItem>>([]);
+    const [memorizedImgCollection, setMemorizedImgCollection] = useState<Array<GalleryItem>>([]);
 
     const [collectionAmount, setCollectionAmount] = useState<number>(0);
     const [favouriteItemsCounter, setfavouriteItemsCounter] = useState<number>(loadFavouriteItemsLimit);
@@ -27,14 +28,14 @@ const FavouritesPage = () => {
 
     const getUserImgCollection = async () => {
         
-        const favouritesImgs = await apiFirebaseStorage.getFavouritesImgs(userId!, favouriteItemsCounter, lastItemTimestamp) as Array<ImageItemGallery>;
+        const favouritesImgs = await apiFirebaseStorage.getFavouritesImgs(userId!, favouriteItemsCounter, lastItemTimestamp) as Array<GalleryItem>;
     
         if (favouriteItemsCounter === loadFavouriteItemsLimit) {
             setImgCollection(favouritesImgs);
             setMemorizedImgCollection(favouritesImgs);
         } else if (favouriteItemsCounter % loadFavouriteItemsLimit === 0 && favouriteItemsCounter !== loadFavouriteItemsLimit) {
-            setImgCollection([...memorizedImgCollection, ...favouritesImgs]);
-            setMemorizedImgCollection([...memorizedImgCollection, ...favouritesImgs]);
+            setImgCollection([...memorizedImgCollection!, ...favouritesImgs]);
+            setMemorizedImgCollection([...memorizedImgCollection!, ...favouritesImgs]);
         } else {
             console.log(`genHistoryItemCounter error. genHistoryItemCounter: ${favouriteItemsCounter}`);
         };
@@ -55,7 +56,8 @@ const FavouritesPage = () => {
     }, []);
 
     useEffect(() => {
-        setLastItemTimestamp(imgCollection[imgCollection.length - 1]?.timestamp!);
+        if (imgCollection) setLastItemTimestamp(imgCollection[imgCollection.length - 1]?.timestamp);
+        
     }, [favouriteItemsCounter]);
 
     useEffect(() => {
@@ -65,23 +67,23 @@ const FavouritesPage = () => {
     }, [lastItemTimestamp]);
 
     const [isGalleryOpened, setIsGalleryOpened] = useState(false);  
-    const [clickedImgIndex, setClickedImg] = useState<number | undefined>(undefined);
+    const [selectedImgIndex, setSelectedImgIndex] = useState<number | undefined>(undefined);
 
-    const handleImgClick = (imgIndex: number) => {
+    const handleImgClick = (clickedImgIndex: number, clickedImgId: string) => {
+        
         switch (isSelectMultipleImagesModeOn) {
             case true:
-                if (!selectedImgs.find(img => img.index === imgIndex)) {
-                    setSelectedImgs(prev => [...prev, {
-                        img: imgCollection[imgIndex].url,
-                        name: imgCollection[imgIndex].name,
-                        format: imgCollection[imgIndex].name.split(".").slice(-1)[0],
-                        index: imgIndex
-                    }]);
+                const selectedImg = imgCollection.find(img => img.id === clickedImgId);
+
+                if (selectedImg) {
+                    setSelectedImgs(prev => [...prev, selectedImg]);
                 };
             break;
 
             case false:
-                setClickedImg(imgIndex);
+                setSelectedImgIndex(clickedImgIndex);
+                console.log(`selectedImgIndex: ${clickedImgIndex}`);
+                
                 setIsGalleryOpened(true);
             break;
         
@@ -90,16 +92,11 @@ const FavouritesPage = () => {
     };
 
     const handleDeleteImgClick = (imgIndex: number) => {
-        setImgCollection(prev => prev.filter((img, index) => index !== imgIndex));
+        setImgCollection(prev => prev!.filter((img) => img.index !== imgIndex));
     };
 
     const [isSelectMultipleImagesModeOn, setSelectMultipleImagesModeOn] = useState(false);
-    const [selectedImgs, setSelectedImgs] = useState<Array<{
-        img: string,
-        name: string,
-        format: string,
-        index: number
-    }>>([]);
+    const [selectedImgs, setSelectedImgs] = useState<Array<GalleryItem>>([]);
 
     const handleSelectMultipleImagesClick = () => {
         setSelectMultipleImagesModeOn(!isSelectMultipleImagesModeOn);
@@ -111,52 +108,71 @@ const FavouritesPage = () => {
                 <Gallery
                     setIsOpened={setIsGalleryOpened}
                     imgCollection={imgCollection}
-                    clickedImgIndex={clickedImgIndex}
+                    clickedImgIndex={selectedImgIndex}
                 />
                 :
                 <div className="collection">
                     <div className="container">
                         <div className="collection__inner">
                             <h1 className='collection__headline'>Favourites</h1>
-                            <div className="collection__action-btns">
-                                <a 
-                                    href="#0" 
-                                    className="select-btn"
-                                    onClick={handleSelectMultipleImagesClick}
-                                >
-                                    {isSelectMultipleImagesModeOn ? 'Cancel' : 'Select multiple images'}
-                                </a>
-                                <div className="main-bnts">
-                                    <DownloadButton 
-                                        imgsToDownload={selectedImgs.map(img => ({name: img.name, url: img.img}))}
-                                        text="Download selected images"
-                                    />
-                                    <DeleteButton 
-                                        userId={userId} 
-                                        imgsToDelete={
-                                            selectedImgs.map(img => ({
-                                                name: img.name, 
-                                                format: img.name.split(".").slice(-1)[0],
-                                                index: img.index
-                                            }))
-                                        } 
-                                        handleDeleteImgClick={handleDeleteImgClick}
-                                        text="Delete selected images"
-                                    />
+                            {imgCollection &&   
+                                <div className="collection__action-btns">
+                                    <a 
+                                        href="#0" 
+                                        className="select-btn"
+                                        onClick={handleSelectMultipleImagesClick}
+                                    >
+                                        {isSelectMultipleImagesModeOn ? 'Cancel' : 'Select multiple images'}
+                                    </a>
+                                    <div className="main-bnts">
+                                        <DownloadButton 
+                                            imgsToDownload={selectedImgs.map(img => (
+                                                {
+                                                    name: getImgNameAndFormat(img.storagePath), 
+                                                    url: img.url
+                                                })
+                                            )}
+                                            text="Download selected images"
+                                        />
+                                        <DeleteButton 
+                                            userId={userId} 
+                                            imgsToDelete={selectedImgs.map(img => {
+                                                return {
+                                                    storagePath: img.storagePath,
+                                                    index: img.index
+                                                }
+                                            })} 
+                                            handleDeleteImgClick={handleDeleteImgClick}
+                                            text="Delete selected images"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
+                            }
                             <div className="collection__main">
-                                {imgCollection.map((img, index) => (
-                                    <ImgCollectionItem
-                                        key={index}
-                                        index={index}
-                                        img={img}
-                                        userId={userId}
-                                        handleImgClick={handleImgClick}
-                                        handleDeleteImgClick={handleDeleteImgClick}
-                                        isSelectMultipleImagesModeOn={isSelectMultipleImagesModeOn}
-                                    />
-                                ))}
+                                {imgCollection ?
+                                    <Fragment>
+                                            {imgCollection.map((img, index) => (
+                                            <FavouritesItem
+                                                key={index}
+                                                index={index}
+                                                img={{
+                                                    prompt: img.prompt,
+                                                    format: img.format,
+                                                    url: img.url,
+                                                    id: img.id,
+                                                    storagePath: img.storagePath
+                                                }}
+                                                userId={userId}
+                                                handleImgClick={handleImgClick}
+                                                handleDeleteImgClick={handleDeleteImgClick}
+                                                isSelectMultipleImagesModeOn={isSelectMultipleImagesModeOn}
+                                            />
+                                        ))}
+                                    </Fragment>
+                                    :
+                                    <Loader className="component-loading" />
+                                }
+
                             </div>
                             {collectionAmount > favouriteItemsCounter && 
                                 <div className="collection__action-btn-container">

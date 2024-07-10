@@ -1,9 +1,15 @@
 import './downloadButton.scss';
 import { ReactComponent as DownloadIcon } from '../../../../imgs/download-icon.svg';
 import { saveImageToPC } from '../../../../utilities/functions';
-import { DownloadButtonText, ImageItemGallery } from '../../../../types/typesCommon';
+import { DownloadButtonText } from '../../../../types/typesCommon';
 
-const DownloadButton = ( { imgsToDownload, text } : { imgsToDownload: Array<ImageItemGallery> | undefined, text: DownloadButtonText } ) => {
+const DownloadButton = ( 
+    { imgsToDownload, text } 
+    : 
+    { 
+        imgsToDownload: Array<{url: string, name: string}> | undefined, 
+        text: DownloadButtonText 
+    }) => {
 
     const handleClick = () => {
         if (!imgsToDownload) return console.log(`currentImg is ${imgsToDownload}!`);

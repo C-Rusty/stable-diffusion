@@ -1,21 +1,23 @@
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
-import { GenModelsValue, GenerationHistoryItemType, UploadImgProps, generatedImageItem } from '../../../types/typesCommon';
+import { GenModelsValue, generationHistoryItem, ImageItem, UploadImgProps } from '../../../types/typesCommon';
 import { SDModelParams } from '../../../types/typesV2Model';
 import ModelV2Selects from '../ModelV2Selects/ModelV2Selects';
 import './generatorOptions.scss';
 import { Context } from '../../app/App';
-import { apiStableDiffusion } from '../../../api/Api.SD.TextToImage';
+import { apiStableDiffusion } from '../../../api/Api.StableDiffusion';
 import Models from '../../models/Models';
 import Switcher from '../../common/switcher/Switcher';
 import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
 import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
+import { v4 as uuidv4 } from 'uuid';
+import { createImgStoragePath } from '../../../utilities/functions';
 
 const GeneratorOptions = (
     {setIsLoading, setImage} 
     : 
     {
         setIsLoading: Dispatch<SetStateAction<boolean>>,
-        setImage: Dispatch<SetStateAction<generatedImageItem>>
+        setImage: Dispatch<SetStateAction<ImageItem>>
     }
 ) => {
 
@@ -23,10 +25,13 @@ const GeneratorOptions = (
     const apiKey = mobxStore.SDApiKey;
     const userId = mobxStore.userId;
 
+    const [id, setId] = useState<string | undefined>(undefined);
     const prompt = useRef<HTMLTextAreaElement | null>(null);
     const [genModel, setGenModel] = useState<GenModelsValue>(`ultra`);
-    const [options, setOptions] = useState<SDModelParams | {}>({});
+    const [options, setOptions] = useState<SDModelParams | undefined>(undefined);
     const [isOptionsShown, setIsOptionsShown] = useState<boolean>(false);
+    const [storagePath, setStoragePath] = useState<string | undefined>(undefined);
+
     const [isGenerationHistorySavingOptionEnabled, setIsGenerationHistorySavingOptionEnabled] = useState<boolean>(true);
 
     const [base64Img, setBase64Img] = useState<string>('');
@@ -48,7 +53,7 @@ const GeneratorOptions = (
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const promptValue = prompt.current?.value;
+        const promptValue = prompt.current?.value.trim();
 
         if (!promptValue) {
             return console.log(`Prompt is empty. ${promptValue}`);
@@ -57,6 +62,7 @@ const GeneratorOptions = (
         if (!apiKey) {
             return console.log(`API key is empty. ${apiKey}`);
         };
+        if (!options) return console.log(`Options is empty. ${options}`);
 
         if (!userId) {
             return console.log(`userId is empty. ${userId}`);
@@ -69,34 +75,37 @@ const GeneratorOptions = (
             setIsLoading(true);
 
             let response: string | { name: string; errors: string[]; } | undefined = undefined;
-            const timestamp: string = new Date().getTime().toString();
 
-            const selectedOptions = options as SDModelParams;
-
-            response = await apiStableDiffusion.getImage(promptValue, selectedOptions, genModel, apiKey);
+            response = await apiStableDiffusion.getImage(promptValue, options, genModel, apiKey);
             
             if (!response) console.log(`Something went wrong with request: ${response}`);
 
-            setImage({
-                path: response as string,
-                name: promptValue,
-                format: selectedOptions.output_format,
-                timestamp,
-            });
+            const timestamp: string = new Date().getTime().toString();
+            const id = uuidv4();
+            const storagePath = createImgStoragePath(id, promptValue, options.output_format);
 
-            convertImgToBlob(response as string);
+            setValuesForImageUpload(response as string, id, storagePath);
+
+            const imageItem: ImageItem = {
+                id: id,
+                prompt: promptValue,
+                format: options.output_format,
+                url: response as string,
+                storagePath: storagePath,
+                timestamp
+            };
+
+            setImage(imageItem);
 
             if (isGenerationHistorySavingOptionEnabled) {
 
-                const generationHistoryItem: GenerationHistoryItemType = {
-                    userId,
-                    prompt: promptValue,
-                    options: options as SDModelParams,
-                    timestamp,
+                const generationHistoryItem: generationHistoryItem = {
+                    generalInfo: imageItem,
+                    options: options,
                     isFavourite: false,
                 };
 
-                ApiFirebaseStore.uploadGenerationHistoryItem(generationHistoryItem);
+                ApiFirebaseStore.uploadGenerationHistoryItem(userId, generationHistoryItem);
             };
         } catch (error) {
             console.log(error);
@@ -105,21 +114,28 @@ const GeneratorOptions = (
         };
     };
 
+    const setValuesForImageUpload = (response: string, id: string, storagePath: string) => {
+        convertImgToBlob(response as string);
+        setId(id);
+        setStoragePath(storagePath);
+    };
+
     const uploadImageToStorage = async () => {
-        const optionsV2 = options as SDModelParams;
+
+        if (!options) return console.log(`Options is empty. ${options}`);
 
         const imgItemToUpload: UploadImgProps = {
             userId: userId,
             base64String: base64Img,
-            imgName: `${prompt.current!.value.split(` `).join(`_`)}.${optionsV2.output_format}`,
+            imgName: `${id}.${prompt.current!.value.split(` `).join(`_`)}.${options.output_format}`,
         };
 
         await apiFirebaseStorage.uploadImages(imgItemToUpload);
     };
 
     useEffect(() => {
-        uploadImageToStorage();
-    }, [base64Img]);
+        if (base64Img && id && storagePath) uploadImageToStorage();
+    }, [setValuesForImageUpload]);
 
     return(
         <form 

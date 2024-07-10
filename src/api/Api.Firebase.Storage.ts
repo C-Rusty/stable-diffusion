@@ -1,16 +1,17 @@
 import { ref, uploadString } from "@firebase/storage";
 import { storage } from "../utilities/firebaseConfig";
 import { deleteObject, getDownloadURL, getMetadata, listAll} from "firebase/storage";
-import { DeleteImgProps, GetAllImgsProps, GetImgProps, UploadImgProps } from "../types/typesCommon";
+import { DeleteImgProps, GalleryItem, generationHistoryItem, GetAllImgsProps, GetImgProps, UploadImgProps } from "../types/typesCommon";
 import { ApiFirebaseStore } from "./Api.Firebase.Store";
-
-const storagePath = `generatedImages`;
+import { createFullImgStoragePath } from "../utilities/functions";
 
 const getImages = async (imagsToGetProps: GetAllImgsProps) => {
 
     const { userId } = imagsToGetProps;
 
-    const pathRef = ref(storage, `/users/${userId}/${storagePath}/`);
+    const pathToImages = createFullImgStoragePath(userId!, null);
+
+    const pathRef = ref(storage, pathToImages);
 
     try {
         const { items } = await listAll(pathRef);
@@ -41,14 +42,21 @@ const getImages = async (imagsToGetProps: GetAllImgsProps) => {
 
 const getFavouritesImgs = async (userId: string, favouritesImgsItemCounter: number, lastItemTimestamp: string | null) => {
     try {
-        const favouritesImgPaths = await ApiFirebaseStore.getFavouritesImgsPaths(userId, favouritesImgsItemCounter, lastItemTimestamp);
+        const favouritesImgPaths: generationHistoryItem[] | undefined = await ApiFirebaseStore.getFavouritesImgsPaths(userId, favouritesImgsItemCounter, lastItemTimestamp);
 
         if (!favouritesImgPaths) return console.log(`favouritesImgs get error...`);
 
-        const imagesPromises = favouritesImgPaths.map(async (item) => {
-            const fullName = item.name.split(` `).join(`_`) + `.` + item.format;
-            const url = await getImage({ userId, imgName: fullName });
-            return { name: item.name, url: url, timestamp: item.timestamp };
+        const imagesPromises: Promise<GalleryItem>[] = favouritesImgPaths.map(async (item) => {
+            const url = await getImage({userId, storagePath: item.generalInfo.storagePath});
+
+            return { 
+                id: item.generalInfo.id,
+                prompt: item.generalInfo.prompt,
+                format: item.generalInfo.format,
+                url: url ? url : `getImage method error`,
+                storagePath: item.generalInfo.storagePath,
+                timestamp: item.generalInfo.timestamp
+            };
         });
 
         const images = await Promise.all(imagesPromises);
@@ -62,9 +70,9 @@ const getFavouritesImgs = async (userId: string, favouritesImgsItemCounter: numb
 
 const getImage = async (ImgItemProps: GetImgProps) => {
     try {
-        const { userId, imgName } = ImgItemProps;
+        const { userId, storagePath } = ImgItemProps;
 
-        const imageRef = ref(storage, `/users/${userId}/${storagePath}/${imgName}`);
+        const imageRef = ref(storage, createFullImgStoragePath(userId!, storagePath));
 
         let imageUrl = await getDownloadURL(imageRef);
 
@@ -80,7 +88,9 @@ const uploadImages = async (imgsToUploadProps: UploadImgProps) =>{
     const { base64String, userId, imgName } = imgsToUploadProps;
 
     try {
-        const imageRef = ref(storage, `users/${userId}/${storagePath}/${imgName}`);
+        const pathToImages = createFullImgStoragePath(userId!, imgName);
+
+        const imageRef = ref(storage, pathToImages);
 
         uploadString(imageRef, base64String!, "data_url");
 
@@ -100,15 +110,18 @@ const deleteImages = async (imgsToDeleteProps: DeleteImgProps) => {
     
     try {
         imgsToDelete.map(async (img) => {
-            const imageRef = ref(storage, `/users/${userId}/${storagePath}/${img.name}`);
+            const pathToImage = createFullImgStoragePath(userId!, img.storagePath);
+
+            const imageRef = ref(storage, pathToImage);
     
             try {
                 await deleteObject(imageRef);
             } catch (error) {
                 console.log(`Something went wrong with deleting an image: ${error}. 
-                Image name: ${img.name}`);
+                storagePath: ${img.storagePath}`);
             };
         });
+        
         response = true;
     } catch (error) {
         console.log(`Something went wrong with deleting images: ${error}`);
