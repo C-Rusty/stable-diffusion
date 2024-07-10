@@ -15,11 +15,7 @@ const DeleteButton = (
     :
     {
         userId: string | undefined,
-        imgsToDelete: Array<{
-            name: string,
-            format: string,
-            index: number
-        }>,
+        imgsToDelete: Array<{storagePath: string, index: number | undefined}>,
         handleDeleteImgClick: (index: number) => void,
         text: DeleteButtonText
     }
@@ -32,20 +28,14 @@ const DeleteButton = (
         if (!userId) return console.log(`DeleteImgBtn error: userId is ${userId}`);
         if (!imgsToDelete) return console.log(`DeleteImgBtn error: imgsToDelete is ${imgsToDelete}`);
 
-        const imagesToDeleteProps: DeleteImgProps = {
-            userId,
-            imgsToDelete: imgsToDelete.map(img => ({
-                name: img.name,
-                format: img.format
-            })),
-        };
+        const imagesToDeleteProps: DeleteImgProps = { userId, imgsToDelete };
 
         const isDeleted = await apiFirebaseStorage.deleteImages(imagesToDeleteProps);
 
         switch (isDeleted) {
             case true:
                 imgsToDelete.forEach((img) => {
-                    handleDeleteImgClick(img.index);
+                    handleDeleteImgClick(img.index!);
                 });
         
                 dispatch(setModalContent({

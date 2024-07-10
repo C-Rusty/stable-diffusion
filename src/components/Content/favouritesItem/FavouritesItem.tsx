@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import DeleteButton from '../../common/buttons/delete-img-btn/DeleteImgButton';
 import DownloadButton from '../../common/buttons/download-btn/DownloadButton';
-import './imgCollectionItem.scss';
+import './favouritesItem.scss';
+import { getImgNameAndFormat } from '../../../utilities/functions';
 
-const ImgCollectionItem = (
+const FavouritesItem = (
     {
         index,
         img,
@@ -16,11 +17,14 @@ const ImgCollectionItem = (
     {
         index: number,
         img: {
-            name: string,
-            url: string
+            prompt: string,
+            format: string,
+            url: string,
+            id: string,
+            storagePath: string
         },
         userId: string | undefined,
-        handleImgClick: (index: number) => void,
+        handleImgClick: (index: number, id: string) => void,
         handleDeleteImgClick: (index: number) => void,
         isSelectMultipleImagesModeOn: boolean
     }
@@ -46,8 +50,8 @@ const ImgCollectionItem = (
         <div className="img-container">
             <img 
                 src={img.url} 
-                alt={img.name} 
-                onClick={() => {handleImgClick(index); handleClassNameState();}}
+                alt={img.prompt} 
+                onClick={() => {handleImgClick(index, img.id); handleClassNameState();}}
                 className={`
                     img-container__img 
                     ${isSelectMultipleImagesModeOn ? 'select-mode' : ''}
@@ -57,18 +61,15 @@ const ImgCollectionItem = (
             />
             <div className="img-container__btns-container">
             <DownloadButton 
-                imgsToDownload={[img]}
+                imgsToDownload={[{
+                    url: img.url,
+                    name: getImgNameAndFormat(img.storagePath)
+                }]}
                 text="Download"
             />
             <DeleteButton
                 userId={userId}
-                imgsToDelete={[
-                    {
-                        name: img.name, 
-                        format: img.name.split(".").slice(-1)[0],
-                        index: index
-                    }
-                ]}
+                imgsToDelete={ [{ storagePath: img.storagePath, index: index } ]}
                 handleDeleteImgClick={handleDeleteImgClick}
                 text="Delete"
             />
@@ -77,4 +78,4 @@ const ImgCollectionItem = (
     );
 };
 
-export default ImgCollectionItem;
+export default FavouritesItem;

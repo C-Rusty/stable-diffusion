@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import './generationHistoryPage.scss';
-import { GenerationHistoryItemType } from '../../../types/typesCommon';
+import { generationHistoryItem } from '../../../types/typesCommon';
 import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
 import { Context } from '../../app/App';
 import GenerationHistoryItem from '../generationHistoryItem/GenerationHistoryItem';
@@ -12,8 +12,8 @@ const GenerationHistoryPage = () => {
     const { mobxStore } = useContext(Context);
     const userId = mobxStore.userId;
 
-    const [generationHistory, setGenerationHistory] = useState<Array<GenerationHistoryItemType>>([]);
-    const [memorizedGenerationHistory, setMemorizedGenerationHistory] = useState<Array<GenerationHistoryItemType>>([]);
+    const [generationHistory, setGenerationHistory] = useState<Array<generationHistoryItem>>([]);
+    const [memorizedGenerationHistory, setMemorizedGenerationHistory] = useState<Array<generationHistoryItem>>([]);
     const [collectionAmount, setCollectionAmount] = useState<number>(0);
 
     const getCollectionLength = async () => {
@@ -54,7 +54,7 @@ const GenerationHistoryPage = () => {
     const [lastItemTimestamp, setLastItemTimestamp] = useState<string | null>(null);
 
     useEffect(() => {
-        setLastItemTimestamp(generationHistory[generationHistory.length - 1]?.timestamp);
+        setLastItemTimestamp(generationHistory[generationHistory.length - 1]?.generalInfo.timestamp);
     }, [genHistoryItemCounter]);
 
     useEffect(() => {
@@ -69,9 +69,10 @@ const GenerationHistoryPage = () => {
                 <div className="generation-history__inner">
                     <h1 className="generation-history__headline">Generation History</h1>
                     <div className="generation-history__main">
-                        {
-                            generationHistory ? generationHistory.map((item) => <GenerationHistoryItem 
-                                key={item.timestamp} 
+                        {generationHistory ? generationHistory.map((item) => 
+                            <GenerationHistoryItem 
+                                key={item.generalInfo.id}
+                                userId={userId} 
                                 item={item}
                                 setGenerationHistory={setGenerationHistory} 
                             />) 

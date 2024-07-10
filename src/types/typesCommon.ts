@@ -33,20 +33,29 @@ export type ModalProps = {
     event: `img-delete` | `img-upload` | undefined
 };
 
-export type generatedImageItem = {
-    path: string | null,
-    name: string | null,
-    format: string | null,
-    timestamp: string | null,
+export type ImageItem = {
+    id: string,
+    prompt: string,
+    format: string,
+    url: string,
+    storagePath: string
+    timestamp: string,
 };
 
-export type ImageItemGallery = {
-    name: string,
-    format?: string,
-    index?: number,
-    img?: string,
+export type GalleryItem = {
+    id: string, 
+    prompt: string,
+    format: string,
     url: string,
-    timestamp?: string
+    storagePath: string,
+    timestamp: string,
+    index?: number
+};
+
+export type generationHistoryItem = {
+    generalInfo: ImageItem,
+    options: SDModelParams,
+    isFavourite: boolean
 };
 
 export type UploadImgProps = {
@@ -58,8 +67,7 @@ export type UploadImgProps = {
 export type DeleteImgProps = {
     userId: string | undefined,
     imgsToDelete: Array<{
-        name: string,
-        format: string,
+        storagePath: string,
     }>,
 };
 
@@ -69,21 +77,13 @@ export type GetAllImgsProps = {
 
 export type GetImgProps = {
     userId: string | undefined,
-    imgName: string
-};
-
-export type GenerationHistoryItemType = {
-    userId: string, 
-    prompt: string,
-    options: SDModelParams,
-    timestamp: string,
-    isFavourite: boolean
+    storagePath: string
 };
 
 export type updateImgItemFavouriteProps = {
     userId: string | undefined,
-    imgName: string,
-    timestamp: string
+    storagePath: string,
+    id: string
 };
 
 export type LoaderClassName = undefined | `generator-page` | `component-loading` | `log-in` | `img-loading`;
