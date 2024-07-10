@@ -1,20 +1,19 @@
 import './addToFavouritesButton.scss';
 import { ReactComponent as AddIcon } from '../../../../imgs/add-icon.svg';
 import { useDispatch } from 'react-redux';
-import { generatedImageItem, updateImgItemFavouriteProps } from '../../../../types/typesCommon';
+import { updateImgItemFavouriteProps } from '../../../../types/typesCommon';
 import { setModalContent } from '../../../../store/reduxReducers/modalReducer';
 import { ApiFirebaseStore } from '../../../../api/Api.Firebase.Store';
 
 const AddToFavouritesButton = ( 
     { 
-        imgInfo 
+        image,
+        userId
     } 
     : 
     { 
-        imgInfo: {
-            userId: string | undefined,
-            image: generatedImageItem,
-        }
+        image: {storagePath: string, id: string},
+        userId: string | undefined
     }
 ) => {
 
@@ -22,19 +21,17 @@ const AddToFavouritesButton = (
     
     const handleClick = async () => {
 
-        const { userId, image } = imgInfo;
-
-        if (!userId || !image || !image.timestamp) {
+        if (!userId || !image) {
             return console.log(`Something went wrong with a request: 
                 userId: ${userId}, 
-                imgDetails: ${image}`,
+                image Details: ${image}`,
             );
         };
 
         const imgsToUploadProps: updateImgItemFavouriteProps = {
             userId,
-            imgName: image.name!.split(` `).join(`_`) + `.${image.format}`,
-            timestamp: image.timestamp,
+            storagePath: image.storagePath,
+            id: image.id,
         };
 
         const isAdded: boolean = await ApiFirebaseStore.addImgToFavourites(imgsToUploadProps);

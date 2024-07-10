@@ -6,4 +6,26 @@
     background: $colorBlack;
 
     @extend %page-min-height;
+
+    &__balance {
+        width: 100%;
+
+        display: flex;
+        justify-content: flex-start;
+
+        &-text {
+            @extend %Font-Regular-20px;
+            color: $colorPink;
+    
+            padding: 1rem 2rem;
+    
+            border-radius: 3rem;
+    
+            background: $colorLightBlack;
+    
+            margin-bottom: 2rem;
+    
+            min-width: max-content;
+        }
+    }
 }

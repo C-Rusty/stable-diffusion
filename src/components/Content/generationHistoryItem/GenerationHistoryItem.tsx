@@ -1,21 +1,24 @@
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
-import { GenerationHistoryItemType, GetImgProps } from '../../../types/typesCommon';
+import { generationHistoryItem, GetImgProps } from '../../../types/typesCommon';
 import './generationHistoryItem.scss';
-import DeleteButton from '../../common/buttons/delete-btn/DeleteButton';
+import DeleteGenHistoryButton from '../../common/buttons/delete-gen-history-item-btn/DeleteGenHistoryButton';
 import ShowImageButton from '../../common/buttons/show-img-btn/ShowImageButton';
 import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
 import Loader from '../../common/loader/Loader';
 import DownloadButton from '../../common/buttons/download-btn/DownloadButton';
+import { getImgNameAndFormat } from '../../../utilities/functions';
 
 const GenerationHistoryItem = ( 
     {
+        userId,
         item, 
         setGenerationHistory
     } 
     : 
     {
-        item: GenerationHistoryItemType, 
-        setGenerationHistory: Dispatch<SetStateAction<GenerationHistoryItemType[]>>
+        userId: string | undefined,
+        item: generationHistoryItem, 
+        setGenerationHistory: Dispatch<SetStateAction<generationHistoryItem[]>>
     }
 ) => {
 
@@ -26,8 +29,8 @@ const GenerationHistoryItem = (
     const getImgFromStorage = async () => {
 
         const ImgItemProps: GetImgProps = {
-            userId: item.userId, 
-            imgName: item.prompt.split(" ").join("_") + `.` + item.options.output_format
+            userId, 
+            storagePath: item.generalInfo.storagePath
         };
         
         const response = await apiFirebaseStorage.getImage(ImgItemProps);
@@ -47,7 +50,7 @@ const GenerationHistoryItem = (
                 <div className="generation-history-item__prompt">
                     <p className="name">Prompt:</p>
                     <div className="value-container">
-                        <p className="value">{item.prompt}</p>
+                        <p className="value">{item.generalInfo.prompt}</p>
                     </div>
                 </div>
                 <div className="generation-history-item__block model-options">
@@ -84,14 +87,15 @@ const GenerationHistoryItem = (
                     </div>
                 </div>
                 <div className="generation-history-item__btns-container">
-                    <DeleteButton 
-                        timestamp={item.timestamp} 
+                    <DeleteGenHistoryButton 
+                        id={item.generalInfo.id} 
+                        storagePath={item.generalInfo.storagePath}
                         setGenerationHistory={setGenerationHistory} 
                     />
                     <DownloadButton 
                         imgsToDownload={
                             [{
-                                name: item.prompt.split(" ").join("_") + `.` + item.options.output_format,
+                                name: getImgNameAndFormat(item.generalInfo.storagePath),
                                 url: img!
                             }]
                         }
@@ -103,7 +107,7 @@ const GenerationHistoryItem = (
                     {isImageShown && 
                         <Fragment>
                             {img ? 
-                                <img src={img} alt="img" /> 
+                                <img src={img} alt="img" loading='lazy' /> 
                                 : 
                                 <Loader className='img-loading'/>
                             }
