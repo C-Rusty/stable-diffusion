@@ -29,6 +29,7 @@ const GeneratorPage = () => {
         if (image.url) {
             setIsLoading(false);
         };
+        if (SDApiKey) updateBalance(SDApiKey);
     }, [image.url]);
 
     const { mobxStore } = useContext(Context);
@@ -44,11 +45,7 @@ const GeneratorPage = () => {
 
     useEffect(() => {
         if (SDApiKey) updateBalance(SDApiKey);
-    }, [SDApiKey]);
-
-    useEffect(() => {
-        if (SDApiKey) updateBalance(SDApiKey);
-    }, [image]);
+    }, []);
 
     return(
         <section className="generator-page">

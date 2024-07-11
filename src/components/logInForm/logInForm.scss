@@ -49,7 +49,7 @@
 
        color: $colorPink;
 
-       @extend %Font-Regular-15px;
+       @extend %Font-Regular-16px;
 
        @include transition(.3s, ease);
     }
