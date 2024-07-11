@@ -53,7 +53,7 @@
 }
 
 %button {
-    @extend %Font-Regular-15px;
+    @extend %Font-Regular-16px;
 
     border: none;
     border-radius: .5rem;
@@ -104,7 +104,7 @@
     }
 
     p {
-      @extend %Font-Regular-15px;
+      @extend %Font-Regular-16px;
       color: $colorPink;
 
       white-space: nowrap;

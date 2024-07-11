@@ -73,7 +73,7 @@
     }
 
     &__prompt {
-        @extend %Font-Regular-15px;
+        @extend %Font-Regular-16px;
         color: $colorWhite;
 
         @extend %block;
@@ -87,7 +87,7 @@
         @extend %block;
 
         .name, .value {
-            @extend %Font-Regular-15px;
+            @extend %Font-Regular-16px;
             color: $colorWhite;
         }
     }
@@ -121,7 +121,7 @@
         }
 
         .headline {
-            @extend %Font-Regular-15px;
+            @extend %Font-Regular-16px;
             color: $colorWhite;
         }
 
