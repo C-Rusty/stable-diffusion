@@ -112,7 +112,8 @@ const LogInForm = () => {
                                 type="password" 
                                 name="password" 
                                 required
-                                placeholder="password" 
+                                placeholder="password"
+                                autoComplete='on'
                                 className='log-in-form__input'
                                 onChange={(e) => handleChange(e)}
                                 value={formFields.password}
