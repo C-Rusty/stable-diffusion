@@ -93,3 +93,7 @@ export type GoToButtonText = `Go to favourites` | `Go to documentation` | `Go to
 export type DownloadButtonText = `Download` | `Download selected images`;
 
 export type DeleteButtonText = `Delete` | `Delete selected images`;
+
+export type CreditsAmount = {
+    balance: number | `No-data`
+}

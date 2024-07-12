@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import ModalContentReducer from "./reduxReducers/modalReducer";
+import CreditsReducer from "./reduxReducers/creditsReducer";
 
 const reduxStore = configureStore({
     reducer: {
-        modalContent: ModalContentReducer
+        modalContent: ModalContentReducer,
+        creditsAmount: CreditsReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false
