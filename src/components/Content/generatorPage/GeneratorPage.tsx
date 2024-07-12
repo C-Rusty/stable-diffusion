@@ -4,10 +4,13 @@ import GeneratorOptions from '../generatorOptions/GeneratorOptions';
 import GenerationResult from '../generationResult/GenerationResult';
 import Loader from '../../common/loader/Loader';
 import noise from '../../../imgs/noise.png';
-import { ImageItem } from '../../../types/typesCommon';
+import { CreditsAmount, ImageItem } from '../../../types/typesCommon';
 import { v4 as uuidv4 } from 'uuid';
 import { apiStableDiffusion } from '../../../api/Api.StableDiffusion';
 import { Context } from '../../app/App';
+import { CreditsReducer } from '../../../store/reduxReducers/creditsReducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/reduxStore';
 
 const GeneratorPage = () => {
 
@@ -35,12 +38,15 @@ const GeneratorPage = () => {
     const { mobxStore } = useContext(Context);
     const SDApiKey = mobxStore.SDApiKey;
 
-    const [currentBalance, setCurrentBalance] = useState<number>(0);
+    const dispatch = useDispatch();
+    const creditsAmount = useSelector<RootState, CreditsAmount>((state) => state.creditsAmount);
 
     const updateBalance = async (SDApiKey: string) => {
         const response = await apiStableDiffusion.getBalance(SDApiKey);
         
-        if (response) setCurrentBalance(response.credits);
+        if (response) dispatch(CreditsReducer.actions.setCreditsAmount({
+            balance: response.credits
+        }));
     };
 
     useEffect(() => {
@@ -53,7 +59,7 @@ const GeneratorPage = () => {
                 <div className="generator-page__inner">
                     <div className="generator-page__main">
                         <div className='generator-page__balance'>
-                            <p className='generator-page__balance-text'>Credits: {currentBalance ? currentBalance : `No data`}</p>
+                            <p className='generator-page__balance-text'>Credits: {creditsAmount.balance}</p>
                         </div>
                         <GeneratorOptions 
                             setIsLoading={setIsLoading} 

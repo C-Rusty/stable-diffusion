@@ -2,42 +2,67 @@ import './documentationPage.scss';
 import { ReactComponent as Arrow } from '../../../imgs/arrow.svg';
 import { useEffect, useState } from 'react';
 
+type Links = {
+    link: `general-info-link` | `common-description-link` | `ultra-model-link` | `sd3-model-link` | `core-model-link`;
+}
+
 const DocumentationPage = () => {
 
-    const scrollToSection = (sectionId: string) => {
-        const section = document.getElementById(sectionId);
-        if (section) section.scrollIntoView({ behavior: 'smooth' });
-    };
+    const headerOffsetHeight: number = 100;
 
-    const scrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
+    const [scrollYPostiion, setScrollYPostiion] = useState<number>(window.scrollY);
+    const [pageSections, setPageSections] = useState<NodeListOf<Element> | []>([]);
 
-    const [currentPosition, setCurrentPosition] = useState<number>(window.scrollY);
-    
     const handleScrollEvent = () => {
-
-        setCurrentPosition(window.scrollY);
+        setScrollYPostiion(window.scrollY);
     };
 
     useEffect(() => {
         window.addEventListener('scroll', handleScrollEvent);
         setNavigationPosition(document.getElementById('navigation')?.getBoundingClientRect().top || 0);
+        setPageSections(document.querySelectorAll('section'));
     }, []);
 
     const [isScrollOnTop, setIsScrollOnTop] = useState<boolean>(true);
     const [isNavigationSticky, setIsNavigationSticky] = useState<boolean>(false);
     const [navigationPosition, setNavigationPosition] = useState<number>(0);
+    const [activeBtn, setActiveBtn] = useState< Links["link"] | undefined>(undefined);
 
     useEffect(() => {
-        if (currentPosition > navigationPosition + 100) {
+        if (scrollYPostiion > navigationPosition + headerOffsetHeight) {
             setIsScrollOnTop(false);
             setIsNavigationSticky(true);
-        } else if (currentPosition < 100) {
+            setActiveNavLink();
+        } else if (scrollYPostiion < headerOffsetHeight) {
             setIsScrollOnTop(true);
             setIsNavigationSticky(false);
+
+            setActiveBtn(undefined);
         };
-    }, [currentPosition]);
+
+    }, [scrollYPostiion]);
+
+    const scrollToSection = (sectionId: string) => {
+        const section = document.getElementById(sectionId);
+
+        if (!section) return console.log(`Section ${sectionId} not found`);
+
+        const sectionPositionY = section.getBoundingClientRect().top + window.scrollY - headerOffsetHeight;
+
+        if (section) window.scrollTo({ top: sectionPositionY, behavior: 'smooth' });
+    };
+
+    const setActiveNavLink = () => {
+        pageSections.forEach((section) => {
+            if (section.getBoundingClientRect().top <= scrollYPostiion / 4) {
+                setActiveBtn(section.id + `-link` as Links["link"]);
+            };
+        });
+    };
+
+    const scrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     return (
         <div className="documentation">
@@ -52,19 +77,49 @@ const DocumentationPage = () => {
                                 Navigation
                             </h2>
                             <div className="navigation__main">
-                                <button onClick={() => scrollToSection('general-info')} className="navigation__main-link">
+                                <button 
+                                    onClick={() => {
+                                        scrollToSection('general-info');
+                                    }} 
+                                    className={`navigation__main-link ${activeBtn === 'general-info-link' ? 'active' : ''}`}
+                                    id='general-info-link'
+                                >
                                     Models
                                 </button>
-                                <button onClick={() => scrollToSection('common-description')} className="navigation__main-link">
+                                <button 
+                                    onClick={() => {
+                                        scrollToSection('common-description');
+                                    }}
+                                    className={`navigation__main-link ${activeBtn === 'common-description-link' ? 'active' : ''}`}
+                                    id='common-description-link'
+                                >
                                     General Information
                                 </button>
-                                <button onClick={() => scrollToSection('ultra-model')} className="navigation__main-link">
+                                <button 
+                                    onClick={() => {
+                                        scrollToSection('ultra-model');
+                                    }} 
+                                    className={`navigation__main-link ${activeBtn === 'ultra-model-link' ? 'active' : ''}`}
+                                    id='ultra-model-link'
+                                >
                                     Ultra model description
                                 </button>
-                                <button onClick={() => scrollToSection('sd3-model')} className="navigation__main-link">
+                                <button 
+                                    onClick={() => {
+                                        scrollToSection('sd3-model');
+                                    }} 
+                                    className={`navigation__main-link ${activeBtn === 'sd3-model-link' ? 'active' : ''}`}
+                                    id='sd3-model-link'
+                                >
                                     SD 3 models description
                                 </button>
-                                <button onClick={() => scrollToSection('core-model')} className="navigation__main-link">
+                                <button 
+                                    onClick={() => {
+                                        scrollToSection('core-model');
+                                    }} 
+                                    className={`navigation__main-link ${activeBtn === 'core-model-link' ? 'active' : ''}`}
+                                    id='core-model-link'
+                                >
                                     Core model description
                                 </button>
                             </div>

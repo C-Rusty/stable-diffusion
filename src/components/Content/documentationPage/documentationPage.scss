@@ -33,22 +33,17 @@
 @keyframes hide-headline {
     0% {
         transform: translateY(0);
+        display: none;
     }
     100% {
-        width: 0;
-        height: 0;
-        opacity: 0;
         transform: translateY(-20vh);
+        display: none;
     }
 }
 
 @keyframes smoothScroll {
-    0% {
-      transform: translateY(0);
-    }
-  
     100% {
-      transform: translateY(0px);
+        transform: translateY(0);
     }
 }
 
@@ -167,7 +162,7 @@
             }
 
             .navigation__headline {
-               margin-bottom: 0;
+                margin-bottom: 0;
 
                 @include transition(.3s, ease);
 
@@ -183,6 +178,10 @@
                     padding: 1rem;
 
                     background: none;
+
+                    &.active {
+                        background: $colorBlue;
+                    }
 
                     &:hover {
                         @include transition(.3s, ease);
@@ -207,6 +206,9 @@
                 @extend %text-item;
 
                 @include transition(.3s, ease);
+
+                text-align: center;
+                text-decoration: none;
 
                 &:hover {
                     @include transition(.3s, ease);
@@ -369,6 +371,10 @@
                     .description {
                         &__block-item-list {
                             @include grid(5, 2rem);
+
+                            @media screen and (max-width: 1600px) {
+                                grid-template-columns: repeat(4, 1fr) !important;
+                            }
                         }
                     }
                 }
@@ -392,11 +398,19 @@
             .text-container {
                 @include grid(5, 4rem);
 
-                &__headline, &__block:first-of-type {
+                &__headline {
                     grid-column: span 5;
                 }
 
-                &__block:nth-of-type(3) {
+                &__block:first-of-type {
+                    grid-column: span 3;
+                }
+
+                &__block:nth-of-type(2) {
+                    grid-column: span 2;
+                }
+
+                &__block:nth-of-type(3), &__block:nth-of-type(4) {
                     grid-column: span 2;
                 }
             }
@@ -467,24 +481,31 @@
             .text-container {
                 @include grid(6, 4rem);
 
-                &__headline {
+                &__headline, &__block:last-of-type  {
                     grid-column: span 6;
                 }
 
-                &__block:first-of-type, &__block:last-of-type {
-                    grid-column: span 6;
+                &__block:first-of-type {
+                    grid-column: span 5;
                 }
 
                 &__block:nth-of-type(3) {
                     grid-column: span 3;
                 }
+                &__block:nth-of-type(4) {
+                    grid-column: span 2;
+                }
 
                 &__block:last-of-type {
                     .description {
                         &__block-item-list {
-                            @include grid(7, 2rem);
+                            @include grid(6, 2rem);
 
                             margin-top: 2rem;
+
+                            @media screen and (max-width: 1600px) {
+                                @include grid(4, 2rem);
+                            }
 
                             .list-item {
                                 background: $colorLightBlack;
