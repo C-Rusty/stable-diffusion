@@ -69,7 +69,7 @@ const GenerationHistoryPage = () => {
                 <div className="generation-history__inner">
                     <h1 className="generation-history__headline">Generation History</h1>
                     <div className="generation-history__main">
-                        {generationHistory ? generationHistory.map((item) => 
+                        {generationHistory.length > 0 ? generationHistory.map((item) => 
                             <GenerationHistoryItem 
                                 key={item.generalInfo.id}
                                 userId={userId} 
