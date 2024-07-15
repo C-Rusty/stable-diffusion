@@ -48,7 +48,6 @@ const getImage = async (prompt: string, params: SDModelParams, model: string, ap
 };
 
 const getBalance = async (apiKey: string) => {
-
     const urlPath: string = `${API_URL}/v1/user/balance`;
 
     try {    

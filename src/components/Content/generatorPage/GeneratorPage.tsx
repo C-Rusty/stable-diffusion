@@ -56,7 +56,7 @@ const GeneratorPage = () => {
     };
 
     useEffect(() => {
-        if (mobxStore.isAuth && mobxStore.SDApiKey) updateBalance(mobxStore.SDApiKey);
+        if (mobxStore.isAuth && mobxStore.SDApiKey && (creditsAmount.balance === `Loading...` || creditsAmount.balance === `No-data`)) updateBalance(mobxStore.SDApiKey);
     }, [mobxStore.isAuth]);
 
     return(
