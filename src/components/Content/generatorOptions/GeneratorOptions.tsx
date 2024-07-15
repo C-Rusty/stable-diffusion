@@ -181,6 +181,7 @@ const GeneratorOptions = (
                 <div className="generator-options__options-container">
                     <ModelV2Selects  
                         setData={setOptions as Dispatch<SetStateAction<SDModelParams | {}>>}
+                        genModel={genModel}
                     />
                 </div>
             } 

@@ -39,6 +39,11 @@ body {
     min-height: 100vh;
 }
 
+body > div:not(#root) {
+    position: absolute;
+    z-index: -2;
+}
+
 .container {
     padding: 0 20%;
 

@@ -74,22 +74,8 @@ const stylePresetSelectProps: {
       
 };
 
-const outputFormatSelectProps: {
-    id: string
-    options: Array<{value: OutputFormat, text: OutputFormat}>
-} = {
-    id: 'output-select',
-    options: [
-        {value: `png`, text: `png`},
-        {value: `jpeg`, text: `jpeg`},
-        // {value: `webp`, text: `webp`},
-    ],
-};
-
-
 export const generatorCommonPropsForSelect = {
     genModelSelectProps,
     seedInputProps,
     stylePresetSelectProps,
-    outputFormatSelectProps
 };

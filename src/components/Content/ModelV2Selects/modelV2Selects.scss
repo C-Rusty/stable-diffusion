@@ -3,10 +3,23 @@
 @import '../../../styles/common/mixins.scss';
 
 .generator-v2 {
+
     &__inner {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
         gap: 4rem;
+    }
+
+    &__inner:has(> :nth-child(-n+5)) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+
+    &__inner:not(:has(> :nth-child(5))) {
+        grid-template-columns: repeat(3, 1fr);
+
+        .generator-v2__textarea-component {
+            grid-column: span 3;
+        }
     }
 
     &__select-component, &__input-component , &__textarea-component {

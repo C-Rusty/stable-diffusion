@@ -2,6 +2,16 @@
 @import '../../../styles/common/fonts.scss';
 @import '../../../styles/common/extends.scss';
 
+@keyframes loading-animation {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(.8);
+    }
+  }
+  
+
 .generator-page {
     background: $colorBlack;
 
@@ -12,20 +22,38 @@
 
         display: flex;
         justify-content: flex-start;
+        gap: 2rem;
 
-        &-text {
+            
+        padding: 1rem 2rem;
+    
+        border-radius: 3rem;
+
+        background: $colorLightBlack;
+
+        margin-bottom: 2rem;
+
+        min-width: max-content;
+        max-width: max-content;
+
+        &-text, &-label {
             @extend %Font-Regular-20px;
             color: $colorPink;
-    
-            padding: 1rem 2rem;
-    
-            border-radius: 3rem;
-    
-            background: $colorLightBlack;
-    
-            margin-bottom: 2rem;
-    
-            min-width: max-content;
+            
+            @include transition(.3s, ease);
+
+            &.loading-animation {
+                margin: 0 -.075rem;
+                animation: loading-animation .7s infinite alternate;
+
+                @include transition(.3s, ease);
+
+                @for $i from 1 through 6 {
+                    &:nth-child(#{$i+1}) {
+                        animation-delay: #{$i*.1}s;
+                    }
+                }
+            }
         }
     }
 }

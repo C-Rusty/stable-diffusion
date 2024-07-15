@@ -6,10 +6,18 @@ import './modelV2Selects.scss';
 import Select from "../../common/select/Select";
 import { inputCommonClassName, selectCommonClassName, textAreaCommonClassName } from "../../../utilities/commonVars";
 import Input from "../../common/input/Input";
+import { GenModelsValue } from "../../../types/typesCommon";
 
 const ModelV2Selects = (
-    {setData} : 
-    {setData: Dispatch<SetStateAction<SDModelParams | {}>>}
+    {
+        setData, 
+        genModel
+    } 
+    : 
+    {
+        setData: Dispatch<SetStateAction<SDModelParams | {}>>,
+        genModel: GenModelsValue
+    }
 ) => {
 
     const { 
@@ -62,20 +70,22 @@ const ModelV2Selects = (
                         setValue={setSeed}
                     />
                 </div>
-                <div className="generator-v2__select-component">
-                    <label className="select-label">Style Preset</label>
-                    <Select 
-                        setValue={setStylePreset} 
-                        options={stylePresetSelectProps.options} 
-                        className={selectCommonClassName} 
-                        id={stylePresetSelectProps.id}
-                    />
-                </div>
+                {genModel === `core` &&
+                    <div className="generator-v2__select-component">
+                        <label className="select-label">Style Preset</label>
+                        <Select 
+                            setValue={setStylePreset} 
+                            options={stylePresetSelectProps.options} 
+                            className={selectCommonClassName} 
+                            id={stylePresetSelectProps.id}
+                        />
+                    </div>
+                }
                 <div className="generator-v2__select-component">
                     <label className="select-label">Output Format</label>
                     <Select 
                         setValue={setOutputFormat} 
-                        options={outputFormmatSelectProps.options} 
+                        options={genModel !== `core` && genModel !== `ultra` ? outputFormmatSelectProps.options.filter((option) => option.value !== `webp`) : outputFormmatSelectProps.options} 
                         className={selectCommonClassName} 
                         id={outputFormmatSelectProps.id}
                     />

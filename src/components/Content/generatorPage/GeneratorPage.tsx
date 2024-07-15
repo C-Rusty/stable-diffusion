@@ -31,27 +31,33 @@ const GeneratorPage = () => {
     useEffect(() => {
         if (image.url) {
             setIsLoading(false);
+            if (mobxStore.SDApiKey) updateBalance(mobxStore.SDApiKey);
         };
-        if (SDApiKey) updateBalance(SDApiKey);
     }, [image.url]);
 
     const { mobxStore } = useContext(Context);
-    const SDApiKey = mobxStore.SDApiKey;
 
     const dispatch = useDispatch();
     const creditsAmount = useSelector<RootState, CreditsAmount>((state) => state.creditsAmount);
 
     const updateBalance = async (SDApiKey: string) => {
-        const response = await apiStableDiffusion.getBalance(SDApiKey);
+
+        const timer = creditsAmount.balance === `Loading...` ? 5000 : 0;
+
+        dispatch(CreditsReducer.actions.setCreditsAmount({ balance: `Loading...` }));
+
+        setTimeout(async () => {
+            const response = await apiStableDiffusion.getBalance(SDApiKey);
         
-        if (response) dispatch(CreditsReducer.actions.setCreditsAmount({
-            balance: response.credits
-        }));
+            if (response) dispatch(CreditsReducer.actions.setCreditsAmount({
+                balance: response.credits
+            }));
+        }, timer);
     };
 
     useEffect(() => {
-        if (SDApiKey) updateBalance(SDApiKey);
-    }, []);
+        if (mobxStore.isAuth && mobxStore.SDApiKey) updateBalance(mobxStore.SDApiKey);
+    }, [mobxStore.isAuth]);
 
     return(
         <section className="generator-page">
@@ -59,7 +65,14 @@ const GeneratorPage = () => {
                 <div className="generator-page__inner">
                     <div className="generator-page__main">
                         <div className='generator-page__balance'>
-                            <p className='generator-page__balance-text'>Credits: {creditsAmount.balance}</p>
+                            <p className="generator-page__balance-label">Credits:</p>
+                            <p className="generator-page__balance-text">
+                                {creditsAmount.balance === `Loading...` ? 
+                                    <Loader className="balance-loading" /> 
+                                    : 
+                                    creditsAmount.balance
+                                }
+                            </p>
                         </div>
                         <GeneratorOptions 
                             setIsLoading={setIsLoading} 

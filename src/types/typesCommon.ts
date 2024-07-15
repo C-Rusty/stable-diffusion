@@ -86,7 +86,7 @@ export type updateImgItemFavouriteProps = {
     id: string
 };
 
-export type LoaderClassName = undefined | `generator-page` | `component-loading` | `log-in` | `img-loading`;
+export type LoaderClassName = undefined | `generator-page` | `component-loading` | `log-in` | `img-loading` | `balance-loading`;
 
 export type GoToButtonText = `Go to favourites` | `Go to documentation` | `Go to generator`;
 
@@ -95,5 +95,5 @@ export type DownloadButtonText = `Download` | `Download selected images`;
 export type DeleteButtonText = `Delete` | `Delete selected images`;
 
 export type CreditsAmount = {
-    balance: number | `No-data`
+    balance: number | `No-data` | `Loading...`
 }
