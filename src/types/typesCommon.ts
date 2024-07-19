@@ -1,5 +1,5 @@
 import { Dispatch } from "react";
-import { SDModelParams, AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesV2Model";
+import { SDModelParams, AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesGeneratorOptions";
 
 export type SelectProps = {
     className: string, 
@@ -11,11 +11,16 @@ export type InputProps = {
     className: string,
     id: string,
     inputValue: string | number,
+    inputType: string,
+    name: string,
+    min?: number,
+    max?: number,
+    step?: number,
     placeholder: string
 };
 
 export type GenModelsValue =  `ultra` | `sd3-large-turbo` | `sd3-large` | `sd3-medium` | `core`;
-export type GenModelsText = `Ultra` |`Large Turbo` | `Large` | `Medium` | `Core`;
+export type GenModelsText = `Ultra` |`3 Large Turbo` | `3 Large` | `3 Medium` | `Core`;
 
 export type GenModelsProps = {
     value: GenModelsValue,
@@ -86,7 +91,7 @@ export type updateImgItemFavouriteProps = {
     id: string
 };
 
-export type LoaderClassName = undefined | `generator-page` | `component-loading` | `log-in` | `img-loading`;
+export type LoaderClassName = undefined | `generator-page` | `component-loading` | `log-in` | `img-loading` | `balance-loading`;
 
 export type GoToButtonText = `Go to favourites` | `Go to documentation` | `Go to generator`;
 
@@ -95,5 +100,5 @@ export type DownloadButtonText = `Download` | `Download selected images`;
 export type DeleteButtonText = `Delete` | `Delete selected images`;
 
 export type CreditsAmount = {
-    balance: number | `No-data`
-}
+    balance: number | `No-data` | `Loading...`
+};

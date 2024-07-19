@@ -14,7 +14,7 @@ const Home = () => {
 
     useEffect(() => {
         mobxStore.checkAuth();
-    }, [mobxStore.isAuth, mobxStore]);
+    }, [mobxStore.isAuth, mobxStore.login]);
 
     return (
         <Fragment>

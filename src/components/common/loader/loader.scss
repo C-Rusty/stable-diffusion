@@ -27,32 +27,6 @@
 
     grid-column: span 7;
 
-    &.generator-page, &.log-in {
-        min-height: 50vh;
-    
-        &__item {
-            @include wave-item-size(1rem, 20rem);
-        }
-    }
-
-    &.component-loading {
-        min-height: 100vh;
-
-        background: $colorBlack;
-
-        &__item {
-            @include wave-item-size(1rem, 30rem);
-        }
-    }
-
-    &.img-loading {
-        min-height: 20rem;
-
-        &__item {
-            @include wave-item-size(1rem, 30rem);
-        }
-    }
-
     &__item{
         @include wave-item-size(.5rem, 10rem);
         background: linear-gradient(45deg, $colorGreen, $colorBlue);
@@ -88,4 +62,42 @@
     &__item:nth-child(10) {
         animation-delay: 0.9s;
     }
-}
+
+    &.generator-page, &.log-in {
+        min-height: 50vh;
+    
+        &__item {
+            @include wave-item-size(1rem, 20rem);
+        }
+    }
+
+    &.component-loading {
+        min-height: 100vh;
+
+        background: $colorBlack;
+
+        &__item {
+            @include wave-item-size(1rem, 30rem);
+        }
+    }
+
+    &.img-loading {
+        min-height: 20rem;
+
+        &__item {
+            @include wave-item-size(1rem, 30rem);
+        }
+    }
+
+    &.balance-loading {
+        max-height: 2rem;
+
+        & > .wave-container__item:nth-last-child(-n + 6) {
+            display: none;
+        }
+
+        & > .wave-container__item {
+            @include wave-item-size(.4rem, 3rem);
+        }
+    };
+};

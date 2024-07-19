@@ -5,96 +5,26 @@
 .generator-v2 {
     &__inner {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
         gap: 4rem;
     }
 
-    &__select-component, &__input-component , &__textarea-component {
-        position: relative;
+    &__inner:has(> :nth-child(-n+5)) {
+        grid-template-columns: repeat(4, 1fr);
 
-        &:hover {
-            cursor: pointer;
-
-            .v2-input, .v2-select, .v2-textarea{
-                border-bottom-color: $colorBlue;
-                @include transition(.3s, ease);
-            }
-
-            .input-label, .select-label, .textarea-label {
-                color: $colorBlue;
-                @include transition(.3s, ease);
-            }
-        }
-
-        .v2-input, .v2-select, .v2-textarea {
-            width: 100%;
-
-            display: flex;
-            align-items: center;
-
-            color: $colorPink;
-
-            background-color: transparent;
-
-            border: none;
-            border-bottom: .1rem solid $colorGreen;
-            border-radius: .5rem;
-
-            padding: 1rem 0;
-
-            @include transition(.3s, ease);
-            
-            &:focus {
-                @include transition(.3s, ease);
-
-                outline: none;
-                border-bottom-color: $colorBlue;
-
-                ~ .input-label, ~ .select-label {
-                    color: $colorBlue;
-                    @include transition(.3s, ease);
-                }
-            }
-
-        }
-
-        .v2-input, .v2-select {
-            height: 100%;
-        }
-
-        .v2-textarea {
-            padding: 2rem 0;
-        }
-
-        .input-label, .select-label, .textarea-label {
-            color:$colorPink;
-
-            @extend %Font-Regular-16px;
-
-            @include transition(.3s, ease);
-
-            pointer-events: none;
+        .textarea-container {
+            grid-column: span 4;
         }
     }
 
-    &__textarea-component:last-child {
-        grid-column: span 4;
+    &__inner:has(> :nth-child(-n+5)):not(:has(.textarea-container)) {
+        grid-template-columns: repeat(4, 1fr);
+    }
 
-        .v2-textarea {
-            overflow: auto;
+    &__inner:not(:has(> :nth-child(5))) {
+        grid-template-columns: repeat(3, 1fr);
 
-            resize: vertical;
-
-            &::-webkit-scrollbar {
-                background: $colorBlack;
-                width: .6rem;
-            }
-    
-            &::-webkit-scrollbar-thumb {
-                background: $colorGreen;
-    
-                border-radius: .5rem
-            }
+        .textarea-container {
+            grid-column: span 3;
         }
     }
 }
