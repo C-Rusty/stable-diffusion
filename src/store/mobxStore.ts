@@ -38,13 +38,10 @@ export default class mobxStore {
         
         const cookieUser = splittedCookies.find(cookie => cookie.includes(cookieNameUser) && !cookie.includes(`undefined`));
         
-        
         if(cookieUser) {
             this.setAuth(true);
             this.setApiKey();
             this.setUserId(cookieUser.split('=')[1]);
-        } else {
-            console.log(`User is not authorized`);
         };
     };
 

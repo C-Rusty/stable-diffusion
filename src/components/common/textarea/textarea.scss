@@ -1,0 +1,27 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/mixins.scss';
+@import '../../../styles/common/extends.scss';
+
+.textarea-container {
+    @extend %option-container;
+
+    width: 100%;
+
+    &__textarea {
+        overflow: auto;
+
+        resize: vertical;
+
+        &::-webkit-scrollbar {
+            background: $colorBlack;
+            width: .6rem;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $colorGreen;
+
+            border-radius: .5rem
+        }
+    }
+}

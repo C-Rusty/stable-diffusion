@@ -25,24 +25,7 @@
     }
 
     &__action-btns {
-        display: flex;
-        justify-content: space-between;
-        gap: 4rem;
-
-        margin-bottom: 4rem;
-
-        .select-btn {
-            color: $colorPink;
-            @extend %Font-Regular-16px;
-            text-decoration: none;
-
-            @extend %action-btn;
-        }
-
-        .main-bnts {
-            display: flex;
-            gap: 2rem;
-        }
+        @extend %select-btns-container;
     }
 
     &__main {

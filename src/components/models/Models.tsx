@@ -2,7 +2,7 @@ import { Fragment } from "react/jsx-runtime";
 import { GenModelsValue } from "../../types/typesCommon";
 import './models.scss';
 import { Dispatch, SetStateAction } from "react";
-import { generatorCommonPropsForSelect } from "../../utilities/ModelProps/GeneralPropsForSelect";
+import { modelSelects } from "../../utilities/generatorOptionProps";
 
 const Models = (
     {
@@ -14,7 +14,7 @@ const Models = (
     }
 ) => {
 
-    const { genModelSelectProps } = generatorCommonPropsForSelect;
+    const { genModelSelectProps } = modelSelects;
 
     const handleModelClick = (value: GenModelsValue, id: string) => {
         setGenModel(() => value as GenModelsValue);

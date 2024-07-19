@@ -5,8 +5,8 @@ import { observer } from 'mobx-react-lite';
 import LoginForm from "../../logInForm/LogInForm";
 import Modal from "../../common/modal/Modal";
 import { Outlet } from "react-router-dom";
-import Header from "../../Header/Header";
-import Footer from "../../Footer/Footer";
+import Header from "../../header/Header";
+import Footer from "../../footer/Footer";
 
 const Home = () => {
 
@@ -14,7 +14,7 @@ const Home = () => {
 
     useEffect(() => {
         mobxStore.checkAuth();
-    }, [mobxStore.isAuth, mobxStore]);
+    }, [mobxStore.isAuth, mobxStore.login]);
 
     return (
         <Fragment>

@@ -1,72 +1,91 @@
 @import '../../../styles/common/variables.scss';
 @import '../../../styles/common/fonts.scss';
 @import '../../../styles/common/mixins.scss';
+@import '../../../styles/common/extends.scss';
 
-.v2-select {
-    position: relative;
+.select-container {
+    @extend %option-container;
 
-    height: 100%;
+    &:hover {
+        cursor: pointer;
+    }
 
-    &:active {
-        &__inner {
-            z-index: 20;
+    .option-select {
+        position: relative;
+
+        padding-bottom: 2rem;
+    
+        height: 100%;
+
+        &:focus {
+            @include transition(.3s, ease);
+
+            outline: none;
+            border-bottom-color: $colorBlue;
+
+           .select-container__label {
+                color: $colorBlue;
+                @include transition(.3s, ease);
+            }
         }
-    }
-
-    &__list-options {
-        position: absolute;
-        top: 0;
-        left: 0;
-
-        display: none;
-
-        z-index: -20;
-    }
-
-    &__option {
-        color: $colorPink;
-
-        @extend %Font-Regular-16px;
-
-        padding: .5rem .5rem;
-
-        &:hover {
-            color: $colorBlue;
+    
+        &:active {
+            &__inner {
+                z-index: 10;
+            }
         }
-    }
-
-    &__value {
-        color: $colorPink;
-
-        @extend %Font-Regular-16px;
-    }
-}
-
-.open-list {
-    display: block;
-
-    z-index: 2;
-
-    top: 5rem;
-
-    width: 100%;
-    max-height: 15rem;
-
-    overflow-y: auto;
-
-    background: $colorLightBlack;
-
-    border: .1rem solid $colorBlue;
-    border-top: none;
-
-    border-radius: .5rem;
-
-    &::-webkit-scrollbar {
-        width: .4rem;
-    }
-
-    &::-webkit-scrollbar-thumb {
-        background-color: $colorBlue;
-        border-radius: .5rem;
+    
+        &__list-options {
+            position: absolute;
+            top: 0;
+            left: 0;
+    
+            display: none;
+    
+            z-index: -20;
+    
+            &.open-list {
+                display: block;
+    
+                z-index: 2;
+            
+                top: 4rem;
+            
+                width: 100%;
+                max-height: 15rem;
+            
+                overflow-y: auto;
+            
+                background: $colorLightBlack;
+            
+                border: .1rem solid $colorBlue;
+                border-top: none;
+            
+                border-radius: .5rem;
+            
+                &::-webkit-scrollbar {
+                    width: .4rem;
+                }
+            
+                &::-webkit-scrollbar-thumb {
+                    background-color: $colorBlue;
+                    border-radius: .5rem;
+                }
+            }
+        }
+        
+        &__option, &__value {
+            color: $colorPink;
+    
+            @extend %Font-Regular-16px;
+        }
+    
+        &__option {
+            padding: .5rem .5rem;
+    
+            &:hover {
+                color: $colorBlue;
+            }
+        }
     }
 }

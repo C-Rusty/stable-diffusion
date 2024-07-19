@@ -68,8 +68,6 @@
         display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
-
-        margin-bottom: 2rem;
     }
 
     &__prompt {
@@ -107,16 +105,13 @@
             
             &__item {
                 display: flex;
-                gap: 1rem;
+                flex-wrap: wrap;
+                gap: .5rem;
 
                 background: $colorGreen;
 
                 padding: 1rem 2rem;
                 border-radius: 2rem;
-            }
-
-            .column {
-                flex-direction: column;
             }
         }
 

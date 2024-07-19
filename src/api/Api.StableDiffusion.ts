@@ -1,22 +1,15 @@
 import axios from "axios";
 import FormData from "form-data";
-import { SDModelParams } from "../types/typesV2Model";
+import { SDModelParams } from "../types/typesGeneratorOptions";
 
 const API_URL: string = `https://api.stability.ai`;
 
 interface Balance {
     credits: number;
-}
+};
 
 const getImage = async (prompt: string, params: SDModelParams, model: string, apiKey: string) => { 
     const urlPath = `${API_URL}/v2beta/stable-image/generate/${model.split(`-`)[0]}`;
-
-    if (model.includes(`sd3`)) {
-        params = {
-            ...params,
-            model: model,
-        }
-    };
 
     const formData = {prompt, ...params};
 
@@ -51,7 +44,6 @@ const getBalance = async (apiKey: string) => {
     const urlPath: string = `${API_URL}/v1/user/balance`;
 
     try {    
-
         const response = await axios.get(urlPath, {
             headers: { 
                 Authorization: `Bearer sk-${apiKey}`, 

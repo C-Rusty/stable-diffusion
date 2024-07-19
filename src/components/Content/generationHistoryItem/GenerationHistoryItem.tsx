@@ -22,8 +22,26 @@ const GenerationHistoryItem = (
     }
 ) => {
 
-    const [isImageShown, setIsImageShown] = useState<boolean>(false);
+    const [itemOptionsArray, setItemOptionsArray] = useState<Array<{
+        name: string,
+        value: string
+    }>>([]);
 
+    useEffect(() => {
+        const itemOptionsKeys = Object.keys(item.options);
+        const itemOptionsValues = Object.values(item.options);
+
+        setItemOptionsArray([
+            ...itemOptionsKeys.map((key, index) => {
+                return {
+                    name: key.split(`_`).join(` `),
+                    value: itemOptionsValues[index] as string
+                };
+            })
+        ]);
+    }, [item]);
+
+    const [isImageShown, setIsImageShown] = useState<boolean>(false);
     const [img, setImg] = useState<string | undefined>(undefined);
 
     const getImgFromStorage = async () => {
@@ -56,34 +74,16 @@ const GenerationHistoryItem = (
                 <div className="generation-history-item__block model-options">
                     <p className="headline">Options:</p>
                     <div className="model-options-container">
-                        {item.options.aspect_ratio &&
-                            <div className="model-options-container__item">
-                                <p className="name">Aspect ratio:</p>
-                                <p className="value">{item.options.aspect_ratio}</p>
-                            </div>
-                        }
-                        <div className="model-options-container__item">
-                            <p className="name">Seed:</p>
-                            <p className="value">{item.options.seed}</p>
-                        </div>
-                        {item.options.output_format && 
-                            <div className="model-options-container__item">
-                                <p className="name">Output format:</p>
-                                <p className="value">{item.options.output_format}</p>
-                            </div>
-                        }
-                        {item.options.style_preset && 
-                            <div className={`model-options-container__item ${item.options.style_preset.length >= 8 ? 'column' : ''}`}>
-                                <p className="name">Style preset:</p>
-                                <p className="value">{item.options.style_preset}</p>
-                            </div>
-                        }
-                        {item.options.negative_prompt &&
-                            <div className="model-options-container__item column">
-                                <p className="name">Negative prompt:</p>
-                                <p className="value">{item.options.negative_prompt}</p>
-                            </div>
-                        }
+                        {itemOptionsArray.map((option, index) => (
+                            <Fragment>
+                                {option.name !== `image` &&
+                                    <div className="model-options-container__item" key={index}>
+                                        <p className="name">{option.name}:</p>
+                                        <p className="value">{option.value}</p>
+                                    </div>
+                                }
+                            </Fragment>
+                        ))}
                     </div>
                 </div>
                 <div className="generation-history-item__btns-container">

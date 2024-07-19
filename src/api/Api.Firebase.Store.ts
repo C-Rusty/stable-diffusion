@@ -63,6 +63,8 @@ const uploadGenerationHistoryItem = async (userId: string, generationHistoryItem
 
     const { id } = generationHistoryItem.generalInfo;
 
+    console.log(generationHistoryItem);
+
     const genHistoryStorePath = createFullGenHistoryStorePath(userId, null);
 
     try {

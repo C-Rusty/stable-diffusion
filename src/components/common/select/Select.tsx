@@ -4,15 +4,16 @@ import './select.scss';
 type SetStateAction<T> = React.Dispatch<React.SetStateAction<T>>;
 
 interface SelectComponentProps<T> {
+    value: T,
     setValue: SetStateAction<T>,
     options: {text: string, value: string}[],
     className: string,
-    id?: string
-}
+    id?: string,
+    label: string
+};
 
-const Select = <T,> ({ setValue, options, className, id}: SelectComponentProps<T>) => {
+const Select = <T,> ({ setValue, options, className, id, value, label}: SelectComponentProps<T>) => {
 
-    const [selectedOption, setSelectedOption] = useState<string>(`None`);
     const [selectHtml, setSelectHtml] = useState<HTMLElement | null>(null);
 
     useEffect(() => {
@@ -22,7 +23,6 @@ const Select = <T,> ({ setValue, options, className, id}: SelectComponentProps<T
 
     const handleClick = (value: T, text: string, id: string | undefined) => {
         setValue(value);
-        setSelectedOption(text);
         setIsOpen(false);
 
         const list = selectHtml?.querySelector(`.${className}__list-options`);
@@ -47,28 +47,30 @@ const Select = <T,> ({ setValue, options, className, id}: SelectComponentProps<T
                 default: break;
             }
         };
-        
     }, [isOpen]);
 
     return(
-        <div 
-            className={className} 
-            id={id ? id : undefined}
-            onClick={() => setIsOpen(!isOpen)}
-        >
-            <span className={className + `__value`}>{selectedOption}</span>
-            <div className={className + `__list-options`}>
-                {options.map((optionItem) => 
-                    <div 
-                        onClick={() => handleClick(
-                            optionItem.value as unknown as T,
-                            optionItem.text,
-                            id
-                        )} 
-                        key={optionItem.value}
-                        className={className + `__option`}
-                    >{optionItem.text}</div>
-                )}
+        <div className='select-container'>
+            <label className="select-container__label">{label}</label>
+            <div 
+                className={className} 
+                id={id ? id : undefined}
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <span className={className + `__value`}>{value as unknown as string}</span>
+                <div className={className + `__list-options`}>
+                    {options.map((optionItem) => 
+                        <div 
+                            onClick={() => handleClick(
+                                optionItem.value as unknown as T,
+                                optionItem.text,
+                                id
+                            )} 
+                            key={optionItem.value}
+                            className={className + `__option`}
+                        >{optionItem.text}</div>
+                    )}
+                </div>
             </div>
         </div>
     );

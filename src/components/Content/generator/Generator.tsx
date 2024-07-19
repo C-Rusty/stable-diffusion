@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
 import { GenModelsValue, generationHistoryItem, ImageItem, UploadImgProps } from '../../../types/typesCommon';
-import { SDModelParams } from '../../../types/typesV2Model';
+import { SDModelParams } from '../../../types/typesGeneratorOptions';
 import ModelV2Selects from '../ModelV2Selects/ModelV2Selects';
-import './generatorOptions.scss';
+import './generator.scss';
 import { Context } from '../../app/App';
 import { apiStableDiffusion } from '../../../api/Api.StableDiffusion';
 import Models from '../../models/Models';
@@ -33,6 +33,7 @@ const GeneratorOptions = (
     const [storagePath, setStoragePath] = useState<string | undefined>(undefined);
 
     const [isGenerationHistorySavingOptionEnabled, setIsGenerationHistorySavingOptionEnabled] = useState<boolean>(true);
+    const [isImgToImgModeEnabled, setIsImgToImgModeEnabled] = useState<boolean>(false);
 
     const [base64Img, setBase64Img] = useState<string>('');
 
@@ -98,6 +99,8 @@ const GeneratorOptions = (
             setImage(imageItem);
 
             if (isGenerationHistorySavingOptionEnabled) {
+
+                if (options.image) options.image = URL.createObjectURL(options.image as Blob);
 
                 const generationHistoryItem: generationHistoryItem = {
                     generalInfo: imageItem,
@@ -176,12 +179,22 @@ const GeneratorOptions = (
                         setValue={setIsGenerationHistorySavingOptionEnabled}
                     />
                 </div>
+                {genModel.includes(`sd3`) &&
+                    <div className="generator-options__options-switcher-item">
+                        <p className='headline'>Img-to-img mode</p>
+                        <Switcher 
+                            value={isImgToImgModeEnabled}
+                            setValue={setIsImgToImgModeEnabled}
+                        />
+                    </div>
+                }
             </div>
             {isOptionsShown && 
                 <div className="generator-options__options-container">
                     <ModelV2Selects  
-                        setData={setOptions as Dispatch<SetStateAction<SDModelParams | {}>>}
+                        setOptions={setOptions as Dispatch<SetStateAction<SDModelParams | {}>>}
                         genModel={genModel}
+                        isImgToImgModeEnabled={isImgToImgModeEnabled}
                     />
                 </div>
             } 

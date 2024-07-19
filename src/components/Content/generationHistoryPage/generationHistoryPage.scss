@@ -21,16 +21,22 @@
         text-align: center;
     }
 
+    &__action-btns {
+        @extend %select-btns-container;
+    }
+
     &__main {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
+        gap: 4rem;
     }
 
     &__subheadline {
         @extend %Font-Headline;
         color: $colorPink;
         text-align: center;
+
+        grid-column: span 3;
 
         margin-top: 20vh;
     }

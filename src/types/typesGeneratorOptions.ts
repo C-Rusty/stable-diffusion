@@ -23,6 +23,9 @@ export type SDModelParams = {
     negative_prompt?: string, 
     seed: number,
     model?: string, 
-    style_preset: PresetStyle
-    output_format: OutputFormat
+    style_preset?: PresetStyle
+    output_format: OutputFormat,
+    image?: Blob | string,
+    mode?: `image-to-image` | `text-to-image`,
+    strength?: number
 }
