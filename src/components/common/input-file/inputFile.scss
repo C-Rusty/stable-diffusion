@@ -1,0 +1,51 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/extends.scss';
+
+.input-container {
+    height: 100%;
+
+    position: relative;
+
+    &:hover {
+        cursor: pointer;
+
+        .label-container {
+            svg {
+                path {
+                    stroke: $colorBlue;
+                    @include transition(.3s, ease);
+                }
+            }
+        }
+    }
+
+    &__file-input {
+        padding: 0 !important;
+        border: none !important;
+
+        position: absolute;
+        opacity: 0;
+    }
+
+    .label-container {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        &__name {
+            @extend %Font-Regular-16px;
+            color: $colorPink;
+        }
+
+        svg {
+            width: 2.4rem;
+            height: 2.4rem;
+
+            path {
+                stroke: $colorPink;
+                @include transition(.3s, ease);
+            }
+        }
+    }
+}

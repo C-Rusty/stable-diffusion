@@ -1,0 +1,5 @@
+@import '../../../styles/common/extends.scss';
+
+.input-container {
+    @extend %option-container;
+}
