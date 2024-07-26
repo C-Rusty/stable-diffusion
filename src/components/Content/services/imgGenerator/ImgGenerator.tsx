@@ -1,18 +1,17 @@
 import { Dispatch, SetStateAction, useContext, useEffect, useRef, useState } from 'react';
-import { GenModelsValue, generationHistoryItem, ImageItem, UploadImgProps } from '../../../types/typesCommon';
-import { SDModelParams } from '../../../types/typesGeneratorOptions';
-import ModelV2Selects from '../ModelV2Selects/ModelV2Selects';
-import './generator.scss';
-import { Context } from '../../app/App';
-import { apiStableDiffusion } from '../../../api/Api.StableDiffusion';
-import Models from '../../models/Models';
-import Switcher from '../../common/switcher/Switcher';
-import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
-import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
-import { v4 as uuidv4 } from 'uuid';
-import { createImgStoragePath } from '../../../utilities/functions';
+import { GenModelsValue, generationHistoryItem, ImageItem, UploadImgProps } from '../../../../types/typesCommon';
+import ModelV2Selects from '../../servicesOptions/ImgGenerationOptions/ImgGenerationOptions';
+import './imgGenerator.scss';
+import { Context } from '../../../app/App';
+import { apiStableDiffusion } from '../../../../api/Api.StableDiffusion';
+import Models from '../../../models/Models';
+import Switcher from '../../../common/switcher/Switcher';
+import { ApiFirebaseStore } from '../../../../api/Api.Firebase.Store';
+import { apiFirebaseStorage } from '../../../../api/Api.Firebase.Storage';
+import { createImageId, createImgStoragePath } from '../../../../utilities/functions';
+import { SDModelParams } from '../../../../types/models';
 
-const GeneratorOptions = (
+const ImgGenerator = (
     {setIsLoading, setImage} 
     : 
     {
@@ -82,7 +81,7 @@ const GeneratorOptions = (
             if (!response) console.log(`Something went wrong with request: ${response}`);
 
             const timestamp: string = new Date().getTime().toString();
-            const id = uuidv4();
+            const id = createImageId();
             const storagePath = createImgStoragePath(id, promptValue, options.output_format);
 
             setValuesForImageUpload(response as string, id, storagePath);
@@ -164,7 +163,7 @@ const GeneratorOptions = (
                     <Models setGenModel={setGenModel} />
                 </div>
             </div>
-            <div className="generator-options__options-switcher">
+            {/* <div className="generator-options__options-switcher">
                 <div className="generator-options__options-switcher-item">
                     <p className='headline'>Show options (advanced)</p>
                     <Switcher 
@@ -188,7 +187,7 @@ const GeneratorOptions = (
                         />
                     </div>
                 }
-            </div>
+            </div> */}
             {isOptionsShown && 
                 <div className="generator-options__options-container">
                     <ModelV2Selects  
@@ -208,4 +207,4 @@ const GeneratorOptions = (
     );
 };
 
-export default GeneratorOptions;
+export default ImgGenerator;

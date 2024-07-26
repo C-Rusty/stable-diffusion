@@ -1,8 +1,9 @@
 import saveAs from "file-saver";
-import { generationHistoryItemsFolder } from "./commonVars";
-import { SDModelParams } from "../types/typesGeneratorOptions";
-import { coreModelOptions, sd3ModelOptions, sd3ModelOptionsImgToImg, ultraModelOptions } from "../types/models";
+import { generationHistoryItemsFolder } from "./vars";
+import { coreModelOptions, sd3ModelOptions, sd3ModelOptionsImgToImg, SDModelParams, ultraModelOptions, upscaleModelParams } from "../types/models";
 import { GenModelsValue } from "../types/typesCommon";
+import { OutputFormat } from "../types/typesGeneratorOptions";
+import { v4 as uuidv4 } from 'uuid';
 
 export async function saveImageToPC (url: string, name: string) {
     try {
@@ -87,16 +88,40 @@ export function createOptionsOfModel(options: SDModelParams, model: GenModelsVal
         default: return console.log(`wrong model name. Model name: ${model}`);
     };
 
-    const filteredOptions: SDModelParams = Object.assign({}, ...Object.values(modelOptions).map((option, index) => {
+    const clearedFromEmptyValuesOptions: SDModelParams = filterOptionsFromEmptyValues(modelOptions);
+
+    return clearedFromEmptyValuesOptions;
+};
+
+export function getImgFromResponse (response: { status: number; data: BlobPart | { name: string; errors: string[]; }; }, output_format: OutputFormat) {
+
+    if (response.status === 200) {
+        const blob = new Blob([response.data as BlobPart], {type: `image/${output_format}`});
+        const url = URL.createObjectURL(blob);
+        
+        return url;
+    } else {
+        const error: {
+            name: string;
+            errors: string[];
+        } = response.data as { name: string; errors: string[]; };
+        console.log(error);
+    };
+};
+
+export const filterOptionsFromEmptyValues = (options: coreModelOptions | sd3ModelOptions | sd3ModelOptionsImgToImg | ultraModelOptions | upscaleModelParams | {}) => {
+    const filteredOptions = Object.assign({}, ...Object.values(options).map((option, index) => {
             
         if (option !== null && option !== undefined) {
-            const key = Object.keys(modelOptions)[index];
+            const key = Object.keys(options)[index];
             return {[key]: option}
         };
 
     }).filter((option) => option !== undefined));
 
-    console.log(filteredOptions);
-
     return filteredOptions;
 };
+
+export const createImageId = () => {
+    return uuidv4();
+}

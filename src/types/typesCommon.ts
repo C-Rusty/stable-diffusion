@@ -1,5 +1,6 @@
 import { Dispatch } from "react";
-import { SDModelParams, AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesGeneratorOptions";
+import { AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesGeneratorOptions";
+import { SDModelParams } from "./models";
 
 export type SelectProps = {
     className: string, 
@@ -9,14 +10,16 @@ export type SelectProps = {
 
 export type InputProps = {
     className: string,
-    id: string,
-    inputValue: string | number,
-    inputType: string,
-    name: string,
+    type: `number` | `text`,
+    label: string,
+    id: string
+    value: number | string,
     min?: number,
     max?: number,
     step?: number,
-    placeholder: string
+    placeholder: string,
+    name: string,
+    required: boolean
 };
 
 export type GenModelsValue =  `ultra` | `sd3-large-turbo` | `sd3-large` | `sd3-medium` | `core`;
@@ -102,3 +105,7 @@ export type DeleteButtonText = `Delete` | `Delete selected images`;
 export type CreditsAmount = {
     balance: number | `No-data` | `Loading...`
 };
+
+export type ServiceType = `Image Generator` | `Upscale Image` | `Edit Image` | `Precise Generator` | `Video Generator`;
+
+export type upscaleServiceOption = `conservative` | `creative`;

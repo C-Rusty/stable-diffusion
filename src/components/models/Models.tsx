@@ -2,7 +2,7 @@ import { Fragment } from "react/jsx-runtime";
 import { GenModelsValue } from "../../types/typesCommon";
 import './models.scss';
 import { Dispatch, SetStateAction } from "react";
-import { modelSelects } from "../../utilities/generatorOptionProps";
+import { modelSelects } from "../../utilities/generatorOptions";
 
 const Models = (
     {

@@ -17,15 +17,3 @@ export type OutputFormatProps = {
     value: OutputFormat,
     text: OutputFormat
 };
-export type SDModelParams = {
-    prompt?: string,
-    aspect_ratio: AspectRatios,
-    negative_prompt?: string, 
-    seed: number,
-    model?: string, 
-    style_preset?: PresetStyle
-    output_format: OutputFormat,
-    image?: Blob | string,
-    mode?: `image-to-image` | `text-to-image`,
-    strength?: number
-}

@@ -1,5 +1,40 @@
-import { AspectRatiosProps, OutputFormat, PresetStyle } from "../types/typesGeneratorOptions";
-import { GenModelsText, GenModelsValue } from "../types/typesCommon";
+import { ImageGenerationServiceOption } from "../../types/services/imageGeneration";
+import { GenModelsText, GenModelsValue } from "../../types/typesCommon";
+import { AspectRatiosProps, OutputFormat, PresetStyle } from "../../types/typesGeneratorOptions";
+
+export const imageGenerationServiceOptions: ImageGenerationServiceOption[] = [
+    `ultra`,
+    `sd3-large-turbo`,
+    `sd3-large`,
+    `sd3-medium`,
+    `core`
+];
+
+const promptProps: {
+    label: string,
+    type: string,
+    id: string
+    placeholder: string,
+    name: string,
+    title: string,
+    autoComplete: string,
+    ariaLabel: string,
+    spellCheck: boolean,
+    rows: number,
+    required: boolean
+} = {
+    label: `Image description`,
+    type: `text`,
+    id: `prompt`,
+    placeholder: `Image description`,
+    name: `prompt`,
+    title: `Image description`,
+    autoComplete: `off`,
+    ariaLabel: `Image description`,
+    spellCheck: true,
+    rows: 1,
+    required: true,
+};
 
 const aspectRatiSelectProps: {
     label: string,
@@ -27,14 +62,24 @@ const negativeInputProps: {
     id: string
     placeholder: string,
     name: string,
-    isRequired: boolean
+    title: string,
+    autoComplete: string,
+    ariaLabel: string,
+    spellCheck: boolean,
+    rows: number,
+    required: boolean
 } = {
     label: `Negative Prompt`,
-    placeholder: `Type what you do not wish to see in the output image`,
     type: `text`,
-    name: `negative-prompt`,
     id: `negative-prompt`,
-    isRequired: false
+    placeholder: `Type what you do not wish to see in the output image`,
+    name: `negative-prompt`,
+    title: `Type what you do not wish to see in the output image`,
+    autoComplete: `off`,
+    ariaLabel: `Type what you do not wish to see in the output image`,
+    spellCheck: false,
+    rows: 1,
+    required: false
 };
 
 const outputFormmatSelectProps: {
@@ -161,15 +206,42 @@ const imageStrengthInputProps: {
     label: 'Image strength',
     type: `number`,
     id: 'image-strength',
-    value: 0,
-    min: 0,
-    max: 1,
-    step: 0.1,
+    value: .35,
+    min: .2,
+    max: .5,
+    step: .01,
     placeholder: `impact on the generation`,
     name: 'strength',
 };
 
+const creativityInputProps: {
+    label: string,
+    type: string
+    id: string,
+    value: number,
+    min: number,
+    max: number,
+    step: number,
+    className: string,
+    placeholder: string,
+    name: string,
+    required: boolean
+} = {
+    label: 'Creativity',
+    type: 'number',
+    id: 'creativity',
+    value: 0.2,
+    min: 0.2,
+    max: 0.5,
+    step: 0.01,
+    className: 'creativity-input',
+    placeholder: `impact on the generation`,
+    name: 'creativity',
+    required: true
+};
+
 export const modelSelects = {
+    promptProps,
     aspectRatiSelectProps,
     negativeInputProps,
     outputFormmatSelectProps,
@@ -177,5 +249,6 @@ export const modelSelects = {
     fileInputProps,
     genModelSelectProps,
     seedInputProps,
-    imageStrengthInputProps
+    imageStrengthInputProps,
+    creativityInputProps
 };

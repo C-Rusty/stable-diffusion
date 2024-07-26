@@ -7,7 +7,7 @@ import Loader from '../../common/loader/Loader';
 import { GalleryItem } from '../../../types/typesCommon';
 import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
 import ShowMoreButton from '../../common/buttons/show-more-btn/ShowMoreButton';
-import { loadFavouriteItemsLimit } from '../../../utilities/commonVars';
+import { loadFavouriteItemsLimit } from '../../../utilities/vars';
 import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
 import FavouritesItem from '../favouritesItem/FavouritesItem';
 import { getImgNameAndFormat } from '../../../utilities/functions';

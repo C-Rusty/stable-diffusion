@@ -1,5 +1,5 @@
 import { generationHistoryItem, updateImgItemFavouriteProps } from "../types/typesCommon";
-import { generationHistoryItemsFolder, loadFavouriteItemsLimit, loadGenHistoryItemsLimit } from "../utilities/commonVars";
+import { generationHistoryItemsFolder, loadFavouriteItemsLimit, loadGenHistoryItemsLimit } from "../utilities/vars";
 import { db } from "../utilities/firebaseConfig";
 import { DocumentData, QuerySnapshot, collection, deleteDoc, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter, updateDoc, where } from "firebase/firestore"; 
 import { createFullGenHistoryStorePath } from "../utilities/functions";

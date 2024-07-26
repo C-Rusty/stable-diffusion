@@ -4,7 +4,7 @@ import { generationHistoryItem } from '../../../types/typesCommon';
 import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
 import { Context } from '../../app/App';
 import GenerationHistoryItem from '../generationHistoryItem/GenerationHistoryItem';
-import { loadGenHistoryItemsLimit } from '../../../utilities/commonVars';
+import { loadGenHistoryItemsLimit } from '../../../utilities/vars';
 import ShowMoreButton from '../../common/buttons/show-more-btn/ShowMoreButton';
 
 const GenerationHistoryPage = () => {

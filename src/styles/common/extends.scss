@@ -194,3 +194,72 @@
 %page-min-height {
   min-height: calc(100vh - 10.5rem - 7.9rem);
 }
+
+%prompt {
+  @extend %Font-Regular-16px;
+  color: $colorPink;
+  
+  width: 100%;
+
+  padding: 2rem 0;
+
+  resize: vertical;
+
+  border: none;
+  border-bottom: .1rem solid $colorGreen;
+  border-radius: .5rem;
+
+  color: $colorPink;
+
+  background: transparent;
+
+  overflow: hidden;
+
+  min-height: 6rem;
+
+  @include transition(.3s, ease);
+
+  &::-webkit-scrollbar {
+      background: $colorBlack;
+      width: .6rem;
+  }
+
+  &::-webkit-scrollbar-thumb {
+      background: $colorGreen;
+
+      border-radius: .5rem
+  }
+
+  &:focus {
+      outline: none;
+      border-color: $colorBlue;
+
+      @include transition(.3s, ease);
+  }
+
+  &:hover {
+      @include transition(.3s, ease);
+      border-color: $colorBlue;
+  }
+}
+
+%submit-btn {
+  background: $colorBlue;
+
+  @extend %action-btn;
+
+  @extend %Font-Regular-20px;
+  color: $colorPink;
+
+  @include transition(.3s, ease);
+  
+  min-width: max-content;
+  width: 20%;
+
+  border: none;
+
+  &:hover {
+      background: $colorDarkBlue;
+      @include transition(.3s, ease);
+  }
+}

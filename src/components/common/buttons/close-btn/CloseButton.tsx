@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 import './closeButton.scss';
-import { ReactComponent as CloseIcon } from '../../../../imgs/close-icon.svg';
+import { ReactComponent as CloseIcon } from '../../../../images/close-icon.svg';
 
 const CloseButton = ( { setState } : { setState: Dispatch<SetStateAction<boolean>> } ) => {
 

@@ -1,5 +1,5 @@
 import './downloadButton.scss';
-import { ReactComponent as DownloadIcon } from '../../../../imgs/download-icon.svg';
+import { ReactComponent as DownloadIcon } from '../../../../images/download-icon.svg';
 import { saveImageToPC } from '../../../../utilities/functions';
 import { DownloadButtonText } from '../../../../types/typesCommon';
 

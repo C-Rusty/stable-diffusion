@@ -1,0 +1,112 @@
+@import '../../../styles/common/variables.scss';
+@import '../../../styles/common/fonts.scss';
+@import '../../../styles/common/extends.scss';
+
+@keyframes loading-animation {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(.8);
+    }
+  }
+  
+
+.generator-page {
+    background: $colorBlack;
+
+    @extend %page-min-height;
+
+    &__main {
+        display: flex;
+        flex-direction: column;
+        gap: 6rem;
+    }
+
+    &__balance {
+        width: 100%;
+
+        display: flex;
+        justify-content: flex-start;
+        gap: 1rem;
+            
+        padding: 1rem 2rem;
+    
+        border-radius: 3rem;
+
+        background: $colorLightBlack;
+
+        min-width: max-content;
+        max-width: max-content;
+
+        &-text, &-label {
+            @extend %Font-Regular-20px;
+            color: $colorPink;
+            
+            @include transition(.3s, ease);
+
+            &.loading-animation {
+                margin: 0 -.075rem;
+                animation: loading-animation .7s infinite alternate;
+
+                @include transition(.3s, ease);
+
+                @for $i from 1 through 6 {
+                    &:nth-child(#{$i+1}) {
+                        animation-delay: #{$i*.1}s;
+                    }
+                }
+            }
+        }
+    }
+
+    &__services {
+        padding: 3rem;
+
+        background: linear-gradient(to bottom, rgb(15, 52, 67), rgb(38, 161, 111));
+
+        border-radius: 3rem;
+
+        &-label {
+            @extend %Font-Regular-20px;
+            color: $colorPink;
+            text-align: center;
+
+            margin-bottom: 4rem;
+        }
+
+        &-options-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2rem;
+
+            &-item {
+                @extend %Font-Regular-20px;
+                color: $colorPink;
+                text-align: center;
+
+                padding: 1rem;
+
+                border: none;
+                border-radius: 3rem;
+
+                background: $colorBlack;
+
+                @include transition(.3s, ease);
+
+                &:hover {
+                    background: $colorBlue;
+                    cursor: pointer;
+
+                    @include transition(.3s, ease);
+                }
+
+                &.active {
+                    background: $colorBlue;
+
+                    @include transition(.3s, ease);
+                }
+            }   
+        }
+    }
+}

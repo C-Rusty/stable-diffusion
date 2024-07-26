@@ -1,6 +1,6 @@
 import { urlPaths } from '../../routes/urlPaths';
 import GoToButton from '../common/buttons/go-to-btn/GoToButton';
-import {ReactComponent as NotFound} from '../../imgs/not-found.svg'
+import NotFound from '../../images/not-found.svg';
 import './notFoundPage.scss';
 
 const NotFoundPage = () => {
@@ -9,7 +9,7 @@ const NotFoundPage = () => {
             <div className="container">
                 <div className="not-found__inner">
                     <div className="not-found__img-container">
-                        <NotFound className='not-found__img'/>
+                        <NotFound/>
                     </div>
                     <div className="not-found__action-btns-container">
                         <GoToButton urlPath={urlPaths.favourites} text="Go to favourites"/>

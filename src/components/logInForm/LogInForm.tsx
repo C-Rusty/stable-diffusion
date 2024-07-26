@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import './logInForm.scss';
 import { Context } from '../app/App';
 import { UserCredential } from 'firebase/auth';
-import { cookieNameUser } from '../../utilities/commonVars';
+import { cookieNameUser } from '../../utilities/vars';
 import Loader from '../common/loader/Loader';
 import { firebaseUserAuth } from '../../api/Api.FirebaseAuth';
 

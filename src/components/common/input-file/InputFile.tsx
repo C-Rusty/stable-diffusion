@@ -1,6 +1,6 @@
 import { Fragment } from 'react/jsx-runtime';
 import './inputFile.scss';
-import {ReactComponent as UploadIcon} from '../../../imgs/upload-icon.svg';
+import {ReactComponent as UploadIcon} from '../../../images/upload-icon.svg';
 import { Dispatch, useState } from 'react';
 
 interface InputProps {

@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {  cookieNameUser, cookieNameSD } from "../utilities/commonVars";
+import {  cookieNameUser, cookieNameSD } from "../utilities/vars";
 import { ApiFirebaseStore } from "../api/Api.Firebase.Store";
 
 export default class mobxStore {

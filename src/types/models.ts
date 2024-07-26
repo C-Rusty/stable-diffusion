@@ -20,3 +20,12 @@ export type sd3ModelOptions = Pick<SDModelParams, `mode` | `aspect_ratio` | `see
 export type sd3ModelOptionsImgToImg = Pick<SDModelParams, `mode` | `image` | `strength` | `aspect_ratio` | `seed` | `output_format` | `negative_prompt`>;
 
 export type ultraModelOptions = Pick<SDModelParams, `aspect_ratio` | `negative_prompt` | `seed` | `output_format`>;
+
+export type upscaleModelParams = {
+    prompt: string,
+    image: Blob,
+    seed?: number,
+    negative_prompt?: string, 
+    output_format: OutputFormat,
+    creativity?: number
+};

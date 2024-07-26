@@ -1,0 +1,70 @@
+@import '../../../../styles/common/fonts.scss';
+@import '../../../../styles/common/variables.scss';
+@import '../../../../styles/common/mixins.scss';
+@import '../../../../styles/common/extends.scss';
+
+.generator-options {
+    display: flex;
+    flex-direction: column;
+
+    gap: 3.2rem;
+
+    padding: 3rem;
+
+    background-color: $colorLightBlack;
+
+    border-radius: 3rem;
+
+    &__prompt {
+        @extend %prompt;
+    }
+
+    &__model-select {
+        &-headline {
+            @extend %Font-Regular-16px;
+            color: $colorPink;
+            text-align: center;
+        }
+
+
+        &-main {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 2.4rem;
+
+            margin-top: 1rem;
+        }
+    }
+
+    &__options-switcher {
+        display: flex;
+        gap: 2rem;
+
+        &-item {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+
+            .headline {
+                @extend %Font-Regular-16px;
+                color: $colorPink;
+            }
+        }
+    }
+
+    &__btn-container {
+        display: flex;
+        justify-content: center;    
+
+        width: 100%;
+    }
+
+    &__button {
+        @extend %submit-btn;
+    }
+}
+
+.active-model-btn {
+    transition: all .3s ease;
+    background: $colorBlue !important;
+}

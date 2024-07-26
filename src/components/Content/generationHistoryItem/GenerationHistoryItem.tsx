@@ -75,7 +75,7 @@ const GenerationHistoryItem = (
                     <p className="headline">Options:</p>
                     <div className="model-options-container">
                         {itemOptionsArray.map((option, index) => (
-                            <Fragment>
+                            <Fragment key={index}>
                                 {option.name !== `image` &&
                                     <div className="model-options-container__item" key={index}>
                                         <p className="name">{option.name}:</p>

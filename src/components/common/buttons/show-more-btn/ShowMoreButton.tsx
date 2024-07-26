@@ -1,6 +1,6 @@
-import { loadFavouriteItemsLimit, loadGenHistoryItemsLimit } from "../../../../utilities/commonVars";
+import { loadFavouriteItemsLimit, loadGenHistoryItemsLimit } from "../../../../utilities/vars";
 import './showMoreButton.scss';
-import {ReactComponent as Arrow} from '../../../../imgs/arrow.svg';
+import {ReactComponent as Arrow} from '../../../../images/arrow.svg';
 
 
 const ShowMoreButton = (

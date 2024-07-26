@@ -1,17 +1,17 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { SDModelParams, AspectRatios, OutputFormat, PresetStyle } from "../../../types/typesGeneratorOptions";
-import './modelV2Selects.scss';
-import Select from "../../common/select/Select";
-import { inputCommonClassName, selectCommonClassName } from "../../../utilities/commonVars";
-import Input from "../../common/input/Input";
-import { GenModelsValue } from "../../../types/typesCommon";
-import InputFile from "../../common/input-file/InputFile";
-import { modelSelects } from "../../../utilities/generatorOptionProps";
-import Textarea from "../../common/textarea/Textarea";
-import { coreModelOptions, sd3ModelOptions, sd3ModelOptionsImgToImg, ultraModelOptions } from "../../../types/models";
-import { createOptionsOfModel } from "../../../utilities/functions";
+import { AspectRatios, OutputFormat, PresetStyle } from "../../../../types/typesGeneratorOptions";
+import './imgGenerationOptions.scss';
+import Select from "../../../common/select/Select";
+import { inputCommonClassName, selectCommonClassName } from "../../../../utilities/vars";
+import Input from "../../../common/input/Input";
+import { GenModelsValue } from "../../../../types/typesCommon";
+import InputFile from "../../../common/input-file/InputFile";
+import { modelSelects } from "../../../../utilities/generatorOptions";
+import Textarea from "../../../common/textarea/Textarea";
+import { coreModelOptions, sd3ModelOptions, sd3ModelOptionsImgToImg, SDModelParams, ultraModelOptions } from "../../../../types/models";
+import { createOptionsOfModel } from "../../../../utilities/functions";
 
-const ModelV2Selects = (
+const ImgGenerationOptions = (
     {
         setOptions, 
         genModel,
@@ -135,8 +135,8 @@ const ModelV2Selects = (
                 {genModel !== `sd3-large-turbo` &&
                     <Textarea
                         {...negativeInputProps}
-                        negativePrompt={negativePrompt}
-                        setNegativePrompt={setNegativePrompt}
+                        value={negativePrompt}
+                        setValue={setNegativePrompt}
                     />
                 }
             </div>
@@ -144,4 +144,4 @@ const ModelV2Selects = (
     );
 };
 
-export default ModelV2Selects;
+export default ImgGenerationOptions;

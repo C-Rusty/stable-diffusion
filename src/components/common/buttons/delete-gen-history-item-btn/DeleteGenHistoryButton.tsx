@@ -1,5 +1,5 @@
 import './deleteGenHistoryButton.scss';
-import { ReactComponent as DeleteItemIcon } from '../../../../imgs/delete-item-icon.svg';
+import { ReactComponent as DeleteItemIcon } from '../../../../images/delete-item-icon.svg';
 import { ApiFirebaseStore } from '../../../../api/Api.Firebase.Store';
 import { Context } from '../../../app/App';
 import { Dispatch, SetStateAction, useContext } from 'react';

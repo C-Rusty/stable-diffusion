@@ -1,18 +1,24 @@
 import './textarea.scss';
 import { Dispatch, SetStateAction } from "react";
-import { textAreaCommonClassName } from "../../../utilities/commonVars";
+import { textAreaCommonClassName } from "../../../utilities/vars";
 
 interface TextareaComponentProps<T> {
-    id?: string,
-    name: string,
     label: string,
+    type: string,
+    id: string
     placeholder: string,
-    negativePrompt: string | undefined,
-    setNegativePrompt: Dispatch<SetStateAction<string | undefined>>
-    isRequired: boolean,
+    name: string,
+    title: string,
+    autoComplete: string,
+    ariaLabel: string,
+    spellCheck: boolean,
+    rows: number,
+    required: boolean
+    value: string | undefined,
+    setValue: Dispatch<SetStateAction<string | undefined>>
 };
 
-const Textarea = ( { id, name, placeholder, label, negativePrompt, setNegativePrompt, isRequired }: TextareaComponentProps<string>) => {
+const Textarea = ( { id, name, placeholder, label, value, setValue, required, ariaLabel, title, autoComplete, spellCheck, rows}: TextareaComponentProps<string>) => {
 
     return (
         <div className="textarea-container">
@@ -22,14 +28,14 @@ const Textarea = ( { id, name, placeholder, label, negativePrompt, setNegativePr
                 name={name} 
                 className={`textarea-container__textarea ${textAreaCommonClassName}`} 
                 placeholder={placeholder}
-                onChange={(e) => setNegativePrompt(e.target.value)}
-                value={negativePrompt ? negativePrompt : ``}
-                aria-label='Negative prompt'
-                title='Negative prompt'
-                autoComplete='on'
-                spellCheck='true'
-                required={isRequired}
-                rows={1}
+                onChange={(e) => setValue(e.target.value)}
+                value={value ? value : ``}
+                aria-label={ariaLabel}
+                title={title}
+                autoComplete={autoComplete}
+                spellCheck={spellCheck}
+                required={required}
+                rows={rows}
             />
     </div>
     )
