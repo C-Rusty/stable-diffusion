@@ -1,4 +1,4 @@
-export type ImageToVideoGenerationServiceOption = `image-to-video`;
+export type ImageToVideoGenerationServiceModels = `image-to-video`;
 
 export type ImageToVideoGenerationServiceOptions = {
     image: Blob,

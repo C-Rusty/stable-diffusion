@@ -1,6 +1,6 @@
 import { OutputFormat } from "../typesGeneratorOptions";
 
-export type ImageControlServiceOption = `sketch` | `structure` | `style`;
+export type ImageControlServiceModel = `sketch` | `structure` | `style`;
 
 export type ImageControlServiceOptions = {
     prompt: string,

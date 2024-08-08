@@ -1,21 +1,21 @@
-import { ImageControlServiceOption, ImageControlServiceOptions } from "./imageControl";
-import { ImageEditServiceOption, ImageEditServiceOptions } from "./imageEdit";
-import { ImageGenerationServiceOption } from "./imageGeneration";
-import { ImageToVideoGenerationServiceOption, ImageToVideoGenerationServiceOptions } from "./imageToVideoGeneration";
-import { ImageUpscaleModelParams, UpscaleServiceOption } from "./imageUpscale";
+import { ImageControlServiceModel, ImageControlServiceOptions } from "./imageControl";
+import { ImageEditServiceModel, ImageEditServiceOptions } from "./imageEdit";
+import { ImageGenerationServiceModel, ImageGenerationServiceOptions } from "./imageGeneration";
+import { ImageToVideoGenerationServiceModels, ImageToVideoGenerationServiceOptions } from "./imageToVideoGeneration";
+import { ImageUpscaleModelOptions, UpscaleServiceModel } from "./imageUpscale";
 
-export type ServiceType = `Image Generator` | `Upscale Image` | `Edit Image` | `Precise Generator` | `Video Generator`;
+export type ServiceType = `Image Generator` | `Upscale Image` | `Edit Image` | `Precise Image Edit` | `Video Generator`;
 
 export type ModelServicesOptions = {
-    imageGeneration: Array<ImageGenerationServiceOption>,
-    upscale: Array<UpscaleServiceOption>,
-    imageEdit: Array<ImageEditServiceOption>,
-    imageControl: Array<ImageControlServiceOption>,
-    imageToVideoGeneration: Array<ImageToVideoGenerationServiceOption>
+    imageGeneration: Array<ImageGenerationServiceModel>,
+    upscale: Array<UpscaleServiceModel>,
+    imageEdit: Array<ImageEditServiceModel>,
+    imageControl: Array<ImageControlServiceModel>,
+    imageToVideoGeneration: Array<ImageToVideoGenerationServiceModels>
 };
 
-export type CurrentServiceModel = ImageGenerationServiceOption | UpscaleServiceOption | ImageEditServiceOption | ImageControlServiceOption | ImageToVideoGenerationServiceOption;
+export type CurrentServiceModel = ImageGenerationServiceModel | UpscaleServiceModel | ImageEditServiceModel | ImageControlServiceModel | ImageToVideoGenerationServiceModels;
 
 export type CurrentServiceModels = Array<CurrentServiceModel>;
 
-export type CurrentServiceModelOptions = ImageEditServiceOptions | ImageGenerationServiceOption | ImageToVideoGenerationServiceOptions | ImageUpscaleModelParams | ImageControlServiceOptions;
+export type CurrentServiceModelOptions = ImageEditServiceOptions | ImageGenerationServiceOptions | ImageToVideoGenerationServiceOptions | ImageUpscaleModelOptions | ImageControlServiceOptions;

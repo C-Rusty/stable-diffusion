@@ -7,12 +7,12 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { OutputFormat } from "../../../../types/typesGeneratorOptions";
 import { modelSelects } from "../../../../utilities/generatorOptions";
 import { inputCommonClassName, selectCommonClassName } from "../../../../utilities/vars";
-import { upscaleModelParams } from "../../../../types/models";
+import { ImageUpscaleModelOptions } from "../../../../types/services/imageUpscale";
 
 const ImgUpscaleOptions = (
-    { setUpsacleOptions }
+    { setOptions }
     : 
-    { setUpsacleOptions: Dispatch<SetStateAction<upscaleModelParams | {}>>}) => {
+    { setOptions: Dispatch<SetStateAction<ImageUpscaleModelOptions | {}>>}) => {
 
     const { 
         promptProps,
@@ -23,15 +23,15 @@ const ImgUpscaleOptions = (
         creativityInputProps
     } = modelSelects;
 
-    const [prompt, setPrompt] = useState<string | undefined>(undefined);
+    const [prompt, setPrompt] = useState<string>(``);
     const [outputFormat, setOutputFormat] = useState<OutputFormat>(`png`);
     const [seed, setSeed] = useState<number>(0); 
     const [image, setImage] = useState<Blob | undefined>(undefined);
     const [creativity, setCreativity] = useState<number | undefined>(undefined);
-    const [negativePrompt, setNegativePrompt] = useState<string | undefined>(undefined);
+    const [negativePrompt, setNegativePrompt] = useState<string>(``);
 
     useEffect(() => {
-        setUpsacleOptions(modelSelects);
+        setOptions(modelSelects);
     }, [prompt, image, seed, outputFormat, creativity, negativePrompt]);
 
     return (

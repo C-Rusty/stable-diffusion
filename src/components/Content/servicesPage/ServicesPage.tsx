@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
 import './servicesPage.scss';
-import ImgGenerator from '../services/imgGenerator/ImgGenerator';
 import GenerationResult from '../generationResult/GenerationResult';
 import Loader from '../../common/loader/Loader';
 import noise from '../../../images/noise.png';
@@ -8,18 +7,21 @@ import { CreditsAmount, ImageItem, ServiceType } from '../../../types/typesCommo
 import { v4 as uuidv4 } from 'uuid';
 import { apiStableDiffusion } from '../../../api/Api.StableDiffusion';
 import { Context } from '../../app/App';
-import { CreditsReducer } from '../../../store/reduxReducers/creditsReducer';
+import { setCreditsAmount } from '../../../store/reduxReducers/creditsReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/reduxStore';
 import { ServiceTypes } from '../../../utilities/operatorOptions';
-import ImgUpscale from '../services/imgUpscale/ImgUpscale';
+import ServiceContainer from '../serviceContainer/ServiceContainer';
+import { setIsLoading } from '../../../store/reduxReducers/isLoadingReducer';
 
 const ServicesPage = () => {
 
     const { mobxStore } = useContext(Context);
+    const dispatch = useDispatch();
 
     const id = uuidv4();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+
+    const isLoading = useSelector<RootState, boolean>((state) => state.isLoading.isLoading);
 
     const [image, setImage] = useState<ImageItem>(
         {
@@ -34,7 +36,7 @@ const ServicesPage = () => {
 
     useEffect(() => {
         if (image.url) {
-            setIsLoading(false);
+            dispatch(setIsLoading(false));
         };
 
         if (mobxStore.SDApiKey && mobxStore.isAuth) {
@@ -46,17 +48,16 @@ const ServicesPage = () => {
         if (mobxStore.isAuth) updateBalance(mobxStore.SDApiKey!);
     }, [mobxStore.isAuth]);
 
-    const dispatch = useDispatch();
     const creditsAmount = useSelector<RootState, CreditsAmount>((state) => state.creditsAmount);
 
     const updateBalance = async (SDApiKey: string) => {
 
-        dispatch(CreditsReducer.actions.setCreditsAmount({ balance: `Loading...` }));
+        dispatch(setCreditsAmount({ balance: `Loading...` }));
 
         setTimeout( async () => {
             const response = await apiStableDiffusion.getBalance(SDApiKey);
     
-            if (response) dispatch(CreditsReducer.actions.setCreditsAmount({
+            if (response) dispatch(setCreditsAmount({
                 balance: response.credits
             }));
         }, Number(creditsAmount.balance) ? 5000 : 0);
@@ -102,19 +103,10 @@ const ServicesPage = () => {
                                 ))}
                             </div>
                         </div>
-                        <div className="service-container">
-                            {/* {activeService === `Image Generator` ?
-                                <ImgGenerator
-                                    setIsLoading={setIsLoading} 
-                                    setImage={setImage}
-                                /> 
-                                : 
-                                <ImgUpscale
-                                    setIsLoading={setIsLoading} 
-                                    setImage={setImage}
-                                />
-                            } */}
-                        </div>
+                        <ServiceContainer 
+                            activeService={activeService}
+                            setImage={setImage}
+                        />
                         {isLoading ? 
                             <Loader className="generator-page" /> 
                             : 

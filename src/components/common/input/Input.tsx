@@ -19,7 +19,7 @@ const Input = <T,> ({ type, name, id, min, max, step, placeholder, label, value,
 
     return (
         <div className="input-container">
-            <label className="input-container__label">{label}</label>
+            <label className="input-container__label">{type === `number` ? `${label} (number)` : label }</label>
             <input 
                 type={type} 
                 name={name} 

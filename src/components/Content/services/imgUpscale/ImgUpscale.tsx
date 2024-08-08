@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { upscaleServicesOptions } from '../../../../utilities/operatorOptions';
-import { ImageItem, upscaleServiceOption } from '../../../../types/typesCommon';
-import { upscaleModelParams } from '../../../../types/models';
 import { apiStableDiffusion } from '../../../../api/Api.StableDiffusion';
 import { Context } from '../../../app/App';
 import ImgUpscaleOptions from '../../servicesOptions/ImgUpscaleOptions/ImgUpscaleOptions';
 import { createImageId, createImgStoragePath, filterOptionsFromEmptyValues } from '../../../../utilities/functions';
+import { ImageItem } from '../../../../types/typesCommon';
+import { ImageUpscaleModelOptions, UpscaleServiceModel } from '../../../../types/services/imageUpscale';
 
 const ImgUpscale = (
     {setIsLoading, setImage} 
@@ -18,15 +18,15 @@ const ImgUpscale = (
     const {mobxStore} = useContext(Context);
     const apiKey = mobxStore.SDApiKey;
 
-    const [upscaleModel, setUpscaleModel] = useState<upscaleServiceOption>(`conservative`);
-    const [upsacleOptions, setUpsacleOptions] = useState<upscaleModelParams | {}>({});
+    const [upscaleModel, setUpscaleModel] = useState<UpscaleServiceModel>(`conservative`);
+    const [upsacleOptions, setUpsacleOptions] = useState<ImageUpscaleModelOptions | {}>({});
 
     const submitUpscaleForm = async (event: React.FormEvent) => {
         event.preventDefault();
 
         if (!upsacleOptions) return console.log(`Upscale options is empty.`);
 
-        const clearedFromEmptyValuesOptions: upscaleModelParams = filterOptionsFromEmptyValues(upsacleOptions);
+        const clearedFromEmptyValuesOptions: ImageUpscaleModelOptions = filterOptionsFromEmptyValues(upsacleOptions);
 
         setIsLoading(true);
 
@@ -65,7 +65,7 @@ const ImgUpscale = (
                             >{option} mode</button>
                         ))}
                     </div>
-                    <ImgUpscaleOptions setUpsacleOptions={setUpsacleOptions}/>
+                    {/* <ImgUpscaleOptions setUpsacleOptions={setUpsacleOptions}/> */}
                     <div className="img-upscale__form-btn-container">
                         <button 
                             type="submit" 

@@ -1,0 +1,31 @@
+@import '../../../styles/index.scss';
+
+.service-container {
+    background: $colorLightBlack;
+
+    @extend %block;
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+    }
+
+    &__switchers {
+        display: flex;
+        gap: 4rem;
+    }
+
+    &__btn-container {
+        display: flex;
+        justify-content: center;
+        
+        &-btn {
+            @extend %submit-btn;
+
+            &.disabled {
+                background: $colorGray;
+            }
+        }
+    }
+}

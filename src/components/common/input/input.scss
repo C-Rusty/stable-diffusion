@@ -2,4 +2,18 @@
 
 .input-container {
     @extend %option-container;
+
+    &__input {
+        @extend %input-textarea;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
 }

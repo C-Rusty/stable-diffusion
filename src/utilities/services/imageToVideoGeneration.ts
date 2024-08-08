@@ -1,5 +1,5 @@
-import { ImageToVideoGenerationServiceOption } from "../../types/services/imageToVideoGeneration";
+import { ImageToVideoGenerationServiceModels } from '../../types/services/imageToVideoGeneration';
 
-export const imageToVideoGenerationServiceOption: Array<ImageToVideoGenerationServiceOption> = [
+export const ImageToVideoGenerationServiceModel: Array<ImageToVideoGenerationServiceModels> = [
     `image-to-video`
 ];

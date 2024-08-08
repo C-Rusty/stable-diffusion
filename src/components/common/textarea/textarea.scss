@@ -11,6 +11,8 @@
     &__textarea {
         overflow: auto;
 
+        @extend %input-textarea;
+
         resize: vertical;
 
         &::-webkit-scrollbar {

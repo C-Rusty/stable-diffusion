@@ -42,10 +42,10 @@ const InputFile = ({ name, id, accept, className, setImage} : InputProps) => {
                     className={`input-container__file-input`}
                     aria-label='Upload image'
                     title='Upload image'
-                    autoComplete='on'
                     spellCheck='true'
                     required={true}
                     accept={accept}
+                    placeholder='Click or drag n drop to upload image'
                     onChange={(e) => handleImageUpload(e)}
                 />
                 <label className='label-container'>
@@ -55,7 +55,7 @@ const InputFile = ({ name, id, accept, className, setImage} : InputProps) => {
                         </span>
                         :
                         <Fragment>
-                            <span className="input-container__name">Upload Image</span>
+                            <span className="input-container__label">Click or drag image here</span>
                             <UploadIcon/>
                         </Fragment>
                     }

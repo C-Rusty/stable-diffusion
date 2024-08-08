@@ -1,6 +1,6 @@
 import { OutputFormat } from "../typesGeneratorOptions";
 
-export type ImageEditServiceOption = `erase` | `inpaint` | `outpaint` | `search-and-replace` | `remove-background`;
+export type ImageEditServiceModel = `erase` | `inpaint` | `outpaint` | `search-and-replace` | `remove-background`;
 
 export type ImageEditServiceOptions = {
     image: Blob,

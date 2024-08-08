@@ -1,3 +1,3 @@
-import { ImageControlServiceOption } from "../../types/services/imageControl";
+import { ImageControlServiceModel } from "../../types/services/imageControl";
 
-export const imageControlServiceOptions: Array<ImageControlServiceOption> = [`sketch`, `structure`, `style`];
+export const imageControlServiceOptions: Array<ImageControlServiceModel> = [`sketch`, `structure`, `style`];

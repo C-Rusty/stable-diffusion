@@ -1,8 +1,8 @@
-import { ImageGenerationServiceOption } from "../../types/services/imageGeneration";
+import { ImageGenerationServiceModel } from "../../types/services/imageGeneration";
 import { GenModelsText, GenModelsValue } from "../../types/typesCommon";
 import { AspectRatiosProps, OutputFormat, PresetStyle } from "../../types/typesGeneratorOptions";
 
-export const imageGenerationServiceOptions: ImageGenerationServiceOption[] = [
+export const imageGenerationServiceOptions: ImageGenerationServiceModel[] = [
     `ultra`,
     `sd3-large-turbo`,
     `sd3-large`,

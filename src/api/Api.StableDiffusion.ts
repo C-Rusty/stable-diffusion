@@ -1,9 +1,11 @@
 import axios from "axios";
 import FormData from "form-data";
-import { SDModelParams, upscaleModelParams } from "../types/models";
-import { upscaleServiceOption } from "../types/typesCommon";
+import { UpscaleServiceModel } from "../types/typesCommon";
 import { getImgFromResponse } from "../utilities/functions";
 import { OutputFormat } from "../types/typesGeneratorOptions";
+import { CurrentServiceModelOptions } from "../types/services/commonServices";
+import { ImageGenerationServiceOptions } from "../types/services/imageGeneration";
+import { ImageUpscaleModelOptions } from "../types/services/imageUpscale";
 
 const API_URL: string = `https://api.stability.ai`;
 
@@ -29,7 +31,7 @@ const getBalance = async (apiKey: string) => {
     };
 };
 
-const getImage = async (prompt: string, params: SDModelParams, model: string, apiKey: string) => { 
+const getGeneratedImage = async (prompt: string, params: ImageGenerationServiceOptions, model: string, apiKey: string) => { 
     const urlPath = `${API_URL}/v2beta/stable-image/generate/${model.split(`-`)[0]}`;
 
     const formData = {prompt, ...params};
@@ -52,7 +54,7 @@ const getImage = async (prompt: string, params: SDModelParams, model: string, ap
     return result;
 };
 
-const getUpscaledImage = async (params: upscaleModelParams, model: upscaleServiceOption, apiKey: string) => {
+const getUpscaledImage = async (params: ImageUpscaleModelOptions, model: UpscaleServiceModel, apiKey: string) => {
     const urlPath = `${API_URL}/v2beta/stable-image/upscale/${model}`;
 
     const formData = params;
@@ -118,6 +120,6 @@ const getUpscaledCreativeImage = async (id: string, apiKey: string, output_forma
 
 export const apiStableDiffusion = {
     getBalance,
-    getImage,
+    getGeneratedImage,
     getUpscaledImage
 };

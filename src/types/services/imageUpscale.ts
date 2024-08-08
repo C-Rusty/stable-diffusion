@@ -1,8 +1,8 @@
 import { OutputFormat } from "../typesGeneratorOptions";
 
-export type UpscaleServiceOption = `conservative` | `creative`;
+export type UpscaleServiceModel = `conservative` | `creative`;
 
-export type ImageUpscaleModelParams = {
+export type ImageUpscaleModelOptions = {
     prompt: string,
     image: Blob,
     seed?: number,

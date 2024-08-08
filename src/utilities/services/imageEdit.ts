@@ -1,6 +1,6 @@
-import { ImageEditServiceOption } from "../../types/services/imageEdit";
+import { ImageEditServiceModel } from "../../types/services/imageEdit";
 
-export const imageEditServiceOptions: Array<ImageEditServiceOption> = [
+export const imageEditServiceOptions: Array<ImageEditServiceModel> = [
     `erase`,
     `inpaint`,
     `outpaint`,

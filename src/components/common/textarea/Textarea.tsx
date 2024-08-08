@@ -14,8 +14,8 @@ interface TextareaComponentProps<T> {
     spellCheck: boolean,
     rows: number,
     required: boolean
-    value: string | undefined,
-    setValue: Dispatch<SetStateAction<string | undefined>>
+    value: string,
+    setValue: Dispatch<SetStateAction<string>>
 };
 
 const Textarea = ( { id, name, placeholder, label, value, setValue, required, ariaLabel, title, autoComplete, spellCheck, rows}: TextareaComponentProps<string>) => {
@@ -28,8 +28,8 @@ const Textarea = ( { id, name, placeholder, label, value, setValue, required, ar
                 name={name} 
                 className={`textarea-container__textarea ${textAreaCommonClassName}`} 
                 placeholder={placeholder}
-                onChange={(e) => setValue(e.target.value)}
-                value={value ? value : ``}
+                onChange={(e) => setValue(e.target.value.trim())}
+                value={value}
                 aria-label={ariaLabel}
                 title={title}
                 autoComplete={autoComplete}

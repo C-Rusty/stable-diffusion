@@ -1,9 +1,10 @@
 import saveAs from "file-saver";
 import { generationHistoryItemsFolder } from "./vars";
-import { coreModelOptions, sd3ModelOptions, sd3ModelOptionsImgToImg, SDModelParams, ultraModelOptions, upscaleModelParams } from "../types/models";
 import { GenModelsValue } from "../types/typesCommon";
 import { OutputFormat } from "../types/typesGeneratorOptions";
 import { v4 as uuidv4 } from 'uuid';
+import { coreModelOptions, sd3ModelOptions, sd3ModelOptionsImgToImg, ImageGenerationServiceOptions, ultraModelOptions } from "../types/services/imageGeneration";
+import { ImageUpscaleModelOptions } from "../types/services/imageUpscale";
 
 export async function saveImageToPC (url: string, name: string) {
     try {
@@ -35,7 +36,7 @@ export function createFullGenHistoryStorePath (userId: string, imgStorageName: s
     return `users/${userId}/${generationHistoryItemsFolder}/${imgStorageName? imgStorageName : ``}`;
 };
 
-export function createOptionsOfModel(options: SDModelParams, model: GenModelsValue, isImgToImgModeEnabled?: boolean) {
+export function createOptionsOfModel(options: ImageGenerationServiceOptions, model: GenModelsValue, isImgToImgModeEnabled?: boolean) {
 
     let modelOptions: coreModelOptions | sd3ModelOptions | sd3ModelOptionsImgToImg | ultraModelOptions | {} = {};
 
@@ -88,7 +89,7 @@ export function createOptionsOfModel(options: SDModelParams, model: GenModelsVal
         default: return console.log(`wrong model name. Model name: ${model}`);
     };
 
-    const clearedFromEmptyValuesOptions: SDModelParams = filterOptionsFromEmptyValues(modelOptions);
+    const clearedFromEmptyValuesOptions: ImageGenerationServiceOptions = filterOptionsFromEmptyValues(modelOptions);
 
     return clearedFromEmptyValuesOptions;
 };
@@ -109,7 +110,7 @@ export function getImgFromResponse (response: { status: number; data: BlobPart |
     };
 };
 
-export const filterOptionsFromEmptyValues = (options: coreModelOptions | sd3ModelOptions | sd3ModelOptionsImgToImg | ultraModelOptions | upscaleModelParams | {}) => {
+export const filterOptionsFromEmptyValues = (options: coreModelOptions | sd3ModelOptions | sd3ModelOptionsImgToImg | ultraModelOptions | ImageUpscaleModelOptions | {}) => {
     const filteredOptions = Object.assign({}, ...Object.values(options).map((option, index) => {
             
         if (option !== null && option !== undefined) {

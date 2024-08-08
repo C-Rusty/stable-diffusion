@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ServiceType } from "../../../types/typesCommon";
 import { CurrentServiceModel, CurrentServiceModels } from "../../../types/services/commonServices";
 import { servicesOptions } from "../../../utilities/services/commonServices";
+import './modelsContainer.scss';
 
 const ModelsContainer = (
     {
@@ -12,8 +13,8 @@ const ModelsContainer = (
     :
     {
         activeService: ServiceType,
-        serviceModelOption: CurrentServiceModel | undefined,
-        setServiceModelOption: Dispatch<SetStateAction<CurrentServiceModel | undefined>>
+        serviceModelOption: CurrentServiceModel,
+        setServiceModelOption: Dispatch<SetStateAction<CurrentServiceModel>>
     }) => {
 
     const [currentModels, setCurrentModels] = useState<CurrentServiceModels>(servicesOptions.imageGeneration);
@@ -23,21 +24,35 @@ const ModelsContainer = (
             case `Image Generator`: setCurrentModels(servicesOptions.imageGeneration); break;
             case `Upscale Image`: setCurrentModels(servicesOptions.upscale); break;
             case `Edit Image`: setCurrentModels(servicesOptions.imageEdit); break;
-            case `Precise Generator`: setCurrentModels(servicesOptions.imageEdit); break;
+            case `Precise Image Edit`: setCurrentModels(servicesOptions.imageControl); break;
             case `Video Generator`: setCurrentModels(servicesOptions.imageToVideoGeneration); break;
         
             default: return console.log(`Wrong service type: ${activeService}`);
         }
     }, [activeService]);
 
+    useEffect(() => {
+        setServiceModelOption(currentModels[0]);
+    }, [currentModels, setServiceModelOption]);
+
+    function removeSymbols(string: string, stringToRemove: `-` | `sd3-`) {
+        switch (stringToRemove) {
+            case `-`: string = string.split(stringToRemove).join(` `); break;
+
+            case `sd3-`: return string.replace(stringToRemove, ``).split(`-`).join(` `);
+        };
+
+        return string;
+    };
+
     return (
         <div className="service-models">
-            <div className="service-modesl__inner">
-                <p className="service-models__label">Services</p>
-                <div className="service-models__container">
+            <div className="service-models__inner">
+                <p className="service-models__label">Models</p>
+                <div className="service-models__items-container">
                     {currentModels.map((option) => (
                         <button 
-                            className={`generator-page__services-options-container-item ${serviceModelOption === option ? 'active' : ''}`}
+                            className={`service-models__items-container-item ${serviceModelOption === option ? 'active' : ''}`}
                             key={option}
                             type="button"
                             name={option}
@@ -46,7 +61,15 @@ const ModelsContainer = (
                             aria-label={option}
                             onClick={() => setServiceModelOption(option)}
                         >
-                            {option}
+                            {
+                                currentModels.includes(`ultra`) ?
+                                    option.includes(`sd3`) ? 
+                                        removeSymbols(option, `sd3-`)
+                                    : 
+                                        removeSymbols(option, `-`)
+                                :
+                                removeSymbols(option, `-`)
+                            }
                         </button>
                     ))}
                 </div>

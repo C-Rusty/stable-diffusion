@@ -1,6 +1,6 @@
 import { Dispatch } from "react";
 import { AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesGeneratorOptions";
-import { SDModelParams } from "./models";
+import { ImageGenerationServiceModel, ImageGenerationServiceOptions } from "./services/imageGeneration";
 
 export type SelectProps = {
     className: string, 
@@ -62,7 +62,7 @@ export type GalleryItem = {
 
 export type generationHistoryItem = {
     generalInfo: ImageItem,
-    options: SDModelParams,
+    options: ImageGenerationServiceOptions,
     isFavourite: boolean
 };
 
@@ -106,6 +106,6 @@ export type CreditsAmount = {
     balance: number | `No-data` | `Loading...`
 };
 
-export type ServiceType = `Image Generator` | `Upscale Image` | `Edit Image` | `Precise Generator` | `Video Generator`;
+export type ServiceType = `Image Generator` | `Upscale Image` | `Edit Image` | `Precise Image Edit` | `Video Generator`;
 
-export type upscaleServiceOption = `conservative` | `creative`;
+export type UpscaleServiceModel = `conservative` | `creative`;

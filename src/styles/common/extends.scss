@@ -55,10 +55,10 @@
 %option-container {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem;
 
   border: none;
-  border-bottom: .1rem solid $colorGreen;
+  border-bottom: .1rem solid #218770;
   border-radius: .5rem;
 
   @include transition(.3s, ease);
@@ -79,42 +79,15 @@
 
     @include transition(.3s, ease);
   }
-
-  input, textarea {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-
-    color: $colorPink;
-
-    border: none;
-
-    padding-bottom: 2rem;
-
-    background-color: transparent;
-
-    @include transition(.3s, ease);
-
-    &:focus {
-      @include transition(.3s, ease);
-
-      outline: none;
-      border-bottom-color: $colorBlue;
-
-      label {
-          color: $colorBlue;
-          @include transition(.3s, ease);
-      }
-    }
-  }
 }
 
 %button {
     @extend %Font-Regular-16px;
 
     border: none;
-    border-radius: .5rem;
+    border-radius: 2rem;
+
+    text-align: center;
 
     padding: 1.5rem 1rem;
 
@@ -124,6 +97,75 @@
         @include transition(.3s, ease);
         cursor: pointer;    
     }
+
+    &.active {
+      @include transition(.3s, ease);
+  }
+}
+
+%action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  text-decoration: none;
+
+  background: $colorLightBlack;
+
+  padding: 1rem 3rem;
+
+  border: none;
+  border-radius: 3rem;
+
+  &:hover {
+    cursor: pointer;
+
+    p {
+      color: $colorBlue;
+    }
+  }
+
+  p, svg {
+    @include transition(.3s, ease);
+
+    &:hover {
+      @include transition(.3s, ease);
+    }
+  }
+
+  svg {
+    width: 2.4rem;
+    height: 2.4rem;
+  }
+
+  p {
+    @extend %Font-Regular-16px;
+    color: $colorPink;
+
+    white-space: nowrap;
+  }
+}
+
+%submit-btn {
+  background: $colorBlue;
+
+  @extend %action-btn;
+
+  @extend %Font-Regular-20px;
+  color: $colorPink;
+
+  @include transition(.3s, ease);
+  
+  min-width: max-content;
+  width: 20%;
+
+  border: none;
+
+  &:hover {
+      background: $colorDarkBlue;
+      @include transition(.3s, ease);
+  }
 }
 
 %select-btns-container {
@@ -144,50 +186,6 @@
   .main-bnts {
       display: flex;
       gap: 2rem;
-  }
-}
-
-%action-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-
-    text-decoration: none;
-
-    background: $colorLightBlack;
-
-    padding: 1rem 3rem;
-  
-    border: none;
-    border-radius: 3rem;
-  
-    &:hover {
-      cursor: pointer;
-
-      p {
-        color: $colorBlue;
-      }
-    }
-
-    p, svg {
-      @include transition(.3s, ease);
-
-      &:hover {
-        @include transition(.3s, ease);
-      }
-    }
-  
-    svg {
-      width: 2.4rem;
-      height: 2.4rem;
-    }
-
-    p {
-      @extend %Font-Regular-16px;
-      color: $colorPink;
-
-      white-space: nowrap;
   }
 }
 
@@ -243,23 +241,35 @@
   }
 }
 
-%submit-btn {
-  background: $colorBlue;
 
-  @extend %action-btn;
 
-  @extend %Font-Regular-20px;
-  color: $colorPink;
+%block {
+  padding: 3rem;
+  border-radius: 3rem;
+}
 
-  @include transition(.3s, ease);
-  
-  min-width: max-content;
-  width: 20%;
+%input-textarea {
+  background: transparent;
+
+  width: 100%;
+
+  padding: 1.5rem 1rem 1.5rem 0;
 
   border: none;
+  border-radius: .5rem;
 
-  &:hover {
-      background: $colorDarkBlue;
+  color: $colorPink;
+  @extend %Font-Regular-16px;
+
+  @include transition(.3s, ease);
+
+  &:focus {
+      outline: none;
+
+      border-bottom-color: $colorBlue;
+
+      padding-left: 1rem;
+
       @include transition(.3s, ease);
   }
 }

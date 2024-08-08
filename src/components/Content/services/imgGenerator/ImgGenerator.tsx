@@ -9,7 +9,7 @@ import Switcher from '../../../common/switcher/Switcher';
 import { ApiFirebaseStore } from '../../../../api/Api.Firebase.Store';
 import { apiFirebaseStorage } from '../../../../api/Api.Firebase.Storage';
 import { createImageId, createImgStoragePath } from '../../../../utilities/functions';
-import { SDModelParams } from '../../../../types/models';
+import { ImageGenerationServiceOptions } from '../../../../types/services/imageGeneration';
 
 const ImgGenerator = (
     {setIsLoading, setImage} 
@@ -27,7 +27,7 @@ const ImgGenerator = (
     const [id, setId] = useState<string | undefined>(undefined);
     const prompt = useRef<HTMLTextAreaElement | null>(null);
     const [genModel, setGenModel] = useState<GenModelsValue>(`ultra`);
-    const [options, setOptions] = useState<SDModelParams | undefined>(undefined);
+    const [options, setOptions] = useState<ImageGenerationServiceOptions | undefined>(undefined);
     const [isOptionsShown, setIsOptionsShown] = useState<boolean>(false);
     const [storagePath, setStoragePath] = useState<string | undefined>(undefined);
 
@@ -76,7 +76,7 @@ const ImgGenerator = (
 
             let response: string | { name: string; errors: string[]; } | undefined = undefined;
 
-            response = await apiStableDiffusion.getImage(promptValue, options, genModel, apiKey);
+            response = await apiStableDiffusion.getGeneratedImage(promptValue, options, genModel, apiKey);
             
             if (!response) console.log(`Something went wrong with request: ${response}`);
 
@@ -188,7 +188,7 @@ const ImgGenerator = (
                     </div>
                 }
             </div> */}
-            {isOptionsShown && 
+            {/* {isOptionsShown && 
                 <div className="generator-options__options-container">
                     <ModelV2Selects  
                         setOptions={setOptions as Dispatch<SetStateAction<SDModelParams | {}>>}
@@ -196,7 +196,7 @@ const ImgGenerator = (
                         isImgToImgModeEnabled={isImgToImgModeEnabled}
                     />
                 </div>
-            } 
+            }  */}
             <div className="generator-options__btn-container">
                 <button 
                     type="submit" 
