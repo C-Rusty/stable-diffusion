@@ -44,7 +44,6 @@
        padding: 1.5rem 1rem;
 
        border: none;
-       border-bottom: .1rem solid $colorGreen;
        border-radius: .5rem;
 
        color: $colorPink;
@@ -56,6 +55,8 @@
 
     &__input {
         @extend %input-textarea;
+
+        border-bottom: .1rem solid $colorGreen;
     }
 
     &__btn-container {

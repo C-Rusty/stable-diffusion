@@ -1,11 +1,12 @@
 import { Dispatch, SetStateAction, useContext, useState } from 'react';
 import { upscaleServicesOptions } from '../../../../utilities/operatorOptions';
-import { apiStableDiffusion } from '../../../../api/Api.StableDiffusion';
 import { Context } from '../../../app/App';
-import ImgUpscaleOptions from '../../servicesOptions/ImgUpscaleOptions/ImgUpscaleOptions';
-import { createImageId, createImgStoragePath, filterOptionsFromEmptyValues } from '../../../../utilities/functions';
 import { ImageItem } from '../../../../types/typesCommon';
 import { ImageUpscaleModelOptions, UpscaleServiceModel } from '../../../../types/services/imageUpscale';
+import { createImgStoragePath } from '../../../../utilities/functions/storagePaths';
+import { createImageId } from '../../../../utilities/functions/images';
+import { filterOptionsFromEmptyValues } from '../../../../utilities/functions/modelOptions';
+import { ApiImgUpscale } from '../../../../api/StableDiffustion/Api.ImgUpscale';
 
 const ImgUpscale = (
     {setIsLoading, setImage} 
@@ -31,7 +32,7 @@ const ImgUpscale = (
         setIsLoading(true);
 
         try {
-            const response = await apiStableDiffusion.getUpscaledImage(clearedFromEmptyValuesOptions, upscaleModel, apiKey!);
+            const response = await ApiImgUpscale.getUpscaledImage(clearedFromEmptyValuesOptions, upscaleModel, apiKey!);
 
             const { prompt, output_format } = clearedFromEmptyValuesOptions;
 
@@ -40,7 +41,7 @@ const ImgUpscale = (
 
                 const timestamp: string = new Date().getTime().toString();
                 const id = createImageId();
-                const storagePath = createImgStoragePath(id, prompt, output_format);
+                const storagePath = createImgStoragePath(id, prompt, `png`);
             }
         } catch (error) {
             

@@ -1,6 +1,7 @@
 import { Dispatch } from "react";
-import { AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesGeneratorOptions";
+import { AspectRatios, AspectRatiosProps, OutputFormat, OutputFormatProps, PresetStyleProps } from "./typesGeneratorOptions";
 import { ImageGenerationServiceModel, ImageGenerationServiceOptions } from "./services/imageGeneration";
+import { CurrentServiceModelOptions } from "./services/commonServices";
 
 export type SelectProps = {
     className: string, 
@@ -44,7 +45,7 @@ export type ModalProps = {
 export type ImageItem = {
     id: string,
     prompt: string,
-    format: string,
+    format: OutputFormat,
     url: string,
     storagePath: string
     timestamp: string,
@@ -62,7 +63,7 @@ export type GalleryItem = {
 
 export type generationHistoryItem = {
     generalInfo: ImageItem,
-    options: ImageGenerationServiceOptions,
+    options: CurrentServiceModelOptions,
     isFavourite: boolean
 };
 

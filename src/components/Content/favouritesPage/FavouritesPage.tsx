@@ -5,12 +5,12 @@ import DownloadButton from '../../common/buttons/download-btn/DownloadButton';
 import DeleteButton from '../../common/buttons/delete-img-btn/DeleteImgButton';
 import Loader from '../../common/loader/Loader';
 import { GalleryItem } from '../../../types/typesCommon';
-import { apiFirebaseStorage } from '../../../api/Api.Firebase.Storage';
+import { apiFirebaseStorage } from '../../../api/Firebase/Api.Firebase.Storage';
 import ShowMoreButton from '../../common/buttons/show-more-btn/ShowMoreButton';
-import { loadFavouriteItemsLimit } from '../../../utilities/vars';
-import { ApiFirebaseStore } from '../../../api/Api.Firebase.Store';
+import { loadFavouriteItemsLimit } from '../../../utilities/constants';
+import { ApiFirebaseStore } from '../../../api/Firebase/Api.Firebase.Store';
 import FavouritesItem from '../favouritesItem/FavouritesItem';
-import { getImgNameAndFormat } from '../../../utilities/functions';
+import { getImgNameAndFormat } from '../../../utilities/functions/storagePaths';
 
 const FavouritesPage = () => {
 

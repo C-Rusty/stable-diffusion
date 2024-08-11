@@ -4,7 +4,7 @@ import ImageGallery from "react-image-gallery";
 import './gallery.scss';
 import DownloadButton from "../common/buttons/download-btn/DownloadButton";
 import CloseButton from "../common/buttons/close-btn/CloseButton";
-import { getImgNameAndFormat } from "../../utilities/functions";
+import { getImgNameAndFormat } from "../../utilities/functions/storagePaths";
 
 const Gallery = (
     {

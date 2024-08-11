@@ -228,7 +228,7 @@ const creativityInputProps: {
     className: 'creativity-input',
     placeholder: `impact on the generation`,
     name: 'creativity',
-    required: true
+    required: false
 };
 
 export const modelSelects = {

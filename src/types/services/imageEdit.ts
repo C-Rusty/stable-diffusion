@@ -9,7 +9,7 @@ export type ImageEditServiceOptions = {
     up?: number,
     down?: number,
     creativity?: number,
-    search_prompt?: string,
+    search_prompt: string,
     negative_prompt?: string,
     prompt?: string,
     seed?: number,

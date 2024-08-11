@@ -18,7 +18,7 @@
         gap: 2rem;
 
         &:not(:has(.service-models__items-container-item:nth-of-type(4))) {
-            grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
         }
 
         &:has(.service-models__items-container-item:nth-of-type(4)) {

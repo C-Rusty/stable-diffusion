@@ -8,13 +8,15 @@ const ModelsContainer = (
     {
         activeService, 
         serviceModelOption,
-        setServiceModelOption
+        setServiceModelOption,
+        isImgToImgModeEnabled
     }
     :
     {
         activeService: ServiceType,
         serviceModelOption: CurrentServiceModel,
-        setServiceModelOption: Dispatch<SetStateAction<CurrentServiceModel>>
+        setServiceModelOption: Dispatch<SetStateAction<CurrentServiceModel>>,
+        isImgToImgModeEnabled: boolean
     }) => {
 
     const [currentModels, setCurrentModels] = useState<CurrentServiceModels>(servicesOptions.imageGeneration);
@@ -45,6 +47,14 @@ const ModelsContainer = (
         return string;
     };
 
+    useEffect(() => {
+        if (isImgToImgModeEnabled && currentModels.includes(`ultra`)) {
+            setCurrentModels(currentModels.filter(model => model.includes(`sd3`)));
+        } else if (!isImgToImgModeEnabled  && currentModels.includes(`sd3-large`)) {
+            setCurrentModels(servicesOptions.imageGeneration);
+        };
+    }, [isImgToImgModeEnabled, currentModels]);
+
     return (
         <div className="service-models">
             <div className="service-models__inner">
@@ -52,7 +62,10 @@ const ModelsContainer = (
                 <div className="service-models__items-container">
                     {currentModels.map((option) => (
                         <button 
-                            className={`service-models__items-container-item ${serviceModelOption === option ? 'active' : ''}`}
+                            className={`
+                                service-models__items-container-item 
+                                ${serviceModelOption === option ? 'active' : ''}
+                            `}
                             key={option}
                             type="button"
                             name={option}
@@ -62,7 +75,7 @@ const ModelsContainer = (
                             onClick={() => setServiceModelOption(option)}
                         >
                             {
-                                currentModels.includes(`ultra`) ?
+                                currentModels.includes(`sd3-large`) ?
                                     option.includes(`sd3`) ? 
                                         removeSymbols(option, `sd3-`)
                                     : 

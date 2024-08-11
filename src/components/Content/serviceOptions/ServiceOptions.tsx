@@ -1,13 +1,13 @@
 import { Dispatch, SetStateAction } from 'react';
 import { CurrentServiceModel, CurrentServiceModelOptions, ServiceType } from '../../../types/services/commonServices';
 import './serviceOptions.scss';
-import ImgGenerationOptions from '../servicesOptions/ImgGenerationOptions/ImgGenerationOptions';
-import ImgUpscaleOptions from '../servicesOptions/ImgUpscaleOptions/ImgUpscaleOptions';
-import ImgEditOptions from '../servicesOptions/ImgEditOptions/ImgEditOptions';
-import ImgPreciseOptions from '../servicesOptions/ImgPreciseOptions/ImgPreciseOptions';
-import VideoGenerationOptions from '../servicesOptions/VideoGenerationOptions/VideoGenerationOptions';
 import { ImageGenerationServiceModel, ImageGenerationServiceOptions } from '../../../types/services/imageGeneration';
-import { ImageUpscaleModelOptions } from '../../../types/services/imageUpscale';
+import { ImageUpscaleModelOptions, UpscaleServiceModel } from '../../../types/services/imageUpscale';
+import ImgEditOptions from '../servicesOptions/ImgEditOptions/ImgEditOptions';
+import ImgGenerationOptions from '../servicesOptions/ImgGenerationOptions/ImgGenerationOptions';
+import ImgPreciseOptions from '../servicesOptions/ImgPreciseOptions/ImgPreciseOptions';
+import ImgUpscaleOptions from '../servicesOptions/ImgUpscaleOptions/ImgUpscaleOptions';
+import VideoGenerationOptions from '../servicesOptions/VideoGenerationOptions/VideoGenerationOptions';
 
 const ServiceOptions = (
     {
@@ -24,6 +24,7 @@ const ServiceOptions = (
         isImgToImgModeEnabled: boolean
     }
 ) => {
+
     return (
         <div className='service-options-container'>
             <div className="service-options-container__inner">
@@ -38,6 +39,7 @@ const ServiceOptions = (
                     :
                     activeService === `Upscale Image`?
                         <ImgUpscaleOptions
+                            serviceModelOptionModel={serviceModelOptionModel as UpscaleServiceModel}
                             setOptions={setServiceModelOptions as Dispatch<SetStateAction<ImageUpscaleModelOptions | {}>>}
                         />
                     :

@@ -1,10 +1,10 @@
 import './deleteGenHistoryButton.scss';
 import { ReactComponent as DeleteItemIcon } from '../../../../images/delete-item-icon.svg';
-import { ApiFirebaseStore } from '../../../../api/Api.Firebase.Store';
+import { ApiFirebaseStore } from '../../../../api/Firebase/Api.Firebase.Store';
 import { Context } from '../../../app/App';
 import { Dispatch, SetStateAction, useContext } from 'react';
 import { generationHistoryItem } from '../../../../types/typesCommon';
-import { apiFirebaseStorage } from '../../../../api/Api.Firebase.Storage';
+import { apiFirebaseStorage } from '../../../../api/Firebase/Api.Firebase.Storage';
 
 const DeleteGenHistoryButton = (
     {

@@ -1,9 +1,9 @@
 import { ref, uploadString } from "@firebase/storage";
-import { storage } from "../utilities/firebaseConfig";
+import { storage } from "../../utilities/firebaseConfig";
 import { deleteObject, getDownloadURL, getMetadata, listAll} from "firebase/storage";
-import { DeleteImgProps, GalleryItem, generationHistoryItem, GetAllImgsProps, GetImgProps, UploadImgProps } from "../types/typesCommon";
+import { DeleteImgProps, GalleryItem, generationHistoryItem, GetAllImgsProps, GetImgProps, UploadImgProps } from "../../types/typesCommon";
 import { ApiFirebaseStore } from "./Api.Firebase.Store";
-import { createFullImgStoragePath } from "../utilities/functions";
+import { createFullImgStoragePath } from "../../utilities/functions/storagePaths";
 
 const getImages = async (imagsToGetProps: GetAllImgsProps) => {
 

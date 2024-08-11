@@ -2,12 +2,12 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AspectRatios, OutputFormat, PresetStyle } from "../../../../types/typesGeneratorOptions";
 import './imgGenerationOptions.scss';
 import Select from "../../../common/select/Select";
-import { inputCommonClassName, selectCommonClassName } from "../../../../utilities/vars";
+import { inputCommonClassName, selectCommonClassName } from "../../../../utilities/constants";
 import Input from "../../../common/input/Input";
 import InputFile from "../../../common/input-file/InputFile";
 import { modelSelects } from "../../../../utilities/generatorOptions";
 import Textarea from "../../../common/textarea/Textarea";
-import { createOptionsOfModel } from "../../../../utilities/functions";
+import { createOptionsOfModel } from "../../../../utilities/functions/modelOptions";
 import { coreModelOptions, ImageGenerationServiceModel, sd3ModelOptions, sd3ModelOptionsImgToImg, ImageGenerationServiceOptions, ultraModelOptions } from "../../../../types/services/imageGeneration";
 
 const ImgGenerationOptions = (

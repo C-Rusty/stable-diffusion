@@ -1,6 +1,6 @@
 import {makeAutoObservable} from "mobx";
-import {  cookieNameUser, cookieNameSD } from "../utilities/vars";
-import { ApiFirebaseStore } from "../api/Api.Firebase.Store";
+import {  cookieNameUser, cookieNameSD } from "../utilities/constants";
+import { ApiFirebaseStore } from "../api/Firebase/Api.Firebase.Store";
 
 export default class mobxStore {
     isAuth = false;

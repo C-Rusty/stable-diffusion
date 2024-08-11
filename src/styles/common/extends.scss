@@ -64,7 +64,7 @@
   @include transition(.3s, ease);
 
   &:hover {
-    border-bottom-color: $colorBlue;
+    border-bottom-color: $colorDarkBlue;
     @include transition(.3s, ease);
 
     label {
@@ -72,6 +72,12 @@
       @include transition(.3s, ease);
     }
   } 
+
+  &:has(input:focus, textarea:focus) {
+    label {
+      color: $colorBlue;
+    }
+  }
 
   label {
     color: $colorPink;
@@ -94,8 +100,8 @@
     @include transition(.3s, ease);
 
     &:hover {
-        @include transition(.3s, ease);
-        cursor: pointer;    
+      @include transition(.3s, ease);
+      cursor: pointer;    
     }
 
     &.active {
@@ -163,8 +169,8 @@
   border: none;
 
   &:hover {
-      background: $colorDarkBlue;
-      @include transition(.3s, ease);
+    background: $colorDarkBlue;
+    @include transition(.3s, ease);
   }
 }
 
@@ -241,8 +247,6 @@
   }
 }
 
-
-
 %block {
   padding: 3rem;
   border-radius: 3rem;
@@ -264,12 +268,16 @@
   @include transition(.3s, ease);
 
   &:focus {
-      outline: none;
+    outline: none;
 
-      border-bottom-color: $colorBlue;
+    border-bottom: .1rem solid $colorDarkBlue;
 
-      padding-left: 1rem;
+    padding-left: 1rem;
 
-      @include transition(.3s, ease);
+    @include transition(.3s, ease);
   }
+}
+
+%services-options {
+  
 }

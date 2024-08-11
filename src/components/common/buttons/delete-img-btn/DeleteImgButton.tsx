@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux';
-import { apiFirebaseStorage } from '../../../../api/Api.Firebase.Storage';
+import { apiFirebaseStorage } from '../../../../api/Firebase/Api.Firebase.Storage';
 import { ReactComponent as DeleteImgIcon } from '../../../../images/delete-img-icon.svg';
 import { setModalContent } from '../../../../store/reduxReducers/modalReducer';
 import { DeleteButtonText, DeleteImgProps } from '../../../../types/typesCommon';

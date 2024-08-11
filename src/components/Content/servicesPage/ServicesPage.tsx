@@ -5,7 +5,7 @@ import Loader from '../../common/loader/Loader';
 import noise from '../../../images/noise.png';
 import { CreditsAmount, ImageItem, ServiceType } from '../../../types/typesCommon';
 import { v4 as uuidv4 } from 'uuid';
-import { apiStableDiffusion } from '../../../api/Api.StableDiffusion';
+import { ApiSDGetInfo } from '../../../api/StableDiffustion/Api.SDGetInfo';
 import { Context } from '../../app/App';
 import { setCreditsAmount } from '../../../store/reduxReducers/creditsReducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -55,7 +55,7 @@ const ServicesPage = () => {
         dispatch(setCreditsAmount({ balance: `Loading...` }));
 
         setTimeout( async () => {
-            const response = await apiStableDiffusion.getBalance(SDApiKey);
+            const response = await ApiSDGetInfo.getBalance(SDApiKey);
     
             if (response) dispatch(setCreditsAmount({
                 balance: response.credits

@@ -3,10 +3,9 @@ import { AspectRatios, OutputFormat, PresetStyle } from "../typesGeneratorOption
 export type ImageGenerationServiceModel = `ultra` | `sd3-large-turbo` | `sd3-large` | `sd3-medium` | `core`;
 
 export type ImageGenerationServiceOptions = {
-    prompt?: string,
-    aspect_ratio: AspectRatios,
+    aspect_ratio?: AspectRatios,
     negative_prompt?: string, 
-    seed: number,
+    seed?: number,
     model?: ImageGenerationServiceModel, 
     style_preset?: PresetStyle,
     output_format: OutputFormat,

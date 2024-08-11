@@ -3,7 +3,7 @@ import { ReactComponent as AddIcon } from '../../../../images/add-icon.svg';
 import { useDispatch } from 'react-redux';
 import { updateImgItemFavouriteProps } from '../../../../types/typesCommon';
 import { setModalContent } from '../../../../store/reduxReducers/modalReducer';
-import { ApiFirebaseStore } from '../../../../api/Api.Firebase.Store';
+import { ApiFirebaseStore } from '../../../../api/Firebase/Api.Firebase.Store';
 
 const AddToFavouritesButton = ( 
     { 

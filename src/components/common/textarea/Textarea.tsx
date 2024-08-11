@@ -1,6 +1,6 @@
 import './textarea.scss';
 import { Dispatch, SetStateAction } from "react";
-import { textAreaCommonClassName } from "../../../utilities/vars";
+import { textAreaCommonClassName } from "../../../utilities/constants";
 
 interface TextareaComponentProps<T> {
     label: string,
@@ -28,7 +28,7 @@ const Textarea = ( { id, name, placeholder, label, value, setValue, required, ar
                 name={name} 
                 className={`textarea-container__textarea ${textAreaCommonClassName}`} 
                 placeholder={placeholder}
-                onChange={(e) => setValue(e.target.value.trim())}
+                onChange={(e) => setValue(e.target.value)}
                 value={value}
                 aria-label={ariaLabel}
                 title={title}

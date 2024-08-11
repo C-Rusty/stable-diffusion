@@ -7,9 +7,9 @@ export type ImageControlServiceOptions = {
     image: Blob,
     negative_prompt?: string,
     control_strength?: number,
-    fidelity: number,
+    fidelity?: number,
     seed?: number,
-    aspect_ratio: string,
+    aspect_ratio?: string,
     output_format: OutputFormat
 };
 
