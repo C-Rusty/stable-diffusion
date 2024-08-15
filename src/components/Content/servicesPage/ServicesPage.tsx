@@ -12,7 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/reduxStore';
 import { ServiceTypes } from '../../../utilities/operatorOptions';
 import ServiceContainer from '../serviceContainer/ServiceContainer';
-import { setIsLoading } from '../../../store/reduxReducers/isLoadingReducer';
+import { setIsLoading } from '../../../store/reduxReducers/commonsReducer';
+import { setService } from '../../../store/reduxReducers/serviceReducer';
 
 const ServicesPage = () => {
 
@@ -21,9 +22,9 @@ const ServicesPage = () => {
 
     const id = uuidv4();
 
-    const isLoading = useSelector<RootState, boolean>((state) => state.isLoading.isLoading);
+    const isLoading = useSelector<RootState, boolean>((state) => state.commonStates.isLoading);
 
-    const [image, setImage] = useState<ImageItem>(
+    const [imageItem, setImageItem] = useState<ImageItem>(
         {
             id: id,
             prompt: `noise`, 
@@ -35,14 +36,14 @@ const ServicesPage = () => {
     );
 
     useEffect(() => {
-        if (image.url) {
+        if (imageItem.url) {
             dispatch(setIsLoading(false));
         };
 
         if (mobxStore.SDApiKey && mobxStore.isAuth) {
-                updateBalance(mobxStore.SDApiKey!)
+            updateBalance(mobxStore.SDApiKey!)
         };
-    }, [image.url]);
+    }, [imageItem.url]);
 
     useEffect(() => {
         if (mobxStore.isAuth) updateBalance(mobxStore.SDApiKey!);
@@ -63,10 +64,10 @@ const ServicesPage = () => {
         }, Number(creditsAmount.balance) ? 5000 : 0);
     };
 
-    const [activeService, setActiveService] = useState<ServiceType>(ServiceTypes[0]);
+    const activeService = useSelector<RootState, ServiceType>((state) => state.service.currentService);
 
     const changeActiveService = (option: ServiceType) => {
-        setActiveService(option);
+        dispatch(setService(option));
     };
 
     return(
@@ -105,12 +106,12 @@ const ServicesPage = () => {
                         </div>
                         <ServiceContainer 
                             activeService={activeService}
-                            setImage={setImage}
+                            setImageItem={setImageItem}
                         />
                         {isLoading ? 
                             <Loader className="generator-page" /> 
                             : 
-                            <GenerationResult image={image} />
+                            <GenerationResult image={imageItem} />
                         }
                     </div>
                 </div>

@@ -1,0 +1,14 @@
+.img-edit-options {
+    &__inner {
+        display: grid;
+        gap: 4rem;
+    }
+
+    &__inner:has(> :nth-child(-n+5)) {
+        grid-template-columns: repeat(4, 1fr);
+
+        .textarea-container {
+            grid-column: span 4;
+        }
+    }
+}

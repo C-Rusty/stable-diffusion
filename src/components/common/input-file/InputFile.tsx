@@ -8,15 +8,19 @@ interface InputProps {
     id?: string,
     accept?: string,
     className: string,
-    setImage: Dispatch<React.SetStateAction<Blob | undefined>>
+    label: string,
+    isRequired?: boolean,
+    setImage: Dispatch<React.SetStateAction<Blob>>
 };
 
-const InputFile = ({ name, id, accept, className, setImage} : InputProps) => {
+const InputFile = ({ name, id, accept, label, className, isRequired, setImage} : InputProps) => {
 
     const [imageName, setImageName] = useState<string | undefined>('');
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files![0];
+        console.log(file.name);
+        
         setImageName(file.name.split(`.`)[0]);
         
         const reader = new FileReader();
@@ -33,7 +37,7 @@ const InputFile = ({ name, id, accept, className, setImage} : InputProps) => {
 
     return (
         <div className='input-container'>
-            <label className="input-container__label">Image</label>
+            <label className="input-container__label">{label}</label>
             <div className="input-container__input">
                 <input 
                     type="file"
@@ -43,7 +47,7 @@ const InputFile = ({ name, id, accept, className, setImage} : InputProps) => {
                     aria-label='Upload image'
                     title='Upload image'
                     spellCheck='true'
-                    required={true}
+                    required={isRequired}
                     accept={accept}
                     placeholder='Click or drag n drop to upload image'
                     onChange={(e) => handleImageUpload(e)}

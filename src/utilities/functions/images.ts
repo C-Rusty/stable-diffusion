@@ -1,9 +1,18 @@
 import saveAs from "file-saver";
 import { v4 as uuidv4 } from 'uuid';
 import { OutputFormat } from "../../types/typesGeneratorOptions";
+import { createImgStoragePath } from "./storagePaths";
 
 export const createImageId = () => {
     return uuidv4();
+};
+
+export const createImageItemInfo = (prompt: string, output_format: OutputFormat) => {
+    const timestamp: string = new Date().getTime().toString();
+    const id = createImageId();
+    const storagePath = createImgStoragePath(id, prompt, output_format);
+
+    return {id, storagePath, timestamp};
 };
 
 export async function saveImageToPC (url: string, name: string) {

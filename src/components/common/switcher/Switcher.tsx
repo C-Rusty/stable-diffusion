@@ -1,5 +1,6 @@
-import { Dispatch, SetStateAction } from "react";
+import { useDispatch } from 'react-redux';
 import './switcher.scss';
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 const Switcher = (
     {
@@ -10,9 +11,12 @@ const Switcher = (
     {   
         headline: string,
         value: boolean,
-        setValue: Dispatch<SetStateAction<boolean>>
+        setValue: ActionCreatorWithPayload<boolean, string>
     }
 ) => {
+
+    const dispatch = useDispatch();
+
     return (
         <div className="switcher-container">
             <p className='switcher-container__headline'>
@@ -22,7 +26,7 @@ const Switcher = (
                 <input 
                     className="switcher-container__switch-input" 
                     type="checkbox" checked={value} 
-                    onChange={() => setValue(!value)}
+                    onChange={() => dispatch(setValue(!value))}
                 />
                 <span className="switcher-container__switch-slider round"></span>
             </label>

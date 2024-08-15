@@ -1,14 +1,17 @@
 import axios from "axios";
 import { API_URL } from "../../utilities/constants";
 import { getImgFromResponse } from "../../utilities/functions/images";
-import { ImageUpscaleModelOptions, UpscaleServiceModel } from "../../types/services/imageUpscale";
+import {UpscaleServiceModel } from "../../types/services/imageUpscale";
 import { OutputFormat } from "../../types/typesGeneratorOptions";
 import { delay } from "../../utilities/functions/common";
+import { ImageUpscaleItem } from "../../interface/services/imageUpscale";
 
-const getUpscaledImage = async (params: ImageUpscaleModelOptions, model: UpscaleServiceModel, apiKey: string) => {
-    const urlPath = `${API_URL}/v2beta/stable-image/upscale/${model}`;
+const upscaleUrlPath = `${API_URL}/v2beta/stable-image/upscale/`;
+const upscaleCreativeUrlPath = `${API_URL}/v2beta/stable-image/upscale/creative/result/`;
 
-    const formData = params;
+const getUpscaledImage = async (formData: ImageUpscaleItem, model: UpscaleServiceModel, apiKey: string) => {
+    const urlPath = upscaleUrlPath + model;
+
 
     const response = await axios.postForm(
         urlPath,
@@ -28,13 +31,13 @@ const getUpscaledImage = async (params: ImageUpscaleModelOptions, model: Upscale
 
         switch (model) {
             case `conservative`: 
-                upscaledImage = getImgFromResponse(response.data, params.output_format!);
+                upscaledImage = getImgFromResponse(response.data, formData.output_format!);
             break;
     
             case `creative`:
                 const { id } = response.data;
 
-                upscaledImage = await getUpscaledCreativeImage(id, apiKey, params.output_format!);
+                upscaledImage = await getUpscaledCreativeImage(id, apiKey, formData.output_format!);
             break;
 
             default: return `wrong model name. Model: ${model}`;
@@ -61,7 +64,7 @@ const getUpscaledCreativeImage = async (id: string, apiKey: string, output_forma
 
 const getCreativeImageResponse = async (id: string, apiKey: string, output_format: OutputFormat) => {
 
-    const urlPath = `${API_URL}/v2beta/stable-image/upscale/creative/result/${id}`;
+    const urlPath = upscaleCreativeUrlPath + id;
 
     const response = await axios.request({
         url: urlPath,

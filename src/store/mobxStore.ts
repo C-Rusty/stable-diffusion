@@ -4,8 +4,8 @@ import { ApiFirebaseStore } from "../api/Firebase/Api.Firebase.Store";
 
 export default class mobxStore {
     isAuth = false;
-    SDApiKey: string | undefined = undefined;
-    userId: string | undefined = undefined;
+    SDApiKey: string = ``;
+    userId: string = ``;
     isModalOpen = false;
 
     static SDApiKey: string = ``;

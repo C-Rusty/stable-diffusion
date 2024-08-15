@@ -1,37 +1,43 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { ServiceType } from "../../../types/typesCommon";
-import { CurrentServiceModel, CurrentServiceModels } from "../../../types/services/commonServices";
+import { UpscaleServiceModel } from "../../../types/typesCommon";
+import { CurrentServiceModel, ServiceType } from "../../../types/services/commonServices";
 import { servicesOptions } from "../../../utilities/services/commonServices";
 import './modelsContainer.scss';
+import { RootState } from "../../../store/reduxStore";
+import { useSelector } from "react-redux";
+import { ImageGenerationServiceModel } from "../../../types/services/imageGeneration";
+import { ImageEditServiceModel } from "../../../types/services/imageEdit";
+import { ImageControlServiceModel } from "../../../types/services/imageControl";
+import { ImageToVideoGenerationServiceModels } from "../../../types/services/imageToVideoGeneration";
+
+interface Props {
+    serviceModelOption: CurrentServiceModel,
+    setServiceModelOption: Dispatch<SetStateAction<CurrentServiceModel>>,
+    isImgToImgModeEnabled?: boolean
+}
 
 const ModelsContainer = (
     {
-        activeService, 
         serviceModelOption,
         setServiceModelOption,
         isImgToImgModeEnabled
-    }
-    :
-    {
-        activeService: ServiceType,
-        serviceModelOption: CurrentServiceModel,
-        setServiceModelOption: Dispatch<SetStateAction<CurrentServiceModel>>,
-        isImgToImgModeEnabled: boolean
-    }) => {
+    }: Props) => {
 
-    const [currentModels, setCurrentModels] = useState<CurrentServiceModels>(servicesOptions.imageGeneration);
+    const currentService = useSelector<RootState, ServiceType>(state => state.service.currentService);
+
+    const [currentModels, setCurrentModels] = useState<Array<ImageGenerationServiceModel | UpscaleServiceModel | ImageEditServiceModel | ImageControlServiceModel | ImageToVideoGenerationServiceModels>>(servicesOptions.imageGeneration);
 
     useEffect(() => {
-        switch (activeService) {
+        switch (currentService) {
             case `Image Generator`: setCurrentModels(servicesOptions.imageGeneration); break;
             case `Upscale Image`: setCurrentModels(servicesOptions.upscale); break;
             case `Edit Image`: setCurrentModels(servicesOptions.imageEdit); break;
             case `Precise Image Edit`: setCurrentModels(servicesOptions.imageControl); break;
             case `Video Generator`: setCurrentModels(servicesOptions.imageToVideoGeneration); break;
         
-            default: return console.log(`Wrong service type: ${activeService}`);
+            default: return console.log(`Wrong service type: ${currentService}`);
         }
-    }, [activeService]);
+    }, [currentService]);
 
     useEffect(() => {
         setServiceModelOption(currentModels[0]);

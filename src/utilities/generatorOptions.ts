@@ -58,7 +58,7 @@ const negativeInputProps: {
     ariaLabel: string,
     spellCheck: boolean,
     rows: number,
-    required: boolean
+    isRequired: boolean
 } = {
     label: `Negative Prompt`,
     type: `text`,
@@ -70,7 +70,7 @@ const negativeInputProps: {
     ariaLabel: `Type what you do not wish to see in the output image`,
     spellCheck: false,
     rows: 1,
-    required: false
+    isRequired: false
 };
 
 const outputFormmatSelectProps: {
@@ -175,12 +175,14 @@ const fileInputProps: {
     id: string,
     accept: string,
     inputType: `file`
+    required: boolean
 } = {
     label: 'Image',
     name: 'file',
     id: 'file-input',
     accept: '.png, .webp, .jpeg',
     inputType: 'file',
+    required: false
 };
 
 const imageStrengthInputProps: {
@@ -216,7 +218,7 @@ const creativityInputProps: {
     className: string,
     placeholder: string,
     name: string,
-    required: boolean
+    isRequired: boolean
 } = {
     label: 'Creativity',
     type: 'number',
@@ -228,7 +230,7 @@ const creativityInputProps: {
     className: 'creativity-input',
     placeholder: `impact on the generation`,
     name: 'creativity',
-    required: false
+    isRequired: true
 };
 
 export const modelSelects = {

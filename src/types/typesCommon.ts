@@ -1,6 +1,5 @@
 import { Dispatch } from "react";
 import { AspectRatios, AspectRatiosProps, OutputFormat, OutputFormatProps, PresetStyleProps } from "./typesGeneratorOptions";
-import { ImageGenerationServiceModel, ImageGenerationServiceOptions } from "./services/imageGeneration";
 import { CurrentServiceModelOptions } from "./services/commonServices";
 
 export type SelectProps = {
@@ -44,21 +43,23 @@ export type ModalProps = {
 
 export type ImageItem = {
     id: string,
-    prompt: string,
+    prompt?: string,
     format: OutputFormat,
     url: string,
     storagePath: string
     timestamp: string,
+    uploadedImage?: Blob | undefined
 };
 
 export type GalleryItem = {
     id: string, 
-    prompt: string,
+    prompt?: string,
     format: string,
     url: string,
     storagePath: string,
     timestamp: string,
-    index?: number
+    index?: number,
+    uploadedImage?: Blob | undefined
 };
 
 export type generationHistoryItem = {

@@ -12,10 +12,11 @@ interface InputProps<T> {
     placeholder?: string,
     label: string,
     value: T,
+    isRequired?: boolean,
     setValue: SetStateAction<T>
 };
 
-const Input = <T,> ({ type, name, id, min, max, step, placeholder, label, value, setValue} : InputProps<T>) => {
+const Input = <T,> ({ type, name, id, min, max, step, placeholder, label, value, isRequired, setValue} : InputProps<T>) => {
 
     return (
         <div className="input-container">
@@ -31,6 +32,7 @@ const Input = <T,> ({ type, name, id, min, max, step, placeholder, label, value,
                 max={type === "number" ? max : undefined}
                 step={type === "number" ? step : undefined}
                 placeholder={placeholder ? placeholder : undefined} 
+                required={isRequired}
                 value={`${value}`}
                 onChange={(e) => setValue(e.target.value as unknown as T)}
             />

@@ -156,7 +156,7 @@ const FavouritesPage = () => {
                                                 key={index}
                                                 index={index}
                                                 img={{
-                                                    prompt: img.prompt,
+                                                    prompt: img.prompt || '',
                                                     format: img.format,
                                                     url: img.url,
                                                     id: img.id,

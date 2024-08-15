@@ -1,8 +1,11 @@
+import { ImageGenerationOptions } from "../../interface/services/imageGeneration";
+import { ImageUpscaleModelOptions } from "../../interface/services/imageUpscale";
+import { ImageEditOptions } from "../../interface/services/imgEdit";
 import { ImageControlServiceModel, ImageControlServiceOptions } from "./imageControl";
-import { ImageEditServiceModel, ImageEditServiceOptions } from "./imageEdit";
-import { ImageGenerationServiceModel, ImageGenerationServiceOptions } from "./imageGeneration";
+import { ImageEditServiceModel } from "./imageEdit";
+import { ImageGenerationServiceModel } from "./imageGeneration";
 import { ImageToVideoGenerationServiceModels, ImageToVideoGenerationServiceOptions } from "./imageToVideoGeneration";
-import { ImageUpscaleModelOptions, UpscaleServiceModel } from "./imageUpscale";
+import { UpscaleServiceModel } from "./imageUpscale";
 
 export type ServiceType = `Image Generator` | `Upscale Image` | `Edit Image` | `Precise Image Edit` | `Video Generator`;
 
@@ -18,4 +21,4 @@ export type CurrentServiceModel = ImageGenerationServiceModel | UpscaleServiceMo
 
 export type CurrentServiceModels = Array<CurrentServiceModel>;
 
-export type CurrentServiceModelOptions = ImageEditServiceOptions | ImageGenerationServiceOptions | ImageToVideoGenerationServiceOptions | ImageUpscaleModelOptions | ImageControlServiceOptions;
+export type CurrentServiceModelOptions = ImageEditOptions | ImageGenerationOptions | ImageToVideoGenerationServiceOptions | ImageUpscaleModelOptions | ImageControlServiceOptions;

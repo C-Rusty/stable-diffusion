@@ -6,18 +6,19 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { OutputFormat } from "../../../../types/typesGeneratorOptions";
 import { modelSelects } from "../../../../utilities/generatorOptions";
 import { inputCommonClassName, selectCommonClassName } from "../../../../utilities/constants";
-import { ImageUpscaleModelOptions, UpscaleServiceModel } from "../../../../types/services/imageUpscale";
+import { UpscaleServiceModel } from "../../../../types/services/imageUpscale";
 import './imgUpscaleOptions.scss';
+import { ImageUpscaleModelOptions } from "../../../../interface/services/imageUpscale";
 
 const ImgUpscaleOptions = (
     { 
         setOptions, 
-        serviceModelOptionModel 
+        upscaleModel 
     }
     : 
     { 
-        setOptions: Dispatch<SetStateAction<ImageUpscaleModelOptions | {}>>,
-        serviceModelOptionModel: UpscaleServiceModel
+        setOptions: Dispatch<SetStateAction<ImageUpscaleModelOptions>>,
+        upscaleModel: UpscaleServiceModel
     }) => {
 
     const { 
@@ -30,7 +31,7 @@ const ImgUpscaleOptions = (
     let { creativityInputProps } = modelSelects;
 
     useEffect(() => {
-        switch (serviceModelOptionModel) {
+        switch (upscaleModel) {
             case `conservative`:
                 creativityInputProps.min = 0.2;
                 creativityInputProps.max = 0.5;
@@ -49,31 +50,32 @@ const ImgUpscaleOptions = (
         
             default: break;
         }
-    }, [creativityInputProps, serviceModelOptionModel]);
+    }, [creativityInputProps, upscaleModel]);
 
-    const [outputFormat, setOutputFormat] = useState<OutputFormat>(`png`);
-    const [seed, setSeed] = useState<number>(0); 
-    const [image, setImage] = useState<Blob | undefined>(undefined);
-    const [creativity, setCreativity] = useState<number | undefined>(undefined);
-    const [negativePrompt, setNegativePrompt] = useState<string>(``);
+    const [output_format, setOutputFormat] = useState<OutputFormat>(`png`);
+    const [seed, setSeed] = useState<number>(seedInputProps.value); 
+    const [image, setImage] = useState<Blob>(new Blob());
+    const [creativity, setCreativity] = useState<number | undefined>(creativityInputProps.value);
+    const [negative_prompt, setNegativePrompt] = useState<string>(``);
 
     const upscaleOptions = {
-        output_format: outputFormat,
-        seed: seed,
-        image: image,
-        creativity: creativity,
-        negative_prompt: negativePrompt
+        image,
+        seed,
+        negative_prompt,
+        output_format,
+        creativity,
     };
 
     useEffect(() => {
         setOptions(upscaleOptions);
-    }, [image, seed, outputFormat, creativity, negativePrompt]);
+    }, [image, seed, output_format, creativity, negative_prompt]);
 
     return (
         <div className="img-upscale-options">
             <div className="img-upscale-options__inner">
                 <InputFile 
                     {...fileInputProps}
+                    isRequired={true}
                     className={inputCommonClassName}
                     setImage={setImage}
                 />
@@ -84,7 +86,7 @@ const ImgUpscaleOptions = (
                 />
                 <Select 
                     {...outputFormmatSelectProps}
-                    value={outputFormat}
+                    value={output_format}
                     setValue={setOutputFormat} 
                     options={outputFormmatSelectProps.options} 
                     className={selectCommonClassName} 
@@ -96,7 +98,7 @@ const ImgUpscaleOptions = (
                 />
                 <Textarea
                     {...negativeInputProps}
-                    value={negativePrompt}
+                    value={negative_prompt}
                     setValue={setNegativePrompt}
                 />
             </div>

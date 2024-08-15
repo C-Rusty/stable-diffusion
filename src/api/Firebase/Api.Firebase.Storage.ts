@@ -51,11 +51,12 @@ const getFavouritesImgs = async (userId: string, favouritesImgsItemCounter: numb
 
             return { 
                 id: item.generalInfo.id,
-                prompt: item.generalInfo.prompt,
+                prompt: item.generalInfo.prompt || `No prompt`,
                 format: item.generalInfo.format,
                 url: url ? url : `getImage method error`,
                 storagePath: item.generalInfo.storagePath,
-                timestamp: item.generalInfo.timestamp
+                timestamp: item.generalInfo.timestamp,
+                uploadedImage: item.generalInfo.uploadedImage
             };
         });
 

@@ -1,13 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import ModalContentReducer from "./reduxReducers/modalReducer";
 import CreditsReducer from "./reduxReducers/creditsReducer";
-import isLoadingReducer from "./reduxReducers/isLoadingReducer";
+import commonsReducer from "./reduxReducers/commonsReducer";
+import switcherReducer from "./reduxReducers/switcherReducer";
+import serviceReducer from "./reduxReducers/serviceReducer";
 
 const reduxStore = configureStore({
     reducer: {
         modalContent: ModalContentReducer,
         creditsAmount: CreditsReducer,
-        isLoading: isLoadingReducer
+        commonStates: commonsReducer,
+        switchers: switcherReducer,
+        service: serviceReducer
     },
     middleware: (getDefaultMiddleware) => getDefaultMiddleware({
         serializableCheck: false
