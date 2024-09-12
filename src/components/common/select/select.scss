@@ -1,7 +1,4 @@
-@import '../../../styles/common/variables.scss';
-@import '../../../styles/common/fonts.scss';
-@import '../../../styles/common/mixins.scss';
-@import '../../../styles/common/extends.scss';
+@import '../../../styles/index.scss';
 
 .select-container {
     @extend %option-container;

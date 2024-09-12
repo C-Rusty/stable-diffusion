@@ -1,19 +1,19 @@
 import { useContext, useEffect, useState } from 'react';
 import './generationHistoryPage.scss';
-import { generationHistoryItem } from '../../../types/typesCommon';
 import { ApiFirebaseStore } from '../../../api/Firebase/Api.Firebase.Store';
 import { Context } from '../../app/App';
 import GenerationHistoryItem from '../generationHistoryItem/GenerationHistoryItem';
 import { loadGenHistoryItemsLimit } from '../../../utilities/constants';
 import ShowMoreButton from '../../common/buttons/show-more-btn/ShowMoreButton';
+import { IImageHistoryItem } from '../../../interface/items/imgItems';
 
 const GenerationHistoryPage = () => {
 
     const { mobxStore } = useContext(Context);
     const userId = mobxStore.userId;
 
-    const [generationHistory, setGenerationHistory] = useState<Array<generationHistoryItem>>([]);
-    const [memorizedGenerationHistory, setMemorizedGenerationHistory] = useState<Array<generationHistoryItem>>([]);
+    const [generationHistory, setGenerationHistory] = useState<Array<IImageHistoryItem>>([]);
+    const [memorizedGenerationHistory, setMemorizedGenerationHistory] = useState<Array<IImageHistoryItem>>([]);
     const [collectionAmount, setCollectionAmount] = useState<number>(0);
 
     const getCollectionLength = async () => {

@@ -1,8 +1,9 @@
-import { generationHistoryItem, updateImgItemFavouriteProps } from "../../types/typesCommon";
+import { updateImgItemFavouriteProps } from "../../types/typesCommon";
 import { generationHistoryItemsFolder, loadFavouriteItemsLimit, loadGenHistoryItemsLimit } from "../../utilities/constants";
 import { db } from "../../utilities/firebaseConfig";
 import { DocumentData, QuerySnapshot, collection, deleteDoc, doc, getCountFromServer, getDoc, getDocs, limit, orderBy, query, setDoc, startAfter, updateDoc, where } from "firebase/firestore"; 
 import { createFullGenHistoryStorePath } from "../../utilities/functions/storagePaths";
+import { IImageHistoryItem } from "../../interface/items/imgItems";
 
 const getSDApiKey = async () => {
     try {
@@ -27,7 +28,7 @@ const getGenerationHistory = async (userId: string, genHistoryItemCounter: numbe
     try {
         const ref = collection(db, `users`, userId, generationHistoryItemsFolder);
 
-        let generationHistory: Array<generationHistoryItem> = [];
+        let generationHistory: Array<IImageHistoryItem> = [];
 
         if (genHistoryItemCounter === loadGenHistoryItemsLimit)  {
             const q = query(ref, orderBy(`generalInfo.timestamp`, `desc`), limit(loadGenHistoryItemsLimit));
@@ -37,7 +38,7 @@ const getGenerationHistory = async (userId: string, genHistoryItemCounter: numbe
             if (!generationHistoryResponse) console.log(`generationHistory get error...`);
 
             generationHistoryResponse.forEach((doc) => {
-                generationHistory.push(doc.data() as generationHistoryItem);
+                generationHistory.push(doc.data() as IImageHistoryItem);
             });
             
         } else if (genHistoryItemCounter % loadGenHistoryItemsLimit === 0 && genHistoryItemCounter !== loadGenHistoryItemsLimit) {
@@ -48,7 +49,7 @@ const getGenerationHistory = async (userId: string, genHistoryItemCounter: numbe
             if (!generationHistoryResponse) console.log(`generationHistory get error...`);
 
             generationHistoryResponse.forEach((doc) => {
-                generationHistory.push(doc.data() as generationHistoryItem);
+                generationHistory.push(doc.data() as IImageHistoryItem);
             });
         };
 
@@ -59,7 +60,7 @@ const getGenerationHistory = async (userId: string, genHistoryItemCounter: numbe
     };
 };
 
-const uploadGenerationHistoryItem = async (userId: string, generationHistoryItem: generationHistoryItem) => {
+const uploadGenerationHistoryItem = async (userId: string, generationHistoryItem: IImageHistoryItem) => {
 
     const { id } = generationHistoryItem.generalInfo;
 
@@ -123,10 +124,10 @@ const getFavouritesImgsPaths = async (userId: string, favouritesImgsItemCounter:
 
         if (!response) console.log(`favouritesImgs get error...`);
 
-        let favouritesImgItems: Array<generationHistoryItem> = [];
+        let favouritesImgItems: Array<IImageHistoryItem> = [];
 
         response!.forEach((doc) => {
-            favouritesImgItems.push(doc.data() as generationHistoryItem);
+            favouritesImgItems.push(doc.data() as IImageHistoryItem);
         });
 
         return favouritesImgItems;

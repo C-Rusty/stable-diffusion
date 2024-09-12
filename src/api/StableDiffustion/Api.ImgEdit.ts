@@ -1,20 +1,18 @@
 import axios from "axios";
-import { ImageEditServiceChosenOptions, ImageEditServiceModel } from "../../types/services/imageEdit";
+import { ImageEditServiceModel } from "../../types/services/imageEdit";
 import { API_URL } from "../../utilities/constants";
 import { getImgFromResponse } from "../../utilities/functions/images";
+import { ImageEditItem } from "../../interface/sd-request/imgEdit";
 
 const editUrlPath = `${API_URL}/v2beta/stable-image/edit/`;
 
-const getEditedImage = async ( uploadedImage: Blob, options: ImageEditServiceChosenOptions, model: ImageEditServiceModel, apiKey: string) => {
+const getEditedImage = async ( params: ImageEditItem, model: ImageEditServiceModel, apiKey: string) => {
 
     const urlPath = editUrlPath + model;
 
     let editedImage: string | undefined = undefined;
 
-    const payload = {
-        ...options,
-        image: uploadedImage,
-    };
+    const payload = {...params };
 
     try {
         const response = await axios.postForm(
@@ -30,7 +28,7 @@ const getEditedImage = async ( uploadedImage: Blob, options: ImageEditServiceCho
             }
         );
 
-        editedImage = getImgFromResponse(response.data, options.output_format!);
+        editedImage = getImgFromResponse(response.data, params.output_format!);
 
     } catch (error) {
         console.log(`Error with uploading generation history: ${error}`);

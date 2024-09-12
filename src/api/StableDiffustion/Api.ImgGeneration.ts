@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getImgFromResponse } from "../../utilities/functions/images";
 import { API_URL } from "../../utilities/constants";
-import { ImageGenerationItem } from "../../interface/services/imageGeneration";
+import { ImageGenerationItem } from "../../interface/sd-request/imageGeneration";
 
 const generateUrlPath = `${API_URL}/v2beta/stable-image/generate/`;
 

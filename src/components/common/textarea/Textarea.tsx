@@ -13,12 +13,13 @@ interface TextareaComponentProps<T> {
     ariaLabel: string,
     spellCheck: boolean,
     rows: number,
-    isRequired: boolean
+    className?: string,
+    required: boolean
     value: string,
     setValue: Dispatch<SetStateAction<string>>
 };
 
-const Textarea = ( { id, name, placeholder, label, value, setValue, isRequired, ariaLabel, title, autoComplete, spellCheck, rows}: TextareaComponentProps<string>) => {
+const Textarea = ( { id, name, placeholder, label, value, setValue, required, ariaLabel, title, autoComplete, spellCheck, rows, className}: TextareaComponentProps<string>) => {
 
     return (
         <div className="textarea-container">
@@ -26,15 +27,15 @@ const Textarea = ( { id, name, placeholder, label, value, setValue, isRequired, 
             <textarea
                 id={id}
                 name={name} 
-                className={`textarea-container__textarea ${textAreaCommonClassName}`} 
+                className={`textarea-container__textarea ${textAreaCommonClassName} ${className}`} 
                 placeholder={placeholder}
                 onChange={(e) => setValue(e.target.value)}
-                value={value}
+                defaultValue={value}
                 aria-label={ariaLabel}
                 title={title}
                 autoComplete={autoComplete}
                 spellCheck={spellCheck}
-                required={isRequired}
+                required={required}
                 rows={rows}
             />
     </div>

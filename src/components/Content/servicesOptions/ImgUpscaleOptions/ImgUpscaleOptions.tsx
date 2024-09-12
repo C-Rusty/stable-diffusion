@@ -5,10 +5,10 @@ import Textarea from "../../../common/textarea/Textarea";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { OutputFormat } from "../../../../types/typesGeneratorOptions";
 import { modelSelects } from "../../../../utilities/generatorOptions";
-import { inputCommonClassName, selectCommonClassName } from "../../../../utilities/constants";
+import { selectCommonClassName } from "../../../../utilities/constants";
 import { UpscaleServiceModel } from "../../../../types/services/imageUpscale";
 import './imgUpscaleOptions.scss';
-import { ImageUpscaleModelOptions } from "../../../../interface/services/imageUpscale";
+import { ImageUpscaleModelOptions } from "../../../../interface/sd-request/imageUpscale";
 
 const ImgUpscaleOptions = (
     { 
@@ -24,11 +24,15 @@ const ImgUpscaleOptions = (
     const { 
         negativeInputProps,
         outputFormmatSelectProps,
-        fileInputProps,
         seedInputProps,
     } = modelSelects;
     
     let { creativityInputProps } = modelSelects;
+
+    const [output_format, setOutputFormat] = useState<OutputFormat>(outputFormmatSelectProps.options[0].value);
+    const [seed, setSeed] = useState<number>(seedInputProps.value); 
+    const [creativity, setCreativity] = useState<number>(creativityInputProps.value);
+    const [negative_prompt, setNegativePrompt] = useState<string>(negativeInputProps.value);
 
     useEffect(() => {
         switch (upscaleModel) {
@@ -52,33 +56,18 @@ const ImgUpscaleOptions = (
         }
     }, [creativityInputProps, upscaleModel]);
 
-    const [output_format, setOutputFormat] = useState<OutputFormat>(`png`);
-    const [seed, setSeed] = useState<number>(seedInputProps.value); 
-    const [image, setImage] = useState<Blob>(new Blob());
-    const [creativity, setCreativity] = useState<number | undefined>(creativityInputProps.value);
-    const [negative_prompt, setNegativePrompt] = useState<string>(``);
-
-    const upscaleOptions = {
-        image,
-        seed,
-        negative_prompt,
-        output_format,
-        creativity,
-    };
-
     useEffect(() => {
-        setOptions(upscaleOptions);
-    }, [image, seed, output_format, creativity, negative_prompt]);
+        setOptions({
+            seed,
+            negative_prompt,
+            output_format,
+            creativity,
+        });
+    }, [seed, output_format, creativity, negative_prompt]);
 
     return (
         <div className="img-upscale-options">
             <div className="img-upscale-options__inner">
-                <InputFile 
-                    {...fileInputProps}
-                    isRequired={true}
-                    className={inputCommonClassName}
-                    setImage={setImage}
-                />
                 <Input 
                     {...seedInputProps}
                     value={seed}

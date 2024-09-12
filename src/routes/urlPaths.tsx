@@ -8,6 +8,6 @@ export const urlPaths = {
         imgEdit: 'img-edit',
         imgUpscale: `img-upscale`,
         imgPrecise: `img-precise`,
-        videoGeneration: 'video-generation',
+        VideoGenerationItem: 'video-generation',
     }
 }

@@ -1,88 +1,154 @@
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { switchers } from '../../../../types/reducers';
-import { ImageItem } from '../../../../types/typesCommon';
 import './imgEditing.scss';
-import { useDispatch } from 'react-redux';
+import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { switchers } from '../../../../types/reducers';
+import { ServiceType } from '../../../../types/typesCommon';
+import { useDispatch, useSelector } from 'react-redux';
 import Textarea from '../../../common/textarea/Textarea';
 import { modelSelects } from '../../../../utilities/generatorOptions';
 import { CurrentServiceModel } from '../../../../types/services/commonServices';
 import ModelsContainer from '../../modelsContainer/ModelsContainer';
-import { ImageEditItem, ImageEditOptions } from '../../../../interface/services/imgEdit';
-import Switcher from '../../../common/switcher/Switcher';
-import { setIsOptionsShown, setIsSavingHistoryEnabled } from '../../../../store/reduxReducers/switcherReducer';
 import { ImageEditServiceModel } from '../../../../types/services/imageEdit';
 import InputFile from '../../../common/input-file/InputFile';
-import { inputCommonClassName } from '../../../../utilities/constants';
 import { imgEditModelSelects } from '../../../../utilities/services/imageEdit';
 import Input from '../../../common/input/Input';
+import ImgEditOptions from '../../servicesOptions/ImgEditOptions/ImgEditOptions';
+import SubmitBtn from '../../../common/buttons/submit-btn/SubmitBtn';
+import { RootState } from '../../../../store/reduxStore';
+import { ApiImgEdit } from '../../../../api/StableDiffustion/Api.ImgEdit';
+import { createImageItemInfo } from '../../../../utilities/functions/images';
+import { uploadGenerationHistoryItem, uploadImageToStorage } from '../../../../utilities/functions/uploadingToFirebase';
+import { IGenResultItem } from '../../../../interface/items/imgItems';
+import { ImageEditItem, ImageEditOptions } from '../../../../interface/sd-request/imgEdit';
+import SwitchersContainer from '../../../common/switchersContainer/SwitchersContainer';
+import { setIsLoading } from '../../../../store/reduxReducers/commonsReducer';
+import { scrollToBlock } from '../../../../utilities/functions/common';
 
 const ImgEditing = (
     {
         setImageItem,
         switchersStates,
         mobxStore,
-        isLoadingReducer
     } 
     :
     {
-        setImageItem: Dispatch<SetStateAction<ImageItem>>,
+        setImageItem: Dispatch<SetStateAction<IGenResultItem>>,
         switchersStates: switchers,
         mobxStore: {apiKey: string, userId: string},
-        isLoadingReducer: {
-            isLoadingState: boolean,
-            isLoadingAction: ActionCreatorWithPayload<boolean, string>
-        }
     }) => {
 
+        const currentService = useSelector<RootState, ServiceType>(state => state.service.currentService);
         const dispatch = useDispatch();
 
-        const [prompt, setPrompt] = useState<string>(``);
-
         const { promptProps, fileInputProps } = modelSelects;
-
         const {searchToReplaceInputProps} = imgEditModelSelects;
-        const [searchPrompt, setSearchPrompt] = useState<string>(``);
 
-        const [image, setImage] = useState<Blob>(new Blob());
+        const [prompt, setPrompt] = useState<string>(promptProps.value);
+        const [image, setImage] = useState<Blob | null>(null);
+        const [search_prompt, setSearchPrompt] = useState<string>(searchToReplaceInputProps.value);
 
         const [imgEditModel, setImgEditModel] = useState<CurrentServiceModel>(`inpaint`);
         const [imgEditOptions, setImgEditOptions] = useState<ImageEditOptions>({
-            search_prompt: ``,
             output_format: `png`,
         });
 
-        const payload: ImageEditItem = {
-            prompt,
-            image,
-            ...imgEditOptions
+        useEffect(() => {
+            if (imgEditModel as ImageEditServiceModel === `outpaint`) {
+                setImgEditOptions({
+                    ...imgEditOptions,
+                    left: 1
+                });
+            } else {
+                setImgEditOptions({
+                    output_format: `png`,
+                });
+            };
+        }, [imgEditModel]);
+
+        const handleSubmit = async (e: React.FormEvent) => {
+            e.preventDefault();
+
+            dispatch(setIsLoading(true));
+            scrollToBlock(document.querySelector(`.generation-result`) as HTMLElement);
+
+            try {
+                let response: string | { name: string; errors: string[]; } | undefined = undefined;
+                let payload: ImageEditItem | undefined = undefined;
+
+                switch (imgEditModel as ImageEditServiceModel) {
+                    case `erase`:
+                        payload = { image, ...imgEditOptions };
+                    break;
+                    case `inpaint`:
+                        payload = { image: image, prompt, ...imgEditOptions };
+                    break;
+                    case `outpaint`:
+                        payload = { image, ...imgEditOptions };
+                    break;
+                    case `search-and-replace`:
+                        payload = { image, prompt, search_prompt, ...imgEditOptions };
+                    break;
+                    case `remove-background`:
+                        payload = { image, ...imgEditOptions };
+                    break;
+
+                    default: return console.log(`ImgEditing handleSubmit error: unknown model: ${imgEditModel}`);
+                };
+
+                response = await ApiImgEdit.getEditedImage(payload, imgEditModel as ImageEditServiceModel, mobxStore.apiKey);
+
+                const imgItemInfo = createImageItemInfo(prompt, payload.output_format);
+
+                const imageItem: IGenResultItem = {
+                    ...imgItemInfo,
+                    prompt,
+                    format: payload.output_format,
+                    itemUrl: response as string,
+                };
+
+                setImageItem(imageItem);
+
+                if (switchersStates.isSavingHistoryEnabled) {
+                    uploadGenerationHistoryItem(mobxStore.userId, {generalInfo: imageItem, options: imgEditOptions, serviceInfo: {service: currentService, serviceModel: imgEditModel}});
+                    uploadImageToStorage(mobxStore.userId, imgItemInfo.id, response as string, prompt, payload.output_format);
+                };
+            } catch (error) {
+                console.log(`ImgEditing handleSubmit error: ${error}`);
+            } finally {
+                dispatch(setIsLoading(false));
+                
+                setImgEditOptions({output_format: `png`});
+                if (image) setImage(null);
+                if (prompt) setPrompt('');
+                if (search_prompt) setSearchPrompt('');
+            };
         };
         
     return (
         <div className='img-editing'>
             <div className="img-editing__inner">
-                <form action="submit" method="post" className='img-editing__form'>
-                    <div className="img-upscale__mandatory-fields">
+                <form action="submit" method="post" className='img-editing__form' onSubmit={(e) => handleSubmit(e)}>
+                    <div className="img-editing__mandatory-fields">
                         <InputFile 
                             {...fileInputProps}
-                            isRequired={true}
-                            className={inputCommonClassName}
+                            required={true}
+                            image={image}
                             setImage={setImage}
                         />
-                        {(imgEditModel as ImageEditServiceModel === `inpaint` || imgEditModel as ImageEditServiceModel === `search-and-replace`) &&
-                            <Textarea
-                                {...promptProps}
-                                isRequired={true}
-                                value={prompt}
-                                setValue={setPrompt}
-                            />
-                        }
                         {imgEditModel as ImageEditServiceModel === `search-and-replace` &&
                             <Input
                                 {...searchToReplaceInputProps}
-                                isRequired={true}
-                                value={searchToReplaceInputProps.value}
+                                required={true}
+                                value={search_prompt}
                                 setValue={setSearchPrompt}
+                            />
+                        }
+                        {(imgEditModel as ImageEditServiceModel === `inpaint` || imgEditModel as ImageEditServiceModel === `search-and-replace`) &&
+                            <Textarea
+                                {...promptProps}
+                                required={true}
+                                value={prompt}
+                                setValue={setPrompt}
                             />
                         }
                     </div>
@@ -90,26 +156,14 @@ const ImgEditing = (
                         serviceModelOption={imgEditModel}
                         setServiceModelOption={setImgEditModel}                    
                     />
-                    <div className="service-container__switchers">
-                        <Switcher
-                            headline="Show options"
-                            value={switchersStates.isOptionsShown}
-                            setValue={setIsOptionsShown}
+                    <SwitchersContainer/>
+                    {switchersStates.isOptionsShown &&
+                        <ImgEditOptions
+                            setOptions={setImgEditOptions}
+                            serviceModelOptionModel={imgEditModel as ImageEditServiceModel}
                         />
-                        <Switcher
-                            headline="Save generation history"
-                            value={switchersStates.isSavingHistoryEnabled}
-                            setValue={setIsSavingHistoryEnabled}
-                        />
-                    </div>
-                    <div className="img-editing__btn-container">
-                        <button 
-                            type="submit" 
-                            disabled={isLoadingReducer.isLoadingState} 
-                            className={`img-editing__btn-container-btn ${isLoadingReducer.isLoadingState ? 'disabled' : ''}`}
-                            title="Edit"
-                        >Edit</button>
-                    </div>
+                    }
+                    <SubmitBtn text="Edit Image"/>
                 </form>
             </div>
         </div>

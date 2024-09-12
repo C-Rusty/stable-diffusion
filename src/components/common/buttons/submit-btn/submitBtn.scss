@@ -1,0 +1,9 @@
+@import '../../../../styles/index.scss';
+
+.submit-btn-container {
+    @extend %submit-btn-container;
+
+    &.disabled {
+        background: $colorGray;
+    }
+};

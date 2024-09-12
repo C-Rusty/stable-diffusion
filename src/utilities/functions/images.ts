@@ -45,7 +45,9 @@ export async function convertImgToBlob (img: string): Promise<string | ArrayBuff
 };
 
 export function getImgFromResponse (image: string, output_format: OutputFormat) {
-    const blob = new Blob([image], {type: `image/${output_format}`});
+    const typeFormat = output_format === `mp4` ? `video/${output_format}` : `image/${output_format}`
+
+    const blob = new Blob([image], {type: typeFormat});
     
     const url = URL.createObjectURL(blob);
 

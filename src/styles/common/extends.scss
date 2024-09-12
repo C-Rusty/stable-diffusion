@@ -278,6 +278,19 @@
   }
 }
 
-%services-options {
-  
+%switchers-container {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+%submit-btn-container {
+  display: flex;
+  justify-content: center;    
+
+  width: 100%;
+
+  button {
+    @extend %submit-btn;
+  }
 }

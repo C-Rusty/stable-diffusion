@@ -1,5 +1,5 @@
 import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
-import { generationHistoryItem, GetImgProps } from '../../../types/typesCommon';
+import { GetImgProps } from '../../../types/typesCommon';
 import './generationHistoryItem.scss';
 import DeleteGenHistoryButton from '../../common/buttons/delete-gen-history-item-btn/DeleteGenHistoryButton';
 import ShowImageButton from '../../common/buttons/show-img-btn/ShowImageButton';
@@ -7,6 +7,7 @@ import { apiFirebaseStorage } from '../../../api/Firebase/Api.Firebase.Storage';
 import Loader from '../../common/loader/Loader';
 import DownloadButton from '../../common/buttons/download-btn/DownloadButton';
 import { getImgNameAndFormat } from '../../../utilities/functions/storagePaths';
+import { IImageHistoryItem } from '../../../interface/items/imgItems';
 
 const GenerationHistoryItem = ( 
     {
@@ -17,8 +18,8 @@ const GenerationHistoryItem = (
     : 
     {
         userId: string | undefined,
-        item: generationHistoryItem, 
-        setGenerationHistory: Dispatch<SetStateAction<generationHistoryItem[]>>
+        item: IImageHistoryItem, 
+        setGenerationHistory: Dispatch<SetStateAction<IImageHistoryItem[]>>
     }
 ) => {
 
@@ -47,7 +48,7 @@ const GenerationHistoryItem = (
     const getImgFromStorage = async () => {
 
         const ImgItemProps: GetImgProps = {
-            userId, 
+            userId: userId, 
             storagePath: item.generalInfo.storagePath
         };
         

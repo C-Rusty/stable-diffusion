@@ -6,11 +6,9 @@ export default class mobxStore {
     isAuth = false;
     SDApiKey: string = ``;
     userId: string = ``;
-    isModalOpen = false;
 
     static SDApiKey: string = ``;
     static userId: string = ``;
-    static isModalOpen: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -22,10 +20,6 @@ export default class mobxStore {
 
     setUserId(userId: string) {
         this.userId = userId;
-    };
-
-    setModelOpen(bool: boolean) {
-        this.isModalOpen = bool;
     };
 
     async login(result: boolean) {
@@ -57,7 +51,7 @@ export default class mobxStore {
             try {
                 const { APIKEY } = await ApiFirebaseStore.getSDApiKey() as { APIKEY: string };
                 
-                this.SDApiKey = APIKEY;
+                this.SDApiKey = APIKEY;                
     
                 document.cookie = cookieNameSD + "=" + this.SDApiKey + ";path=/";
             } catch (error) {

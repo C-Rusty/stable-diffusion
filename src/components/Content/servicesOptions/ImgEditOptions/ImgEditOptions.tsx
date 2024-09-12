@@ -2,14 +2,14 @@ import { Dispatch, Fragment, SetStateAction, useEffect, useState } from 'react';
 import './imgEditOptions.scss';
 import InputFile from '../../../common/input-file/InputFile';
 import { modelSelects } from '../../../../utilities/generatorOptions';
-import { inputCommonClassName, selectCommonClassName } from '../../../../utilities/constants';
+import { selectCommonClassName } from '../../../../utilities/constants';
 import Input from '../../../common/input/Input';
 import { imgEditModelSelects } from '../../../../utilities/services/imageEdit';
 import { OutputFormat } from '../../../../types/typesGeneratorOptions';
 import Select from '../../../common/select/Select';
 import Textarea from '../../../common/textarea/Textarea';
-import { ImageEditServiceOptionErase, ImageEditServiceOptionInpaint, ImageEditServiceOptionOutpaint, ImageEditServiceOptionSearchAndReplace } from '../../../../interface/services/imgEdit';
 import { ImageEditServiceModel } from '../../../../types/services/imageEdit';
+import { ImageEditOptions, ImageEditServiceOptionErase, ImageEditServiceOptionInpaint, ImageEditServiceOptionOutpaint, ImageEditServiceOptionSearchAndReplace, ImageEditServiceOptionRemoveBackground } from '../../../../interface/sd-request/imgEdit';
 
 const ImgEditOptions = (
     {
@@ -18,18 +18,18 @@ const ImgEditOptions = (
     }
     :
     {
-        setOptions: Dispatch<SetStateAction<ImageEditServiceModel | {}>>,
+        setOptions: Dispatch<SetStateAction<ImageEditOptions>>,
         serviceModelOptionModel: ImageEditServiceModel
     }) => {
 
         const { 
             negativeInputProps,
             outputFormmatSelectProps,
-            fileInputProps,
+            promptProps,
             seedInputProps,
         } = modelSelects;
 
-        let {creativityInputProps} = modelSelects;
+        let { creativityInputProps } = modelSelects;
         creativityInputProps.value = .5;
         creativityInputProps.min = 0;
         creativityInputProps.max = 1;
@@ -42,12 +42,12 @@ const ImgEditOptions = (
             searchToReplaceInputProps
         } = imgEditModelSelects;
 
-    const [image, setImage] = useState<Blob>(new Blob());
+    const [prompt, setPrompt] = useState<string>(promptProps.value);
     const [seed, setSeed] = useState<number>(seedInputProps.value); 
-    const [output_format, setOutputFormat] = useState<OutputFormat>(`png`);
-    const [mask, setMask] = useState<Blob>(new Blob());
+    const [output_format, setOutputFormat] = useState<OutputFormat>(outputFormmatSelectProps.options[0].value);
+    const [mask, setMask] = useState<Blob | null>(null);
     const [grow_mask, setGrowMask] = useState<number>(growMaskInputProps.value);
-    const [negative_prompt, setNegativePrompt] = useState<string>(``);
+    const [negative_prompt, setNegativePrompt] = useState<string>(negativeInputProps.value);
     const [creativity, setCreativity] = useState<number>(creativityInputProps.value);
 
     const [left, setLeft] = useState<number>(pixelsAmountInputProps.value);
@@ -58,12 +58,18 @@ const ImgEditOptions = (
     const [search_prompt, setSearchPrompt] = useState<string>(searchToReplaceInputProps.value);
 
     useEffect(() => {
-        let options: ImageEditServiceChosenOptions | undefined = undefined;
+        // SD API docs: at least one side must be greater than 0
+        if (left === 0 && right === 0 && up === 0 && down === 0) {
+            setLeft(1);
+        };
+    }, [left, right, up, down]);
+
+    useEffect(() => {
+        let options: ImageEditOptions | undefined = undefined;
 
         switch (serviceModelOptionModel) {
             case `erase`:
                 options = {
-                    image: image as Blob,
                     mask,
                     grow_mask,
                     seed,
@@ -72,7 +78,6 @@ const ImgEditOptions = (
             break;
             case `inpaint`:
                 options = {
-                    image: image as Blob,
                     negative_prompt,
                     mask,
                     grow_mask,
@@ -82,22 +87,19 @@ const ImgEditOptions = (
             break;
             case `outpaint`:
                 options = {
-                    image: image as Blob,
                     left,
                     right,
                     up,
                     down,
                     creativity,
+                    prompt,
                     seed,
                     output_format
                 } as ImageEditServiceOptionOutpaint;
-                console.log(options);
-                
             break;
             case `search-and-replace`:
                 options = {
-                    image: image as Blob,
-                    search_prompt,
+                    negative_prompt,
                     grow_mask,
                     seed,
                     output_format
@@ -105,41 +107,24 @@ const ImgEditOptions = (
             break;
             case `remove-background`:
                 options = {
-                    image: image as Blob,
                     output_format
-                } as ImageEditServiceOptionErase;
+                } as ImageEditServiceOptionRemoveBackground;
             break;
         
-            default: return console.log(`serviceModelOptionModel not found`);
+            default: return console.log(`serviceModelOption not found: ${serviceModelOptionModel}`);
         };
 
         setOptions(options);
 
-    }, [image, seed, output_format, mask, grow_mask, negative_prompt, creativity, left, right, up, down, search_prompt]);
+    }, [seed, output_format, mask, grow_mask, negative_prompt, creativity, left, right, up, down, search_prompt, prompt, serviceModelOptionModel, setOptions]);
 
     return (
         <div className='img-edit-options'>
             <div className="img-edit-options__inner">
-                {(serviceModelOptionModel === `inpaint` || serviceModelOptionModel === `outpaint` || serviceModelOptionModel === `search-and-replace`) &&
-                    <InputFile 
-                        {...fileInputProps}
-                        isRequired={true}
-                        label={`Image to edit`}
-                        className={inputCommonClassName}
-                        setImage={setImage}
-                    />
-                }
-                {serviceModelOptionModel !== `remove-background` && 
-                    <Input 
-                        {...seedInputProps}
-                        value={seed}
-                        setValue={setSeed}
-                    />
-                }
                 {(serviceModelOptionModel === `erase` || serviceModelOptionModel === `inpaint`) &&
                     <InputFile 
                         {...maskFileInputProps}
-                        className={inputCommonClassName}
+                        image={mask}
                         setImage={setMask}
                     />
                 }
@@ -181,7 +166,19 @@ const ImgEditOptions = (
                             value={creativity}
                             setValue={setCreativity}
                         />
+                        <Input
+                            {...promptProps}
+                            value={prompt}
+                            setValue={setPrompt}
+                        />
                     </Fragment>
+                }
+                {serviceModelOptionModel !== `remove-background` && 
+                    <Input 
+                        {...seedInputProps}
+                        value={seed}
+                        setValue={setSeed}
+                    />
                 }
                 <Select 
                     {...outputFormmatSelectProps}

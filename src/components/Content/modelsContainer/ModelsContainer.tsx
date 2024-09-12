@@ -25,7 +25,7 @@ const ModelsContainer = (
 
     const currentService = useSelector<RootState, ServiceType>(state => state.service.currentService);
 
-    const [currentModels, setCurrentModels] = useState<Array<ImageGenerationServiceModel | UpscaleServiceModel | ImageEditServiceModel | ImageControlServiceModel | ImageToVideoGenerationServiceModels>>(servicesOptions.imageGeneration);
+    const [currentModels, setCurrentModels] = useState<Array<ImageGenerationServiceModel | UpscaleServiceModel | ImageEditServiceModel | ImageControlServiceModel | ImageToVideoGenerationServiceModels>>([]);
 
     useEffect(() => {
         switch (currentService) {
@@ -36,7 +36,7 @@ const ModelsContainer = (
             case `Video Generator`: setCurrentModels(servicesOptions.imageToVideoGeneration); break;
         
             default: return console.log(`Wrong service type: ${currentService}`);
-        }
+        };
     }, [currentService]);
 
     useEffect(() => {

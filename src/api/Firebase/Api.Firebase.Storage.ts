@@ -1,9 +1,10 @@
 import { ref, uploadString } from "@firebase/storage";
 import { storage } from "../../utilities/firebaseConfig";
 import { deleteObject, getDownloadURL, getMetadata, listAll} from "firebase/storage";
-import { DeleteImgProps, GalleryItem, generationHistoryItem, GetAllImgsProps, GetImgProps, UploadImgProps } from "../../types/typesCommon";
+import { DeleteImgProps, GetAllImgsProps, GetImgProps, UploadImgProps } from "../../types/typesCommon";
 import { ApiFirebaseStore } from "./Api.Firebase.Store";
 import { createFullImgStoragePath } from "../../utilities/functions/storagePaths";
+import { IGalleryImageItem, IImageHistoryItem } from "../../interface/items/imgItems";
 
 const getImages = async (imagsToGetProps: GetAllImgsProps) => {
 
@@ -42,21 +43,21 @@ const getImages = async (imagsToGetProps: GetAllImgsProps) => {
 
 const getFavouritesImgs = async (userId: string, favouritesImgsItemCounter: number, lastItemTimestamp: string | null) => {
     try {
-        const favouritesImgPaths: generationHistoryItem[] | undefined = await ApiFirebaseStore.getFavouritesImgsPaths(userId, favouritesImgsItemCounter, lastItemTimestamp);
+        const favouritesImgPaths: IImageHistoryItem[] | undefined = await ApiFirebaseStore.getFavouritesImgsPaths(userId, favouritesImgsItemCounter, lastItemTimestamp);
 
         if (!favouritesImgPaths) return console.log(`favouritesImgs get error...`);
 
-        const imagesPromises: Promise<GalleryItem>[] = favouritesImgPaths.map(async (item) => {
-            const url = await getImage({userId, storagePath: item.generalInfo.storagePath});
+        const imagesPromises: Promise<IGalleryImageItem>[] = favouritesImgPaths.map(async (item) => {
+            const url = await getImage({userId: item.generalInfo.id, storagePath: item.generalInfo.storagePath});
 
             return { 
                 id: item.generalInfo.id,
                 prompt: item.generalInfo.prompt || `No prompt`,
                 format: item.generalInfo.format,
-                url: url ? url : `getImage method error`,
+                itemUrl: url ? url : `getImage method error`,
                 storagePath: item.generalInfo.storagePath,
                 timestamp: item.generalInfo.timestamp,
-                uploadedImage: item.generalInfo.uploadedImage
+                uploadedImage: item.generatedItem ? item.generatedItem : null
             };
         });
 
@@ -72,7 +73,6 @@ const getFavouritesImgs = async (userId: string, favouritesImgsItemCounter: numb
 const getImage = async (ImgItemProps: GetImgProps) => {
     try {
         const { userId, storagePath } = ImgItemProps;
-
         const imageRef = ref(storage, createFullImgStoragePath(userId!, storagePath));
 
         let imageUrl = await getDownloadURL(imageRef);

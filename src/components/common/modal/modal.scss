@@ -17,13 +17,10 @@
 
 @keyframes hide-modal {
     0% {
-        transform: translateX(-50%);
-    }
-    50% {
-        transform: translateX(-100rem);
+        display: none;
     }
     100%{
-        z-index: -20;
+        display: none;
     }
 }
 

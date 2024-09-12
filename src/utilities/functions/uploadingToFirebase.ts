@@ -1,9 +1,9 @@
 import { apiFirebaseStorage } from "../../api/Firebase/Api.Firebase.Storage";
 import { ApiFirebaseStore } from "../../api/Firebase/Api.Firebase.Store";
-import { CurrentServiceModelOptions } from "../../types/services/commonServices";
-import { UploadImgProps, ImageItem, generationHistoryItem } from "../../types/typesCommon";
+import { IImageHistoryItem } from "../../interface/items/imgItems";
+import { UploadImgProps } from "../../types/typesCommon";
 import { OutputFormat } from "../../types/typesGeneratorOptions";
-import { convertImgToBlob, getImgFromResponse } from "./images";
+import { convertImgToBlob } from "./images";
 import { createImgStoragePath } from "./storagePaths";
 
 export const uploadImageToStorage = async (userId: string, imageId: string, image: string, prompt: string, output_format: OutputFormat) => {
@@ -20,15 +20,6 @@ export const uploadImageToStorage = async (userId: string, imageId: string, imag
     await apiFirebaseStorage.uploadImages(imageHistoryItem);
 };
 
-export const uploadGenerationHistoryItem = async (userId: string, imageItem: ImageItem, options: CurrentServiceModelOptions) => {
-
-    if (options.image) options.image = getImgFromResponse(options.image as string, options.output_format);
-
-    const imageHistoryItem: generationHistoryItem = {
-        generalInfo: imageItem,
-        options: options,
-        isFavourite: false,
-    };
-
-    await ApiFirebaseStore.uploadGenerationHistoryItem(userId, imageHistoryItem);
+export const uploadGenerationHistoryItem = async (userId: string, imageItem: IImageHistoryItem) => {
+    await ApiFirebaseStore.uploadGenerationHistoryItem(userId, imageItem);
 };

@@ -5,9 +5,9 @@ import { urlPaths } from '../../../routes/urlPaths';
 import AddToFavouritesButton from '../../common/buttons/upload-img-btn/AddToFavouritesButton';
 import GoToButton from '../../common/buttons/go-to-btn/GoToButton';
 import DownloadButton from '../../common/buttons/download-btn/DownloadButton';
-import { ImageItem } from '../../../types/typesCommon';
+import { IGenResultItem } from '../../../interface/items/imgItems';
 
-const GenerationResult = ({image}: {image: ImageItem}) => {
+const GenerationResult = ({genResultItem}: {genResultItem: IGenResultItem}) => {
 
     const {mobxStore} = useContext(Context);
     const userId = mobxStore.userId;
@@ -16,18 +16,27 @@ const GenerationResult = ({image}: {image: ImageItem}) => {
         <div className="generation-result">
             <div className="generation-result__inner">
                 <div className="generation-result__img-container">
-                    <img 
-                        src={image.url ? image.url : undefined} 
-                        alt={image.prompt ? image.prompt: undefined}
-                        className='generation-result__img'
-                    />
+                    {genResultItem.format === `mp4` ?
+                        <video controls>
+                            <source src={genResultItem.itemUrl ? genResultItem.itemUrl : undefined} type="video/mp4" />
+                            <p>
+                                Your browser doesn't support HTML video. Please upgrade your browser or download other browser supporting HTML5 video. You can review video in generation history page if you've enabled "Save generation history" option.
+                            </p>
+                        </video>
+                        :
+                        <img 
+                            src={genResultItem.itemUrl ? genResultItem.itemUrl : undefined} 
+                            alt={genResultItem.prompt ? genResultItem.prompt: undefined}
+                            className='generation-result__img'
+                        />
+                    }
                 </div>
                 <div className="generation-result__action-btns">
                     <div className="generation-result__action-btns-inner">
                         <AddToFavouritesButton 
                             image={{
-                                storagePath: image.storagePath,
-                                id: image.id
+                                storagePath: genResultItem.storagePath,
+                                id: genResultItem.id
                             }} 
                             userId={userId} 
                         />
@@ -35,8 +44,8 @@ const GenerationResult = ({image}: {image: ImageItem}) => {
                         <DownloadButton 
                             imgsToDownload={[
                                 {
-                                    name: `${image.prompt}.${image.format}`,
-                                    url: image.storagePath
+                                    name: `${genResultItem.prompt}.${genResultItem.format}`,
+                                    url: genResultItem.storagePath
                                 }
                             ]}
                             text="Download"

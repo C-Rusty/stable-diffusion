@@ -1,5 +1,6 @@
+import { IInputNumberProps, ISelectProps } from "../../interface/fields";
 import { ImageGenerationServiceModel } from "../../types/services/imageGeneration";
-import { AspectRatiosProps, PresetStyle } from "../../types/typesGeneratorOptions";
+import { PresetStyle } from "../../types/typesGeneratorOptions";
 
 export const imageGenerationServiceOptions: ImageGenerationServiceModel[] = [
     `ultra`,
@@ -9,33 +10,15 @@ export const imageGenerationServiceOptions: ImageGenerationServiceModel[] = [
     `core`
 ];
 
-const aspectRatiSelectProps: {
-    label: string,
-    options: AspectRatiosProps[],
-    id: string
-} = {
-    label: `Aspect Ratio`,
-    options: [
-        {value: `16:9`, text: `16:9`},
-        {value: `1:1`, text: `1:1`},
-        {value: `21:9`, text: `21:9`},
-        {value: `2:3`, text: `2:3`},
-        {value: `3:2`, text: `3:2`},
-        {value: `4:5`, text: `4:5`},
-        {value: `5:4`, text: `5:4`},
-        {value: `9:16`, text: `9:16`},
-        {value: `9:21`, text: `9:21`},
-    ],
-    id: 'aspect-ratio',
-};
-
-const stylePresetSelectProps: {
-    label: string,
-    id: string
-    options: Array<{value: PresetStyle, text: PresetStyle}>
-} = {
+const stylePresetSelectProps: ISelectProps<PresetStyle> = {
     label: `Style Preset`,
     id: 'style-select',
+    placeholder: `Style Preset`,
+    name: `style-select`,
+    value: `3d-model`,
+    className: `style-select`,
+    type: `select`,
+    required: false,
     options: [
         { value: "3d-model", text: "3d-model" },
         { value: "analog-film", text: "analog-film" },
@@ -57,17 +40,7 @@ const stylePresetSelectProps: {
       ]
 };
 
-const imageStrengthInputProps: {
-    label: string,
-    type: string,
-    id: string
-    value: number,
-    min: number,
-    max: number,
-    step: number,
-    placeholder: string,
-    name: string
-} = {
+const imageStrengthInputProps: IInputNumberProps = {
     label: 'Image strength',
     type: `number`,
     id: 'image-strength',
@@ -77,10 +50,11 @@ const imageStrengthInputProps: {
     step: .01,
     placeholder: `impact on the generation`,
     name: 'strength',
+    className: `image-strength`,
+    required: false
 };
 
 export const modelSelects = {
-    aspectRatiSelectProps,
     stylePresetSelectProps,
     imageStrengthInputProps,
 };

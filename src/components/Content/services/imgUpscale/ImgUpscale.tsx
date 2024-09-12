@@ -1,84 +1,95 @@
+import './imgUpscale.scss';
 import { Dispatch, SetStateAction, useState } from 'react';
-import { ImageItem } from '../../../../types/typesCommon';
-import { createImageItemInfo } from '../../../../utilities/functions/images';
 import { ApiImgUpscale } from '../../../../api/StableDiffustion/Api.ImgUpscale';
 import { switchers } from '../../../../types/reducers';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ImgUpscaleOptions from '../../servicesOptions/ImgUpscaleOptions/ImgUpscaleOptions';
-import { ActionCreatorWithPayload } from '@reduxjs/toolkit';
-import { ImageUpscaleItem, ImageUpscaleModelOptions } from '../../../../interface/services/imageUpscale';
 import { modelSelects } from '../../../../utilities/generatorOptions';
 import Textarea from '../../../common/textarea/Textarea';
 import ModelsContainer from '../../modelsContainer/ModelsContainer';
-import { CurrentServiceModel } from '../../../../types/services/commonServices';
-import Switcher from '../../../common/switcher/Switcher';
-import { setIsOptionsShown, setIsSavingHistoryEnabled } from '../../../../store/reduxReducers/switcherReducer';
+import { CurrentServiceModel, ServiceType } from '../../../../types/services/commonServices';
 import { UpscaleServiceModel } from '../../../../types/services/imageUpscale';
 import { uploadGenerationHistoryItem, uploadImageToStorage } from '../../../../utilities/functions/uploadingToFirebase';
+import SubmitBtn from '../../../common/buttons/submit-btn/SubmitBtn';
+import { RootState } from '../../../../store/reduxStore';
+import { createImageItemInfo, getImgFromResponse } from '../../../../utilities/functions/images';
+import { IGenResultItem, IUpscaleImageItem } from '../../../../interface/items/imgItems';
+import { ImageUpscaleModelOptions, ImageUpscaleItem } from '../../../../interface/sd-request/imageUpscale';
+import SwitchersContainer from '../../../common/switchersContainer/SwitchersContainer';
+import InputFile from '../../../common/input-file/InputFile';
+import { resetGeneratorFields, scrollToBlock } from '../../../../utilities/functions/common';
+import { setIsLoading } from '../../../../store/reduxReducers/commonsReducer';
+
 
 const ImgUpscale = (
     {
         setImageItem,
         switchersStates,
         mobxStore,
-        isLoadingReducer
     } 
     :
     {
-        setImageItem: Dispatch<SetStateAction<ImageItem>>,
+        setImageItem: Dispatch<SetStateAction<IGenResultItem>>,
         switchersStates: switchers,
         mobxStore: {apiKey: string, userId: string},
-        isLoadingReducer: {
-            isLoadingState: boolean,
-            isLoadingAction: ActionCreatorWithPayload<boolean, string>
-        }
     }) => {
 
+    const currentService = useSelector<RootState, ServiceType>(state => state.service.currentService);
     const dispatch = useDispatch();
 
-    const [prompt, setPrompt] = useState<string>(``);
+    const { promptProps, fileInputProps } = modelSelects;
 
-    const { promptProps } = modelSelects;
+    const [prompt, setPrompt] = useState<string>(promptProps.value);
+    const [image, setImage] = useState<Blob | null>(null);
 
     const [upscaleModel, setUpscaleModel] = useState<CurrentServiceModel>(`conservative`);
     const [upsacleOptions, setUpsacleOptions] = useState<ImageUpscaleModelOptions>({
         output_format: `png`,
-        image: new Blob(),
     });
 
     const payload: ImageUpscaleItem = {
         prompt,
+        image,
         ...upsacleOptions
     };
 
     const submitUpscaleForm = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        dispatch(isLoadingReducer.isLoadingAction(true));
+        dispatch(setIsLoading(true));
+        scrollToBlock(document.querySelector(`.generation-result`) as HTMLElement);
 
         try {
-            const response = await ApiImgUpscale.getUpscaledImage(payload, upscaleModel as UpscaleServiceModel, mobxStore.userId);
+            const response = await ApiImgUpscale.getUpscaledImage(payload, upscaleModel as UpscaleServiceModel, mobxStore.apiKey);
 
             if (response) {
                 const imgItemInfo = createImageItemInfo(prompt, upsacleOptions.output_format);
 
-                const imageItem: ImageItem = {
+                const imageItem: IUpscaleImageItem = {
                     ...imgItemInfo,
                     prompt,
                     format: upsacleOptions.output_format,
-                    url: response as string,
+                    itemUrl: response as string,
                 };
 
                 setImageItem(imageItem);
 
-                uploadImageToStorage(mobxStore.userId, imgItemInfo.id, response as string, prompt, upsacleOptions.output_format);
-
-                if (switchersStates.isSavingHistoryEnabled) uploadGenerationHistoryItem(mobxStore.userId, imageItem, upsacleOptions);
+                if (switchersStates.isSavingHistoryEnabled) {
+                    if (payload.image) payload.image = getImgFromResponse(payload.image as string, upsacleOptions.output_format);
+                    
+                    uploadImageToStorage(mobxStore.userId, imgItemInfo.id, response as string, prompt, upsacleOptions.output_format);
+                    uploadGenerationHistoryItem(mobxStore.userId, {generalInfo: imageItem, generatedItem: payload.image, options: upsacleOptions, serviceInfo: {service: currentService, serviceModel: upscaleModel}})
+                };
             };
         } catch (error) {
             console.log(error);
         } finally {
-            dispatch(isLoadingReducer.isLoadingAction(false));
+            dispatch(setIsLoading(false));
+
+            setUpsacleOptions({
+                output_format: `png`,
+            });
+            resetGeneratorFields(setPrompt, setImage);
         };
     };
 
@@ -94,27 +105,22 @@ const ImgUpscale = (
                     <div className="img-upscale__mandatory-fields">
                         <Textarea
                             {...promptProps}
-                            isRequired={true}
+                            required={true}
                             value={prompt}
                             setValue={setPrompt}
+                        />
+                        <InputFile 
+                            {...fileInputProps}
+                            required={true}
+                            image={image}
+                            setImage={setImage}
                         />
                     </div>
                     <ModelsContainer 
                         serviceModelOption={upscaleModel}
                         setServiceModelOption={setUpscaleModel}                    
                     />
-                    <div className="service-container__switchers">
-                        <Switcher
-                            headline="Show options"
-                            value={switchersStates.isOptionsShown}
-                            setValue={setIsOptionsShown}
-                        />
-                        <Switcher
-                            headline="Save generation history"
-                            value={switchersStates.isSavingHistoryEnabled}
-                            setValue={setIsSavingHistoryEnabled}
-                        />
-                    </div>
+                    <SwitchersContainer/>
                     {switchersStates.isOptionsShown && 
                         <ImgUpscaleOptions 
                             setOptions={setUpsacleOptions}
@@ -122,12 +128,7 @@ const ImgUpscale = (
                         />
                     }
                     <div className="img-upscale__form-btn-container">
-                        <button 
-                                type="submit" 
-                                disabled={isLoadingReducer.isLoadingState} 
-                                className={`service-container__btn-container-btn ${isLoadingReducer.isLoadingState ? 'disabled' : ''}`}
-                                title="Generate"
-                        >Upscale</button>
+                        <SubmitBtn text={`Upscale`}/>
                     </div>
                 </form>
             </div>

@@ -1,38 +1,43 @@
 import { Fragment } from 'react/jsx-runtime';
 import './inputFile.scss';
 import {ReactComponent as UploadIcon} from '../../../images/upload-icon.svg';
-import { Dispatch, useState } from 'react';
+import { Dispatch, useEffect, useState } from 'react';
 
 interface InputProps {
     name: string,
     id?: string,
     accept?: string,
-    className: string,
     label: string,
-    isRequired?: boolean,
-    setImage: Dispatch<React.SetStateAction<Blob>>
+    required?: boolean,
+    image: Blob | null,
+    setImage: Dispatch<React.SetStateAction<Blob | null>>
 };
 
-const InputFile = ({ name, id, accept, label, className, isRequired, setImage} : InputProps) => {
+const InputFile = ({ name, id, accept, label, required, image, setImage} : InputProps) => {
 
     const [imageName, setImageName] = useState<string | undefined>('');
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files![0];
-        console.log(file.name);
-        
-        setImageName(file.name.split(`.`)[0]);
-        
-        const reader = new FileReader();
+        if (e.target.files === null) return;
 
-        reader.onload = async () => {
-            const base = await (fetch( URL.createObjectURL(file)));
-            const blob = await base.blob();
+        const file = e.target.files[0];
 
-            setImage(blob);
+        if (file) {
+            setImageName(file.name.split(`.`)[0]);
+        
+            const reader = new FileReader();
+    
+            reader.onload = async () => {
+                const base = await (fetch( URL.createObjectURL(file)));
+                const blob = await base.blob();
+    
+                setImage(blob);
+            };
+    
+            reader.readAsDataURL(file);
+        } else {
+            setImage(image);
         };
-
-        reader.readAsDataURL(file);
     };
 
     return (
@@ -47,7 +52,7 @@ const InputFile = ({ name, id, accept, label, className, isRequired, setImage} :
                     aria-label='Upload image'
                     title='Upload image'
                     spellCheck='true'
-                    required={isRequired}
+                    required={required}
                     accept={accept}
                     placeholder='Click or drag n drop to upload image'
                     onChange={(e) => handleImageUpload(e)}

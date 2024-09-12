@@ -4,28 +4,30 @@
     background: $colorLightBlack;
 
     @extend %block;
+    
+    .img-generation, .img-upscale, .img-editing, .img-precise-edit, .video-generation {
+        &__form {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
 
-    &__form {
-        display: flex;
-        flex-direction: column;
-        gap: 4rem;
+        &__mandatory-fields {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2rem;
+
+            &:has(div:nth-of-type(2)) {
+                grid-template-columns: repeat(2, 1fr);
+
+                div:nth-of-type(3) {
+                    grid-column: span 2;
+                }
+            }
+        }
     }
 
     &__switchers {
-        display: flex;
-        gap: 4rem;
-    }
-
-    &__btn-container {
-        display: flex;
-        justify-content: center;
-        
-        &-btn {
-            @extend %submit-btn;
-
-            &.disabled {
-                background: $colorGray;
-            }
-        }
+        @extend %switchers-container;
     }
 }

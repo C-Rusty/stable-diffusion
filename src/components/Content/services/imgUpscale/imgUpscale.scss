@@ -9,8 +9,6 @@
         flex-direction: column;
         gap: 2rem;
 
-        padding: 3rem;
-
         background: $colorLightBlack;
 
         border-radius: 3rem;
@@ -67,19 +65,5 @@
         &-prompt {
             @extend %prompt;
         }
-
-        &-btn-container {
-            display: flex;
-            justify-content: center;    
-    
-            width: 100%;            
-        }
-
-        &-btn {
-            @extend %submit-btn;
-        }
-
     }
-
-
 }

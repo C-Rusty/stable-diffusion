@@ -4,13 +4,13 @@ import { Context } from '../../app/App';
 import DownloadButton from '../../common/buttons/download-btn/DownloadButton';
 import DeleteButton from '../../common/buttons/delete-img-btn/DeleteImgButton';
 import Loader from '../../common/loader/Loader';
-import { GalleryItem } from '../../../types/typesCommon';
 import { apiFirebaseStorage } from '../../../api/Firebase/Api.Firebase.Storage';
 import ShowMoreButton from '../../common/buttons/show-more-btn/ShowMoreButton';
 import { loadFavouriteItemsLimit } from '../../../utilities/constants';
 import { ApiFirebaseStore } from '../../../api/Firebase/Api.Firebase.Store';
 import FavouritesItem from '../favouritesItem/FavouritesItem';
 import { getImgNameAndFormat } from '../../../utilities/functions/storagePaths';
+import { IGalleryItem } from '../../../interface/items/imgItems';
 
 const FavouritesPage = () => {
 
@@ -19,8 +19,8 @@ const FavouritesPage = () => {
     const { mobxStore } = useContext(Context);
     const userId = mobxStore.userId;
 
-    const [imgCollection, setImgCollection] = useState<Array<GalleryItem>>([]);
-    const [memorizedImgCollection, setMemorizedImgCollection] = useState<Array<GalleryItem>>([]);
+    const [imgCollection, setImgCollection] = useState<Array<IGalleryItem>>([]);
+    const [memorizedImgCollection, setMemorizedImgCollection] = useState<Array<IGalleryItem>>([]);
 
     const [collectionAmount, setCollectionAmount] = useState<number>(0);
     const [favouriteItemsCounter, setfavouriteItemsCounter] = useState<number>(loadFavouriteItemsLimit);
@@ -28,7 +28,7 @@ const FavouritesPage = () => {
 
     const getUserImgCollection = async () => {
         
-        const favouritesImgs = await apiFirebaseStorage.getFavouritesImgs(userId!, favouriteItemsCounter, lastItemTimestamp) as Array<GalleryItem>;
+        const favouritesImgs = await apiFirebaseStorage.getFavouritesImgs(userId!, favouriteItemsCounter, lastItemTimestamp) as Array<IGalleryItem>;
     
         if (favouriteItemsCounter === loadFavouriteItemsLimit) {
             setImgCollection(favouritesImgs);
@@ -57,7 +57,6 @@ const FavouritesPage = () => {
 
     useEffect(() => {
         if (imgCollection) setLastItemTimestamp(imgCollection[imgCollection.length - 1]?.timestamp);
-        
     }, [favouriteItemsCounter]);
 
     useEffect(() => {
@@ -96,7 +95,7 @@ const FavouritesPage = () => {
     };
 
     const [isSelectMultipleImagesModeOn, setSelectMultipleImagesModeOn] = useState(false);
-    const [selectedImgs, setSelectedImgs] = useState<Array<GalleryItem>>([]);
+    const [selectedImgs, setSelectedImgs] = useState<Array<IGalleryItem>>([]);
 
     const handleSelectMultipleImagesClick = () => {
         setSelectMultipleImagesModeOn(!isSelectMultipleImagesModeOn);
@@ -129,7 +128,7 @@ const FavouritesPage = () => {
                                             imgsToDownload={selectedImgs.map(img => (
                                                 {
                                                     name: getImgNameAndFormat(img.storagePath), 
-                                                    url: img.url
+                                                    url: img.itemUrl
                                                 })
                                             )}
                                             text="Download selected images"
@@ -158,7 +157,7 @@ const FavouritesPage = () => {
                                                 img={{
                                                     prompt: img.prompt || '',
                                                     format: img.format,
-                                                    url: img.url,
+                                                    url: img.itemUrl,
                                                     id: img.id,
                                                     storagePath: img.storagePath
                                                 }}

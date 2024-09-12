@@ -3,67 +3,47 @@ import './servicesPage.scss';
 import GenerationResult from '../generationResult/GenerationResult';
 import Loader from '../../common/loader/Loader';
 import noise from '../../../images/noise.png';
-import { CreditsAmount, ImageItem, ServiceType } from '../../../types/typesCommon';
-import { v4 as uuidv4 } from 'uuid';
-import { ApiSDGetInfo } from '../../../api/StableDiffustion/Api.SDGetInfo';
+import { CreditsAmount, ServiceType } from '../../../types/typesCommon';
 import { Context } from '../../app/App';
-import { setCreditsAmount } from '../../../store/reduxReducers/creditsReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../store/reduxStore';
-import { ServiceTypes } from '../../../utilities/operatorOptions';
+import { ServiceTypes } from '../../../utilities/services';
 import ServiceContainer from '../serviceContainer/ServiceContainer';
 import { setIsLoading } from '../../../store/reduxReducers/commonsReducer';
 import { setService } from '../../../store/reduxReducers/serviceReducer';
+import { IGenResultItem } from '../../../interface/items/imgItems';
+import { createImageId } from '../../../utilities/functions/images';
+import { updateCreditsAmount } from '../../../utilities/functions/common';
 
 const ServicesPage = () => {
 
     const { mobxStore } = useContext(Context);
     const dispatch = useDispatch();
 
-    const id = uuidv4();
+    const id = createImageId();
 
     const isLoading = useSelector<RootState, boolean>((state) => state.commonStates.isLoading);
 
-    const [imageItem, setImageItem] = useState<ImageItem>(
+    const [generationResultItem, setGenerationResultItem] = useState<IGenResultItem>(
         {
-            id: id,
+            id: createImageId(),
             prompt: `noise`, 
             format: `png`,
-            url: noise,
+            itemUrl: noise,
             storagePath: `${id}.noise.png`,
             timestamp: new Date().getTime().toString(),
         }
     );
 
     useEffect(() => {
-        if (imageItem.url) {
+        if (generationResultItem.itemUrl) {
             dispatch(setIsLoading(false));
-        };
 
-        if (mobxStore.SDApiKey && mobxStore.isAuth) {
-            updateBalance(mobxStore.SDApiKey!)
+            if (mobxStore.SDApiKey && mobxStore.isAuth) updateCreditsAmount(dispatch, mobxStore.SDApiKey, creditsAmount);
         };
-    }, [imageItem.url]);
-
-    useEffect(() => {
-        if (mobxStore.isAuth) updateBalance(mobxStore.SDApiKey!);
-    }, [mobxStore.isAuth]);
+    }, [generationResultItem.itemUrl]);
 
     const creditsAmount = useSelector<RootState, CreditsAmount>((state) => state.creditsAmount);
-
-    const updateBalance = async (SDApiKey: string) => {
-
-        dispatch(setCreditsAmount({ balance: `Loading...` }));
-
-        setTimeout( async () => {
-            const response = await ApiSDGetInfo.getBalance(SDApiKey);
-    
-            if (response) dispatch(setCreditsAmount({
-                balance: response.credits
-            }));
-        }, Number(creditsAmount.balance) ? 5000 : 0);
-    };
-
     const activeService = useSelector<RootState, ServiceType>((state) => state.service.currentService);
 
     const changeActiveService = (option: ServiceType) => {
@@ -106,12 +86,12 @@ const ServicesPage = () => {
                         </div>
                         <ServiceContainer 
                             activeService={activeService}
-                            setImageItem={setImageItem}
+                            setGenerationResultItem={setGenerationResultItem}
                         />
                         {isLoading ? 
                             <Loader className="generator-page" /> 
                             : 
-                            <GenerationResult image={imageItem} />
+                            <GenerationResult genResultItem={generationResultItem} />
                         }
                     </div>
                 </div>

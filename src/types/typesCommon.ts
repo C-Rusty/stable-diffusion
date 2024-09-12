@@ -1,6 +1,5 @@
 import { Dispatch } from "react";
-import { AspectRatios, AspectRatiosProps, OutputFormat, OutputFormatProps, PresetStyleProps } from "./typesGeneratorOptions";
-import { CurrentServiceModelOptions } from "./services/commonServices";
+import { AspectRatios, AspectRatiosProps, OutputFormatProps, PresetStyleProps } from "./typesGeneratorOptions";
 
 export type SelectProps = {
     className: string, 
@@ -39,33 +38,6 @@ export type ModalProps = {
     text: string | undefined,
     isModalOpen: boolean,
     event: `img-delete` | `img-upload` | undefined
-};
-
-export type ImageItem = {
-    id: string,
-    prompt?: string,
-    format: OutputFormat,
-    url: string,
-    storagePath: string
-    timestamp: string,
-    uploadedImage?: Blob | undefined
-};
-
-export type GalleryItem = {
-    id: string, 
-    prompt?: string,
-    format: string,
-    url: string,
-    storagePath: string,
-    timestamp: string,
-    index?: number,
-    uploadedImage?: Blob | undefined
-};
-
-export type generationHistoryItem = {
-    generalInfo: ImageItem,
-    options: CurrentServiceModelOptions,
-    isFavourite: boolean
 };
 
 export type UploadImgProps = {

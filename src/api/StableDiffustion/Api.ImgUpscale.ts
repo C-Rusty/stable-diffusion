@@ -4,7 +4,7 @@ import { getImgFromResponse } from "../../utilities/functions/images";
 import {UpscaleServiceModel } from "../../types/services/imageUpscale";
 import { OutputFormat } from "../../types/typesGeneratorOptions";
 import { delay } from "../../utilities/functions/common";
-import { ImageUpscaleItem } from "../../interface/services/imageUpscale";
+import { ImageUpscaleItem } from "../../interface/sd-request/imageUpscale";
 
 const upscaleUrlPath = `${API_URL}/v2beta/stable-image/upscale/`;
 const upscaleCreativeUrlPath = `${API_URL}/v2beta/stable-image/upscale/creative/result/`;
@@ -12,6 +12,8 @@ const upscaleCreativeUrlPath = `${API_URL}/v2beta/stable-image/upscale/creative/
 const getUpscaledImage = async (formData: ImageUpscaleItem, model: UpscaleServiceModel, apiKey: string) => {
     const urlPath = upscaleUrlPath + model;
 
+    console.info(apiKey);
+    
 
     const response = await axios.postForm(
         urlPath,

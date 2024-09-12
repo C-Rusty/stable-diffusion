@@ -3,8 +3,8 @@ import { ReactComponent as DeleteItemIcon } from '../../../../images/delete-item
 import { ApiFirebaseStore } from '../../../../api/Firebase/Api.Firebase.Store';
 import { Context } from '../../../app/App';
 import { Dispatch, SetStateAction, useContext } from 'react';
-import { generationHistoryItem } from '../../../../types/typesCommon';
 import { apiFirebaseStorage } from '../../../../api/Firebase/Api.Firebase.Storage';
+import { IImageHistoryItem } from '../../../../interface/items/imgItems';
 
 const DeleteGenHistoryButton = (
     {
@@ -16,7 +16,7 @@ const DeleteGenHistoryButton = (
     {
         id: string,
         storagePath: string,
-        setGenerationHistory: Dispatch<SetStateAction<generationHistoryItem[]>>
+        setGenerationHistory: Dispatch<SetStateAction<IImageHistoryItem[]>>
     }
 ) => {
 

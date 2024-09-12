@@ -1,10 +1,12 @@
-import { ImageGenerationOptions } from "../../interface/services/imageGeneration";
-import { ImageUpscaleModelOptions } from "../../interface/services/imageUpscale";
-import { ImageEditOptions } from "../../interface/services/imgEdit";
-import { ImageControlServiceModel, ImageControlServiceOptions } from "./imageControl";
+import { ImageGenerationOptions } from "../../interface/sd-request/imageGeneration";
+import { ImageUpscaleModelOptions } from "../../interface/sd-request/imageUpscale";
+import { ImageEditOptions } from "../../interface/sd-request/imgEdit";
+import { IImgPreciseEditOptions } from "../../interface/sd-request/imgPreciceEdit";
+import { VideoGenerationModelOptions } from "../../interface/sd-request/videoGeneration";
+import { ImageControlServiceModel } from "./imageControl";
 import { ImageEditServiceModel } from "./imageEdit";
 import { ImageGenerationServiceModel } from "./imageGeneration";
-import { ImageToVideoGenerationServiceModels, ImageToVideoGenerationServiceOptions } from "./imageToVideoGeneration";
+import { ImageToVideoGenerationServiceModels } from "./imageToVideoGeneration";
 import { UpscaleServiceModel } from "./imageUpscale";
 
 export type ServiceType = `Image Generator` | `Upscale Image` | `Edit Image` | `Precise Image Edit` | `Video Generator`;
@@ -21,4 +23,4 @@ export type CurrentServiceModel = ImageGenerationServiceModel | UpscaleServiceMo
 
 export type CurrentServiceModels = Array<CurrentServiceModel>;
 
-export type CurrentServiceModelOptions = ImageEditOptions | ImageGenerationOptions | ImageToVideoGenerationServiceOptions | ImageUpscaleModelOptions | ImageControlServiceOptions;
+export type CurrentServiceModelOptions = ImageEditOptions | ImageGenerationOptions | VideoGenerationModelOptions | ImageUpscaleModelOptions | IImgPreciseEditOptions;

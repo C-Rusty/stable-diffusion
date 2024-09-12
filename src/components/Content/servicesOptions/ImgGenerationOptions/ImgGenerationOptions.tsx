@@ -2,13 +2,12 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { AspectRatios, OutputFormat, PresetStyle } from "../../../../types/typesGeneratorOptions";
 import './imgGenerationOptions.scss';
 import Select from "../../../common/select/Select";
-import { inputCommonClassName, selectCommonClassName } from "../../../../utilities/constants";
+import { selectCommonClassName } from "../../../../utilities/constants";
 import Input from "../../../common/input/Input";
-import InputFile from "../../../common/input-file/InputFile";
 import { modelSelects } from "../../../../utilities/generatorOptions";
 import Textarea from "../../../common/textarea/Textarea";
-import { coreModelOptions, ImageGenerationOptions, sd3ModelOptions, sd3ModelOptionsImgToImg, ultraModelOptions } from "../../../../interface/services/imageGeneration";
 import { ImageGenerationServiceModel } from "../../../../types/services/imageGeneration";
+import { ImageGenerationOptions, coreModelOptions, sd3ModelOptions, sd3ModelOptionsImgToImg, ultraModelOptions } from "../../../../interface/sd-request/imageGeneration";
 
 const ImgGenerationOptions = (
     {
@@ -25,28 +24,20 @@ const ImgGenerationOptions = (
 ) => {
 
     const { 
-        aspectRatiSelectProps,
+        aspectRatioSelectProps,
         negativeInputProps,
         outputFormmatSelectProps,
         stylePresetSelectProps,
-        fileInputProps,
         seedInputProps,
         imageStrengthInputProps
     } = modelSelects;
 
-    const [aspect_ratio, setAspectRatio] = useState<AspectRatios>(`1:1`);
-    const [style_preset, setStylePreset] = useState<PresetStyle | undefined>(undefined);
-    const [output_format, setOutputFormat] = useState<OutputFormat>(`png`);
+    const [aspect_ratio, setAspectRatio] = useState<AspectRatios>(aspectRatioSelectProps.options[0].value);
+    const [style_preset, setStylePreset] = useState<PresetStyle>(stylePresetSelectProps.options[0].value);
+    const [output_format, setOutputFormat] = useState<OutputFormat>(outputFormmatSelectProps.options[0].value);
     const [seed, setSeed] = useState<number>(seedInputProps.value); 
-    const [image, setImage] = useState<Blob>(new Blob());
-    const [strength, setStrength] = useState<number | undefined>(imageStrengthInputProps.value);
-    const [negative_prompt, setNegativePrompt] = useState<string>(``);
-
-    useEffect(() => {
-        if (!serviceModelOptionModel.includes(`sd3`)) setImage(new Blob());
-
-        if (serviceModelOptionModel.includes(`sd3`) && output_format !== `png`) setOutputFormat(`png`);
-    }, [output_format, serviceModelOptionModel]);
+    const [strength, setStrength] = useState<number>(imageStrengthInputProps.value);
+    const [negative_prompt, setNegativePrompt] = useState<string>(negativeInputProps.value);
 
     useEffect(() => {
 
@@ -77,7 +68,6 @@ const ImgGenerationOptions = (
                     case true:
                         options = {
                             mode: `image-to-image`,
-                            image,
                             strength,
                             aspect_ratio,
                             seed,
@@ -107,12 +97,12 @@ const ImgGenerationOptions = (
 
         setOptions(options as ImageGenerationOptions);
 
-    }, [aspect_ratio, style_preset, output_format, seed, image, strength, negative_prompt, serviceModelOptionModel, isImgToImgModeEnabled]);
+    }, [aspect_ratio, style_preset, output_format, seed, strength, negative_prompt, serviceModelOptionModel, isImgToImgModeEnabled]);
 
     return(
         <div className="generator-v2">
             <div className='generator-v2__inner'>
-                {isImgToImgModeEnabled && serviceModelOptionModel.includes(`sd3`) ? 
+                {isImgToImgModeEnabled && (serviceModelOptionModel === `sd3-large` || serviceModelOptionModel === `sd3-large-turbo` || serviceModelOptionModel === `sd3-medium`) ? 
                     <Input 
                         {...imageStrengthInputProps}
                         value={strength}
@@ -120,7 +110,7 @@ const ImgGenerationOptions = (
                     />
                     :
                     <Select 
-                        {...aspectRatiSelectProps}
+                        {...aspectRatioSelectProps}
                         value={aspect_ratio}
                         setValue={setAspectRatio} 
                         className={selectCommonClassName} 
@@ -132,14 +122,6 @@ const ImgGenerationOptions = (
                         value={style_preset}
                         setValue={setStylePreset} 
                         className={selectCommonClassName} 
-                    />
-                }
-                {isImgToImgModeEnabled && serviceModelOptionModel.includes(`sd3`) &&
-                    <InputFile 
-                        {...fileInputProps}
-                        isRequired={true}
-                        className={inputCommonClassName}
-                        setImage={setImage}
                     />
                 }
                 <Input 

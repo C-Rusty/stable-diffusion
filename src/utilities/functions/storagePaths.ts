@@ -7,6 +7,7 @@ export function createImgStoragePath (id: string, prompt: string, format: string
 export function getImgNameAndFormat (storagePath: string) {
     const imgName = storagePath.split(`.`)[1].split(` `).join(`_`);
     const imgFormat = storagePath.split(`.`)[2];
+    
     return `${imgName}.${imgFormat}`;
 };
 
