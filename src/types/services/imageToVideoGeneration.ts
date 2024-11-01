@@ -1,0 +1,1 @@
+export type ImageToVideoGenerationServiceModels = `image-to-video`;

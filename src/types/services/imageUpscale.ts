@@ -1,0 +1,1 @@
+export type UpscaleServiceModel = `conservative` | `creative`;

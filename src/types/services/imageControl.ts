@@ -1,0 +1,1 @@
+export type ImageControlServiceModel = `sketch` | `structure` | `style`;

@@ -1,5 +1,5 @@
 import './showImageButton.scss';
-import {ReactComponent as Arrow} from '../../../../imgs/arrow.svg';
+import {ReactComponent as Arrow} from '../../../../images/arrow.svg';
 import { Dispatch, SetStateAction } from 'react';
 
 const ShowImageButton = ({state, setState} : {state: boolean, setState: Dispatch<SetStateAction<boolean>>}) => {

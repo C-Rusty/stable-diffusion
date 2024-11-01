@@ -38,13 +38,12 @@
         gap: 3rem;
     }
 
-    &__input, &__btn {
+    &__btn {
        width: 100%;
 
        padding: 1.5rem 1rem;
 
        border: none;
-       border-bottom: .1rem solid $colorGreen;
        border-radius: .5rem;
 
        color: $colorPink;
@@ -55,17 +54,9 @@
     }
 
     &__input {
-        background: $colorBlack;
+        @extend %input-textarea;
 
-        &:focus {
-            outline: none;
-
-            border-bottom-color: $colorBlue;
-
-            padding-left: 2rem;
-
-            @include transition(.3s, ease);
-        }
+        border-bottom: .1rem solid $colorGreen;
     }
 
     &__btn-container {

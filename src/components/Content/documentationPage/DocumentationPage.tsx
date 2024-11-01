@@ -1,5 +1,5 @@
 import './documentationPage.scss';
-import { ReactComponent as Arrow } from '../../../imgs/arrow.svg';
+import { ReactComponent as Arrow } from '../../../images/arrow.svg';
 import { useEffect, useState } from 'react';
 
 type Links = {

@@ -1,10 +1,10 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { GalleryItem } from "../../types/typesCommon";
 import ImageGallery from "react-image-gallery";
 import './gallery.scss';
 import DownloadButton from "../common/buttons/download-btn/DownloadButton";
 import CloseButton from "../common/buttons/close-btn/CloseButton";
-import { getImgNameAndFormat } from "../../utilities/functions";
+import { getImgNameAndFormat } from "../../utilities/functions/storagePaths";
+import { IGalleryItem } from "../../interface/items/imgItems";
 
 const Gallery = (
     {
@@ -15,12 +15,12 @@ const Gallery = (
     :
     {
         setIsOpened: Dispatch<SetStateAction<boolean>>,
-        imgCollection: Array<GalleryItem>,
+        imgCollection: Array<IGalleryItem>,
         clickedImgIndex: number | undefined
     }
 ) => {
 
-    const [currentImg, setCurrentImg] = useState<GalleryItem | undefined>(undefined);
+    const [currentImg, setCurrentImg] = useState<IGalleryItem | undefined>(undefined);
     const [imgIndex, setImgIndex] = useState<number | undefined>(clickedImgIndex);
 
     useEffect(() => {
@@ -44,14 +44,14 @@ const Gallery = (
                             startIndex={imgIndex}
                             showIndex={true}
                             onSlide={(index) => setCurrentImg(imgCollection[index])}
-                            items={imgCollection.map((img) => ({original: img.url}))}
+                            items={imgCollection.map((img) => ({original: img.itemUrl}))}
                         />
                     </div>
                     <div className="gallery__action-btn-container">
                         <DownloadButton 
                             imgsToDownload={[
                                 {
-                                    url: currentImg ? currentImg.url : '', 
+                                    url: currentImg ? currentImg.itemUrl : '', 
                                     name: currentImg ? getImgNameAndFormat(currentImg.storagePath) : ''
                                 }
                             ]} 

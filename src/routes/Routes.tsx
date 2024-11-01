@@ -6,7 +6,7 @@ import Loader from "../components/common/loader/Loader";
 
 const Main = () => {
 
-    const GeneratorPage = lazy(() => import('../components/Content/generatorPage/GeneratorPage'));
+    const ServicesPage = lazy(() => import('../components/Content/servicesPage/ServicesPage'));
     const GenerationHistoryPage = lazy(() => import('../components/Content/generationHistoryPage/GenerationHistoryPage'));
     const FavouritesPage = lazy(() => import('../components/Content/favouritesPage/FavouritesPage'));
     const DocumentationPage = lazy(() => import('../components/Content/documentationPage/DocumentationPage'));
@@ -16,7 +16,7 @@ const Main = () => {
         <Suspense fallback={<Loader className="component-loading"/>}>
             <Routes>
                 <Route path={urlPaths.home} element={<Home/>}>
-                    <Route index={true} element={<GeneratorPage/>} />
+                    <Route index={true} element={<ServicesPage/>} />
                     <Route path={urlPaths.generationHistory} element={<GenerationHistoryPage/>} />
                     <Route path={urlPaths.favourites} element={<FavouritesPage/>}/>
                     <Route path={urlPaths.documentation} element={<DocumentationPage/>} />

@@ -2,9 +2,9 @@ import { useContext, useState } from 'react';
 import './logInForm.scss';
 import { Context } from '../app/App';
 import { UserCredential } from 'firebase/auth';
-import { cookieNameUser } from '../../utilities/commonVars';
+import { cookieNameUser } from '../../utilities/constants';
 import Loader from '../common/loader/Loader';
-import { firebaseUserAuth } from '../../api/Api.FirebaseAuth';
+import { firebaseUserAuth } from '../../api/Firebase/Api.FirebaseAuth';
 
 const LogInForm = () => {
 

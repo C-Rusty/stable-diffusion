@@ -1,16 +1,14 @@
 import {makeAutoObservable} from "mobx";
-import {  cookieNameUser, cookieNameSD } from "../utilities/commonVars";
-import { ApiFirebaseStore } from "../api/Api.Firebase.Store";
+import {  cookieNameUser, cookieNameSD } from "../utilities/constants";
+import { ApiFirebaseStore } from "../api/Firebase/Api.Firebase.Store";
 
 export default class mobxStore {
     isAuth = false;
-    SDApiKey: string | undefined = undefined;
-    userId: string | undefined = undefined;
-    isModalOpen = false;
+    SDApiKey: string = ``;
+    userId: string = ``;
 
     static SDApiKey: string = ``;
     static userId: string = ``;
-    static isModalOpen: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -22,10 +20,6 @@ export default class mobxStore {
 
     setUserId(userId: string) {
         this.userId = userId;
-    };
-
-    setModelOpen(bool: boolean) {
-        this.isModalOpen = bool;
     };
 
     async login(result: boolean) {
@@ -57,7 +51,7 @@ export default class mobxStore {
             try {
                 const { APIKEY } = await ApiFirebaseStore.getSDApiKey() as { APIKEY: string };
                 
-                this.SDApiKey = APIKEY;
+                this.SDApiKey = APIKEY;                
     
                 document.cookie = cookieNameSD + "=" + this.SDApiKey + ";path=/";
             } catch (error) {

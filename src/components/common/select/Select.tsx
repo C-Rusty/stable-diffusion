@@ -6,7 +6,7 @@ type SetStateAction<T> = React.Dispatch<React.SetStateAction<T>>;
 interface SelectComponentProps<T> {
     value: T,
     setValue: SetStateAction<T>,
-    options: {text: string, value: string}[],
+    options: {text: T, value: T}[],
     className: string,
     id?: string,
     label: string
@@ -63,12 +63,12 @@ const Select = <T,> ({ setValue, options, className, id, value, label}: SelectCo
                         <div 
                             onClick={() => handleClick(
                                 optionItem.value as unknown as T,
-                                optionItem.text,
+                                optionItem.text as string,
                                 id
                             )} 
-                            key={optionItem.value}
+                            key={optionItem.value as string}
                             className={className + `__option`}
-                        >{optionItem.text}</div>
+                        >{optionItem.text as string}</div>
                     )}
                 </div>
             </div>

@@ -1,18 +1,25 @@
 import './textarea.scss';
 import { Dispatch, SetStateAction } from "react";
-import { textAreaCommonClassName } from "../../../utilities/commonVars";
+import { textAreaCommonClassName } from "../../../utilities/constants";
 
 interface TextareaComponentProps<T> {
-    id?: string,
-    name: string,
     label: string,
+    type: string,
+    id: string
     placeholder: string,
-    negativePrompt: string | undefined,
-    setNegativePrompt: Dispatch<SetStateAction<string | undefined>>
-    isRequired: boolean,
+    name: string,
+    title: string,
+    autoComplete: string,
+    ariaLabel: string,
+    spellCheck: boolean,
+    rows: number,
+    className?: string,
+    required: boolean
+    value: string,
+    setValue: Dispatch<SetStateAction<string>>
 };
 
-const Textarea = ( { id, name, placeholder, label, negativePrompt, setNegativePrompt, isRequired }: TextareaComponentProps<string>) => {
+const Textarea = ( { id, name, placeholder, label, value, setValue, required, ariaLabel, title, autoComplete, spellCheck, rows, className}: TextareaComponentProps<string>) => {
 
     return (
         <div className="textarea-container">
@@ -20,16 +27,16 @@ const Textarea = ( { id, name, placeholder, label, negativePrompt, setNegativePr
             <textarea
                 id={id}
                 name={name} 
-                className={`textarea-container__textarea ${textAreaCommonClassName}`} 
+                className={`textarea-container__textarea ${textAreaCommonClassName} ${className}`} 
                 placeholder={placeholder}
-                onChange={(e) => setNegativePrompt(e.target.value)}
-                value={negativePrompt ? negativePrompt : ``}
-                aria-label='Negative prompt'
-                title='Negative prompt'
-                autoComplete='on'
-                spellCheck='true'
-                required={isRequired}
-                rows={1}
+                onChange={(e) => setValue(e.target.value)}
+                defaultValue={value}
+                aria-label={ariaLabel}
+                title={title}
+                autoComplete={autoComplete}
+                spellCheck={spellCheck}
+                required={required}
+                rows={rows}
             />
     </div>
     )

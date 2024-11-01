@@ -1,0 +1,69 @@
+@import '../../../../styles/common/fonts.scss';
+@import '../../../../styles/common/variables.scss';
+@import '../../../../styles/common/mixins.scss';
+@import '../../../../styles/common/extends.scss';
+
+.img-upscale {
+    &__inner {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        background: $colorLightBlack;
+
+        border-radius: 3rem;
+    }
+
+    &__form {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4rem;
+
+        &-prompt, .textarea-container, &-btn-container {
+            grid-column: span 4;
+        }
+
+        &-services-btns {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+            align-items: center;
+            justify-content: center;
+
+            width: max-content;
+
+            &-btn {
+                @extend %button;
+
+                padding: 1rem 3rem;
+
+                border: none;
+                border-radius: 3rem;
+        
+                color: $colorPink;
+                text-transform: capitalize;
+
+                @include transition(.3s, ease);
+
+                background: $colorGreen;
+        
+                &:hover {
+                    background: $colorBlue;
+
+                    cursor: pointer;
+
+                    @include transition(.3s, ease);
+                }
+
+                &.active {
+                    background: $colorBlue;
+                    @include transition(.3s, ease);
+                }
+            }
+        }
+
+        &-prompt {
+            @extend %prompt;
+        }
+    }
+}

@@ -1,0 +1,43 @@
+@import '../../../styles/index.scss';
+
+.service-models {
+    &__inner {
+        display: flex;
+        flex-direction: column;
+
+        gap: 2rem;
+    }
+
+    &__label {
+        @extend %Font-Regular-16px;
+        color: $colorWhite;
+    }
+
+    &__items-container {
+        display: grid;
+        gap: 2rem;
+
+        &:not(:has(.service-models__items-container-item:nth-of-type(4))) {
+            grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+        }
+
+        &:has(.service-models__items-container-item:nth-of-type(4)) {
+            grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+        }
+
+        &-item {
+            @extend %Font-Regular-16px;
+            color: $colorPink;
+
+            @extend %button;
+
+            background: $colorGreen;
+
+            text-transform: capitalize;
+
+            &.active {
+                background: $colorBlue;
+            }
+        }
+    }
+}

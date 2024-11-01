@@ -1,0 +1,33 @@
+@import '../../../styles/index.scss';
+
+.service-container {
+    background: $colorLightBlack;
+
+    @extend %block;
+    
+    .img-generation, .img-upscale, .img-editing, .img-precise-edit, .video-generation {
+        &__form {
+            display: flex;
+            flex-direction: column;
+            gap: 4rem;
+        }
+
+        &__mandatory-fields {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 2rem;
+
+            &:has(div:nth-of-type(2)) {
+                grid-template-columns: repeat(2, 1fr);
+
+                div:nth-of-type(3) {
+                    grid-column: span 2;
+                }
+            }
+        }
+    }
+
+    &__switchers {
+        @extend %switchers-container;
+    }
+}

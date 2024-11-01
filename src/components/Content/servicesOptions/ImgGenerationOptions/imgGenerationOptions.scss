@@ -1,0 +1,30 @@
+@import '../../../../styles/common/variables.scss';
+@import '../../../../styles/common/fonts.scss';
+@import '../../../../styles/common/mixins.scss';
+
+.generator-v2 {
+    &__inner {
+        display: grid;
+        gap: 4rem;
+    }
+
+    &__inner:has(> :nth-child(-n+5)) {
+        grid-template-columns: repeat(4, 1fr);
+
+        .textarea-container {
+            grid-column: span 4;
+        }
+    }
+
+    &__inner:has(> :nth-child(-n+5)):not(:has(.textarea-container)) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    &__inner:not(:has(> :nth-child(5))) {
+        grid-template-columns: repeat(3, 1fr);
+
+        .textarea-container {
+            grid-column: span 3;
+        }
+    }
+}
